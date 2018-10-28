@@ -1,53 +1,19 @@
-.login-card {
-    margin: 200px auto;
-    max-width: 400px;
-    border-radius: 6px;
+.paper-card {
+    margin: 160px auto;
+    max-width: 460px;
+    border-radius: 4px;
+    -webkit-box-shadow: 8px 10px 39px 10px rgba(0,0,0,0.75);
+    -moz-box-shadow: 8px 10px 39px 10px rgba(0,0,0,0.75);
+    box-shadow: 8px 10px 39px 10px rgba(0,0,0,0.75);
 }
 
-.login-card button {
-    margin-top: 40px;
+.paper-card  button {
+    margin-top: 32px;
 }
 
-.card {
+.paper-card .paper-card-body form {
     padding: 42px;
     display: flex;
     flex-direction:column;
-    background: rgba(255,255,255, 0.4);
-}
-
-.frosted-glass {
-    background: inherit;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-    box-sizing: border-box;
-    box-shadow: 0 .5em 1em rgba(0, 0, 0, .3);
-}
-
-.frosted-glass::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: inherit;
-    filter: blur(10px);
-}
-
-.bg-mask{
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100vw;
-    min-height:100vh;
-    background: linear-gradient(
-        rgba(255, 0, 0, 0.3), 
-        rgba(0, 0, 0, 0.1)
-      ),url('../../img/warhammer-fantasy-wallpaper-20.jpg')no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background-image: url('./../../img/paper-texture-alt.jpg');
 }
