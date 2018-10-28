@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../../main.css';
+import './App.css';
 import './LoginPage.css';
 import logo from './../../img/logo.png' // relative path to image 
 

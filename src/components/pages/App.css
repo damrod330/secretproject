@@ -2,7 +2,6 @@ body{
     transition: 0.3s;
 }
 
-
 .frosted-glass {
     background: inherit;
     position: relative;
@@ -33,7 +32,7 @@ body{
     background: linear-gradient(
         rgba(19, 13, 14, 0.3), 
         rgba(29, 175, 201, 0.1)
-      ),url('./img/main-bg.jpg')no-repeat center center fixed;
+      ),url('../../img/main-bg.jpg')no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
