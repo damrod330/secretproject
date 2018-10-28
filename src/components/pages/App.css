@@ -1,7 +1,3 @@
-body{
-    transition: 0.3s;
-}
-
 .frosted-glass {
     background: inherit;
     position: relative;
@@ -21,27 +17,4 @@ body{
     left: 0;
     background: inherit;
     filter: blur(10px);
-}
-
-.bg-mask{
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100vw;
-    min-height:100vh;
-    background: linear-gradient(
-        rgba(19, 13, 14, 0.3), 
-        rgba(29, 175, 201, 0.1)
-      ),url('../../img/main-bg.jpg')no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-mask .logo-img{
-    height: 160px;
-    position: absolute;
-    top:0;
-    right: 0;
 }
