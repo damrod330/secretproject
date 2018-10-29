@@ -23,6 +23,7 @@ const styles = theme => ({
     root: {
         width: '100%',
         display:"flex",
+        color: "white",
     },
     paper: {
         marginRight: theme.spacing.unit * 2,
@@ -129,9 +130,11 @@ class NavBar extends React.Component {
                                         <MenuItem onClick={this.handleClose}>Logout</MenuItem>
                                         <MenuItem ></MenuItem>
                                         <MenuItem ></MenuItem>
-                                        <MenuItem ></MenuItem>
 
-                                        <Button disabled className={classes.button}></Button>
+
+                                        <Button disabled className={classes.button}> </Button>{/*invisible sign to keep error away*/}
+
+
 
                                     </MenuList>
                                 </ClickAwayListener>
@@ -155,7 +158,7 @@ class NavBar extends React.Component {
                 {/*</FormGroup>*/}
                 {auth && (
 
-                    <AppBar position="static">
+                    <AppBar position="static" className={"navBar"}>
                         <Toolbar>
                             <IconButton className={classes.menuButton} buttonRef={node => {
                                 this.anchorEl = node;
@@ -175,7 +178,7 @@ class NavBar extends React.Component {
                                     <SearchIcon />
                                 </div>
                                 <InputBase
-                                    placeholder="Search…"
+                                    placeholder="Wyszukaj.."
                                     classes={{
                                         root: classes.inputRoot,
                                         input: classes.inputInput,
