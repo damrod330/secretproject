@@ -2,42 +2,41 @@
     margin: 140px auto;
     max-width: 460px;
     border-radius: 4px;
-    -webkit-box-shadow: 8px 10px 39px 10px rgba(0,0,0,0.75);
-    -moz-box-shadow: 8px 10px 39px 10px rgba(0,0,0,0.75);
-    box-shadow: 8px 10px 39px 10px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
+    box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
 }
 
-.paper-card  button {
+.paper-card button {
     margin-top: 32px;
 }
 
-.paper-card .paper-card-body form {
+.paper-card .paper-card-body {
     padding: 42px;
-    display: flex;
-    flex-direction:column;
     background-image: url('./../../img/paper-texture-alt.jpg');
 }
 
-.bg-mask{
+.paper-card .paper-card-body form {
+    display: flex;
+    flex-direction: column;
+}
+
+.bg-mask {
     position: absolute;
     top: 0;
     left: 0;
-    min-height:100vh;
-    min-width:100vw;
-    background: linear-gradient(
-        rgba(19, 13, 14, 0.3), 
-        rgba(29, 175, 201, 0.1)
-      ),url('../../img/main-bg.jpg')no-repeat center center fixed;
+    min-height: 100vh;
+    min-width: 100vw;
+    background: linear-gradient( rgba(19, 13, 14, 0.3), rgba(29, 175, 201, 0.1)), url('../../img/main-bg.jpg')no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
 
-.bg-mask .logo-img{
+.bg-mask .logo-img {
     height: 140px;
     position: absolute;
-    top:0;
+    top: 0;
     right: 0;
 }
-

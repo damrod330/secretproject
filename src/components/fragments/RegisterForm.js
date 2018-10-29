@@ -15,7 +15,6 @@ class RegisterForm extends Component {
 
     handleOnSubmit(e) {
         e.preventDefault();
-        console.log("Submit clicked.")
     }
 
     handleOnLoginClicked(e) {

@@ -23,7 +23,6 @@ class LoginForm extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <form onSubmit={this.handleOnSubmit.bind(this)}>
                 <TextField
