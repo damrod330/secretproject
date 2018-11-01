@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
+import withWidth, {isWidthUp} from '@material-ui/core/withWidth';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import {fade} from '@material-ui/core/styles/colorManipulator';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from "@material-ui/core/es/InputBase/InputBase";
 import Popper from "@material-ui/core/es/Popper/Popper";
@@ -17,12 +18,42 @@ import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import './NavBar.css'
 import Button from "@material-ui/core/es/Button/Button";
 import Slide from "@material-ui/core/es/Slide/Slide";
+import SwipeableDrawer from "@material-ui/core/es/SwipeableDrawer/SwipeableDrawer";
+import List from "@material-ui/core/es/List/List";
+import ListItem from "@material-ui/core/es/ListItem/ListItem";
+import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
+import Divider from "@material-ui/core/es/Divider/Divider";
+import {compose} from "recompose";
 
 
 const styles = theme => ({
+    menuItem: {
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 20,
+        '&:focus': {
+            background: 'linear-gradient(45deg, #2196f3 30%, #21cbf3 90%)',
+            borderRadius: 20,
+            color: 'white',
+            marginLeft: 20,
+            marginRight: 20,
+
+
+            '& $primary, & $icon': {
+                color: theme.palette.common.white,
+            },
+        },
+    },
+    primary: {},
+    icon: {},
+
+    fullList: {
+        width: 'auto',
+    },
+
     root: {
         width: '100%',
-        display:"flex",
+        display: "flex",
         color: "white",
     },
     paper: {
@@ -87,13 +118,14 @@ const styles = theme => ({
 
 class NavBar extends React.Component {
     state = {
-        auth: true,
-        open: false,
+        open: true,
+        top: false,
+        isSm: false,
     };
 
 
     handleToggle = () => {
-        this.setState(state => ({ open: !state.open }));
+        this.setState(state => ({open: !state.open}));
     };
 
     handleClose = event => {
@@ -101,12 +133,57 @@ class NavBar extends React.Component {
             return;
         }
 
-        this.setState({ open: false });
+        this.setState({open: false});
+    };
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+            [side]: open,
+        });
     };
 
     render() {
-        const { classes } = this.props;
-        const { auth,open } = this.state;
+        const {classes} = this.props;
+        const {width} = this.props;
+        let {open} = this.state;
+        let {isSm} =this.state;
+
+
+        // let fullList = (
+        //     <div className={classes.fullList}>
+        //         <List>
+        //             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        //                 <ListItem button key={text}>
+        //                     <ListItemText primary={text}/>
+        //                 </ListItem>
+        //             ))}
+        //         </List>
+        //         <Divider/>
+        //         <List>
+        //             {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        //                 <ListItem button key={text}>
+        //                     <ListItemText primary={text}/>
+        //                 </ListItem>
+        //             ))}
+        //         </List>
+        //     </div>
+        // );
+
+        if (isWidthUp('sm', this.props.width)) {
+            open=false;
+            isSm=true;
+        }
+        if (isWidthUp('md', this.props.width)) {
+            open=true;
+            isSm=false;
+        }
+
+
+        // else if (isWidthUp('md',this.props.width))
+        // {
+        //     this.setState({
+        //         open:true
+        //     })
+        // }
         return (
 
 
@@ -114,30 +191,28 @@ class NavBar extends React.Component {
             <div className={classes.root}>
 
 
-                <Popper open={open}  anchorEl={this.anchorEl} transition disablePortal>
-                    {({ TransitionProps, placement }) => (
+                <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
+                    {({TransitionProps, placement}) => (
 
                         <Slide
                             {...TransitionProps}
                             id="menu-list-grow"
-                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                            style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                            timeout={{enter: 4342}}
                         >
                             <Paper className={"borderLess"}>
-                                <ClickAwayListener onClickAway={this.handleClose}>
-                                    <MenuList className={"banner"}>
-                                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                                        <MenuItem ></MenuItem>
-                                        <MenuItem ></MenuItem>
+                                {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
+                                <MenuList className={"banner"}>
+                                    <MenuItem className={classes.menuItem}>Profile</MenuItem>
+                                    <MenuItem className={classes.menuItem}>My account</MenuItem>
+                                    <MenuItem className={classes.menuItem}>Logout</MenuItem>
 
 
-                                        <Button disabled className={classes.button}> </Button>{/*invisible sign to keep error away*/}
+                                    {/*<Button disabled className={classes.button}> </Button>/!*invisible sign to keep error away*!/*/}
 
 
-
-                                    </MenuList>
-                                </ClickAwayListener>
+                                </MenuList>
+                                {/*</ClickAwayListener>*/}
                             </Paper>
 
                         </Slide>
@@ -147,51 +222,81 @@ class NavBar extends React.Component {
                 </Popper>
 
 
-
                 {/*<FormGroup>*/}
-                    {/*<FormControlLabel*/}
-                        {/*control={*/}
-                            {/*<Switch checked={auth} onChange={this.handleChange} aria-label="LoginSwitch" />*/}
-                        {/*}*/}
-                        {/*label={auth ? 'Logout' : 'Login'}*/}
-                    {/*/>*/}
+                {/*<FormControlLabel*/}
+                {/*control={*/}
+                {/*<Switch checked={auth} onChange={this.handleChange} aria-label="LoginSwitch" />*/}
+                {/*}*/}
+                {/*label={auth ? 'Logout' : 'Login'}*/}
+                {/*/>*/}
                 {/*</FormGroup>*/}
-                {auth && (
 
-                    <AppBar position="static" className={"navBar"}>
-                        <Toolbar>
-                            <IconButton className={classes.menuButton} buttonRef={node => {
-                                this.anchorEl = node;
-                            }}
-                                        aria-owns={open ? 'menu-list-grow' : undefined}
-                                        aria-haspopup="true"
-                                        onClick={this.handleToggle}
-                                        color="inherit">
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                                Material-UI
-                            </Typography>
-                            <div className={classes.grow} />
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon />
-                                </div>
-                                <InputBase
-                                    placeholder="Wyszukaj.."
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                />
+
+                {/*<AppBar position="static" className={"navBar"}>*/}
+                {/*<Toolbar>*/}
+                {/*<IconButton className={classes.menuButton} buttonRef={node => {*/}
+                {/*this.anchorEl = node;*/}
+                {/*}}*/}
+                {/*aria-owns={open ? 'menu-list-grow' : undefined}*/}
+                {/*aria-haspopup="true"*/}
+                {/*onClick={this.handleToggle}*/}
+                {/*color="inherit">*/}
+                {/*<MenuIcon />*/}
+                {/*</IconButton>*/}
+                {/*<Typography className={classes.title} variant="h6" color="inherit" noWrap>*/}
+                {/*Material-UI*/}
+                {/*</Typography>*/}
+                {/*<div className={classes.grow} />*/}
+                {/*<div className={classes.search}>*/}
+                {/*<div className={classes.searchIcon}>*/}
+                {/*<SearchIcon />*/}
+                {/*</div>*/}
+                {/*<InputBase*/}
+                {/*placeholder="Wyszukaj.."*/}
+                {/*classes={{*/}
+                {/*root: classes.inputRoot,*/}
+                {/*input: classes.inputInput,*/}
+                {/*}}*/}
+                {/*/>*/}
+                {/*</div>*/}
+                {/*</Toolbar>*/}
+
+                {/*</AppBar>*/}
+
+                {isSm ?
+                    <SwipeableDrawer
+                        anchor="top"
+                        open={this.state.top}
+                        onClose={this.toggleDrawer('top', false)}
+                        onOpen={this.toggleDrawer('top', true)}
+                    >
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            onClick={this.toggleDrawer('top', false)}
+                            onKeyDown={this.toggleDrawer('top', false)}
+                        >
+                            {/*{fullList}*/}
+                            <div className={classes.fullList}>
+                                <List>
+                                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                                        <ListItem button key={text}>
+                                            <ListItemText primary={text}/>
+                                        </ListItem>
+                                    ))}
+                                </List>
+                                <Divider/>
+                                <List>
+                                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                                        <ListItem button key={text}>
+                                            <ListItemText primary={text}/>
+                                        </ListItem>
+                                    ))}
+                                </List>
                             </div>
-                        </Toolbar>
-
-                    </AppBar>
-
-
-
-                )}
+                        </div>
+                    </SwipeableDrawer>
+                    : null}
             </div>
         );
     }
@@ -199,6 +304,7 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
     classes: PropTypes.object.isRequired,
+    width: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+export default compose(withStyles(styles),withWidth())(NavBar);
