@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch, BrowserRouter} from 'react-router-dom';
-import LoginPage from './components/pages/LoginPage';
-import MainLayout from './components/MainLayout';
+import LoginPage from './pages/LoginPage';
+import MainLayout from './MainLayout';
 
 
 const Main = ()=> (
