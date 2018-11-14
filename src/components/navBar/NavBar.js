@@ -1,22 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import withWidth, {isWidthUp,isWidthDown} from '@material-ui/core/withWidth';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import {fade} from '@material-ui/core/styles/colorManipulator';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from "@material-ui/core/es/InputBase/InputBase";
 import Popper from "@material-ui/core/es/Popper/Popper";
 import Paper from "@material-ui/core/es/Paper/Paper";
-import ClickAwayListener from "@material-ui/core/es/ClickAwayListener/ClickAwayListener";
 import MenuList from "@material-ui/core/es/MenuList/MenuList";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import './NavBar.css'
-import Button from "@material-ui/core/es/Button/Button";
 import Slide from "@material-ui/core/es/Slide/Slide";
 import SwipeableDrawer from "@material-ui/core/es/SwipeableDrawer/SwipeableDrawer";
 import List from "@material-ui/core/es/List/List";
@@ -24,7 +15,15 @@ import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import {compose} from "recompose";
-
+// import Button from "@material-ui/core/es/Button/Button";
+// import ClickAwayListener from "@material-ui/core/es/ClickAwayListener/ClickAwayListener";
+// import InputBase from "@material-ui/core/es/InputBase/InputBase";
+// import SearchIcon from '@material-ui/icons/Search';
+// import AppBar from '@material-ui/core/AppBar';
+// import Toolbar from '@material-ui/core/Toolbar';
+// import Typography from '@material-ui/core/Typography';
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
 
 const styles = theme => ({
     menuItem: {
@@ -47,14 +46,12 @@ const styles = theme => ({
     primary: {},
     icon: {},
 
-    fullList: {
-        width: 'auto',
-    },
 
     root: {
         width: '100%',
         display: "flex",
         color: "white",
+
     },
     paper: {
         marginRight: theme.spacing.unit * 2,
@@ -71,6 +68,9 @@ const styles = theme => ({
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
+    },
+    list: {
+        width: 250,
     },
     search: {
         position: 'relative',
@@ -113,28 +113,20 @@ const styles = theme => ({
             },
         },
     },
+    trans: {
+        backgroundColor: "transparent",
+    }
 
 });
 
 class NavBar extends React.Component {
     state = {
         open: true,
-        top: false,
+        left: false,
         isSm: false,
     };
 
 
-    handleToggle = () => {
-        this.setState(state => ({open: !state.open}));
-    };
-
-    handleClose = event => {
-        if (this.anchorEl.contains(event.target)) {
-            return;
-        }
-
-        this.setState({open: false});
-    };
     toggleDrawer = (side, open) => () => {
         this.setState({
             [side]: open,
@@ -145,45 +137,19 @@ class NavBar extends React.Component {
         const {classes} = this.props;
         const {width} = this.props;
         let {open} = this.state;
-        let {isSm} =this.state;
+        let {isSm} = this.state;
 
 
-        // let fullList = (
-        //     <div className={classes.fullList}>
-        //         <List>
-        //             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-        //                 <ListItem button key={text}>
-        //                     <ListItemText primary={text}/>
-        //                 </ListItem>
-        //             ))}
-        //         </List>
-        //         <Divider/>
-        //         <List>
-        //             {['All mail', 'Trash', 'Spam'].map((text, index) => (
-        //                 <ListItem button key={text}>
-        //                     <ListItemText primary={text}/>
-        //                 </ListItem>
-        //             ))}
-        //         </List>
-        //     </div>
-        // );
-
-        if (isWidthDown('sm', width)) {
-            open=false;
-            isSm=true;
+        if (isWidthDown('md', width)) {
+            open = false;
+            isSm = true;
         }
-        if (isWidthUp('md', width)) {
-            open=true;
-            isSm=false;
+        if (isWidthUp('lg', width)) {
+            open = true;
+            isSm = false;
         }
 
 
-        // else if (isWidthUp('md',this.props.width))
-        // {
-        //     this.setState({
-        //         open:true
-        //     })
-        // }
         return (
 
 
@@ -200,7 +166,7 @@ class NavBar extends React.Component {
                             style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
                             timeout={{enter: 4342}}
                         >
-                            <Paper className={"borderLess"}>
+                            <Paper className={classes.trans + " " + "borderLess"}>
                                 {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
                                 <MenuList className={"banner"}>
                                     <MenuItem className={classes.menuItem}>Profile</MenuItem>
@@ -265,19 +231,18 @@ class NavBar extends React.Component {
 
                 {isSm ?
                     <SwipeableDrawer
-                        anchor="top"
-                        open={this.state.top}
-                        onClose={this.toggleDrawer('top', false)}
-                        onOpen={this.toggleDrawer('top', true)}
+                        open={this.state.left}
+                        onClose={this.toggleDrawer('left', false)}
+                        onOpen={this.toggleDrawer('left', true)}
                     >
                         <div
                             tabIndex={0}
                             role="button"
-                            onClick={this.toggleDrawer('top', false)}
-                            onKeyDown={this.toggleDrawer('top', false)}
+                            onClick={this.toggleDrawer('left', false)}
+                            onKeyDown={this.toggleDrawer('left', false)}
                         >
-                            {/*{fullList}*/}
-                            <div className={classes.fullList}>
+
+                            <div className={classes.list}>
                                 <List>
                                     {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                                         <ListItem button key={text}>
@@ -307,4 +272,4 @@ NavBar.propTypes = {
     width: PropTypes.string.isRequired,
 };
 
-export default compose(withStyles(styles),withWidth())(NavBar);
+export default compose(withStyles(styles), withWidth())(NavBar);
