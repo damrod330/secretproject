@@ -8,5 +8,19 @@
     background: transparent;
      box-shadow: 0 0 0 0 rgba(0,0,0,0)!important;
 }
+.icons{
+    width: 128px;
+    height: 128px;
+
+}
+.sortIcon
+{
+    width: 64px;
+    height: 64px;
+}
+/*.MuiTab-textColorPrimary-29.MuiTab-selected-31*/
+/*{*/
+    /*color: white !important;*/
+/*}*/
 
 
