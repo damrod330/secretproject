@@ -4,21 +4,10 @@ import Grid from "@material-ui/core/es/Grid/Grid";
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import "./../BOF.css"
-import Card from "@material-ui/core/es/Card/Card";
-import CardActionArea from "@material-ui/core/es/CardActionArea/CardActionArea";
-import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
 import Typography from "@material-ui/core/es/Typography/Typography";
-import Flippy, {FrontSide, BackSide} from 'react-flippy';
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Popover from '@material-ui/core/Popover';
 import frontPaper from './../../../../img/paper-texture-alt.jpg'
-import {Flipper, Flipped} from 'react-flip-toolkit';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -32,15 +21,16 @@ import UndeadIcon from './../../../../img/icon/undead.png';
 import UndeadBorderIcon from './../../../../img/icon/undeadBorder.png';
 import MutantsIcon from './../../../../img/icon/tentacle.png';
 import MutantsBorderIcon from './../../../../img/icon/tentacleBorder.png';
-import SkillsIcon from './../../../../img/icon/skills.png';
-import AbilityIcon from './../../../../img/icon/ability.png';
-import EquipmentIcon from './../../../../img/icon/bag.png';
-import BackgroundForFlippedCard from './../../../../img/icon/underCardBg.png';
-import BackgroundForFlippedCardLight from './../../../../img/icon/underCardBgLight.png';
-
-
-import FormLabel from '@material-ui/core/FormLabel';
-// import "../../../styles/main.css";
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import InputBase from "@material-ui/core/es/InputBase";
+import SearchIcon from '@material-ui/icons/Search';
+import {fade} from '@material-ui/core/styles/colorManipulator';
 
 
 const styles = theme => ({
@@ -48,53 +38,68 @@ const styles = theme => ({
         // boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0), 0px 2px 1px -1px rgba(0, 0, 0, 0)",
         //   fontFamily:"Garamond",
         backgroundImage: `url(${frontPaper})`,
-        paddingLeft: 6
+        paddingLeft: 0
     },
+    tableHeader: {
+        backgroundColor: "black",
+        color: "#FFFFFF",
+        padding: "2px",
 
-    popover: {
+    },
+    expansionPanel: {
+        marginBottom: "1px",
+        marginTop: "1px"
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing.unit,
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        width: theme.spacing.unit * 9,
+        height: '100%',
+        position: 'absolute',
         pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    card: {
-        width: "100%",
-        maxHeight: "100%",
-        boxShadow: "0px 0px 0px 0px",
+    inputRoot: {
+        color: 'inherit',
+        width: '100%',
+    },
+    inputInput: {
+        paddingTop: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
+        paddingBottom: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit * 10,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.down('sm')]: {
+            width: 0,
+            '&:focus': {
+                width: 70,
+            },
+        },
+        [theme.breakpoints.up('md')]: {
+            width: 0,
+            '&:focus': {
+                width: 120,
+            },
+        },
 
     },
-    cardShrink: {
-        paddingLeft: 4,
-        paddingRight: 4,
-    },
-    media: {
-        height: 160,
-        width: 110,
-        paddingLeft: 5,
-        paddingRight: 0,
-    },
-    table: {
-        width: "100%",
-        height: "100%",
-        fontFamily: "Courier",
-
-    },
-    shrinker: {
-        height: 0,
-        paddingTop: 2,
-        paddingRight: 0,
-        paddingBottom: 2,
-        paddingLeft: 0,
-        backgroundColor: "transparent",
 
 
-    },
-    row: {
-        height: 0,
-
-        paddingTop: 2,
-        paddingRight: 0,
-        paddingBottom: 2,
-        paddingLeft: 0,
-
-    },
 });
 
 
@@ -125,36 +130,11 @@ const CustomTableCell = withStyles(theme => ({
 
 class Bestiary extends React.Component {
     state = {
-        anchorElSkill: null,
-        anchorElAbility: null,
-        anchorElEquipment: null,
         filter: undefined,
         value: 'all',
-        gridForFlippedCards: 6, // 6 for PC 12 for mobile fight me irl if u think otherwise
-        popOverIcons: false,
 
     };
-    handlePopoverOpenSkill = event => {
-        this.setState({anchorElSkill: event.currentTarget});
-    };
 
-    handlePopoverCloseSkill = () => {
-        this.setState({anchorElSkill: null});
-    };
-    handlePopoverOpenAbility = event => {
-        this.setState({anchorElAbility: event.currentTarget});
-    };
-
-    handlePopoverCloseAbility = () => {
-        this.setState({anchorElAbility: null});
-    };
-    handlePopoverOpenEquipment = event => {
-        this.setState({anchorElEquipment: event.currentTarget});
-    };
-
-    handlePopoverCloseEquipment = () => {
-        this.setState({anchorElEquipment: null});
-    };
     handleChange = event => {
         this.setState({value: event.target.value});
     };
@@ -162,586 +142,278 @@ class Bestiary extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {anchorElAbility, anchorElEquipment, anchorElSkill} = this.state;
-        const openAbility = Boolean(anchorElAbility);
-        const openSkill = Boolean(anchorElSkill);
-        const openEquipment = Boolean(anchorElEquipment);
         const {width} = this.props;
-        let {gridForFlippedCards, popOverIcons} = this.state;
         let sortIcon;
 
 
         if (isWidthDown('md', width)) {
-            gridForFlippedCards = 12;
+
             sortIcon = {
                 width: 32,
                 height: 32
             };
-            popOverIcons = false;
         }
         if (isWidthUp('lg', width)) {
-            gridForFlippedCards = 6;
             sortIcon = {
                 width: 64,
                 height: 64
             };
-            popOverIcons = true;
 
         }
-
-        let mobileInfo = <Grid container justify={"space-between"}>
-            <Grid item xs={4}>
-                <Typography>
-                    <b>Ekwipunek</b>
-                    łuk albo kusza ewentualnie nie
-                </Typography>
-            </Grid>
-            <Grid item xs={4}>
-                <Typography>
-                    <b>Umiejetności</b>
-                    Dowodzenie albo warzenie trucizn, unik, ukrywanie
-                    się, śledzenie
-                </Typography>
-
-            </Grid>
-            <Grid item xs={4}>
-                <Typography>
-                    <b>Zdolności</b>
-                    Błyskawiczne przeładowanie albo strzał mierzony,
-                    wyczucie kierunku
-                </Typography>
-            </Grid>
-        </Grid>;
-
-
-        let popOver = <Grid container justify={"space-between"}>
-            <Grid item xs={4}>
-                <Typography
-                    aria-owns={openSkill ? 'mouse-over-skill' : undefined}
-                    aria-haspopup="true"
-                    align={"left"}
-                    onMouseEnter={this.handlePopoverOpenSkill}
-                    onMouseLeave={this.handlePopoverCloseSkill}
-                    component={"p"}
-                >
-                    <img style={sortIcon} src={EquipmentIcon} alt={"plecak"}/>
-                </Typography>
-
-                <Popover
-                    id="mouse-over-skill"
-                    className={classes.popover}
-                    classes={{
-                        paper: classes.paper,
-                    }}
-                    open={openSkill}
-                    anchorEl={anchorElSkill}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    onClose={this.handlePopoverCloseSkill}
-                    disableRestoreFocus
-                >
-                    <Typography>Twoja
-                        kurta)</Typography>
-                </Popover></Grid>
-            <Grid item xs={4}>
-
-
-                <Typography
-                    aria-owns={openAbility ? 'mouse-over-ability' : undefined}
-                    aria-haspopup="true"
-                    align={"center"}
-                    onMouseEnter={this.handlePopoverOpenAbility}
-                    onMouseLeave={this.handlePopoverCloseAbility}
-                    component={"p"}
-                >
-                    <img style={sortIcon} src={AbilityIcon} alt={"Zdolnosci"}/>
-
-
-                </Typography>
-
-                <Popover
-                    id="mouse-over-ability"
-                    className={classes.popover}
-                    classes={{
-                        paper: classes.paper,
-                    }}
-                    open={openAbility}
-                    anchorEl={anchorElAbility}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    onClose={this.handlePopoverCloseAbility}
-                    disableRestoreFocus
-                >
-                    <Typography>Błyskawiczne przeładowanie albo strzał mierzony,
-                        wyczucie kierunku</Typography>
-                </Popover>
-
-            </Grid>
-            <Grid item xs={4}>
-                <Typography
-                    aria-owns={openEquipment ? 'mouse-over-equipment' : undefined}
-                    aria-haspopup="true"
-                    onMouseEnter={this.handlePopoverOpenEquipment}
-                    onMouseLeave={this.handlePopoverCloseEquipment}
-                    align={"right"}
-
-                >
-                    <img style={sortIcon} src={SkillsIcon} alt={"Umiejetnosci"}/>
-
-                </Typography>
-
-
-                <Popover
-                    id="mouse-over-equipment"
-                    className={classes.popover}
-                    classes={{
-                        paper: classes.paper,
-                    }}
-                    open={openEquipment}
-                    anchorEl={anchorElEquipment}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    onClose={this.handlePopoverCloseEquipment}
-                    disableRestoreFocus
-                >
-                    <Typography>Dowodzenie albo warzenie trucizn, unik, ukrywanie
-                        się, śledzenie</Typography>
-                </Popover></Grid></Grid>;
 
 
         return (
             <Paper className={classes.paper}>
-                <div className={classes.paper}>
-                    <FormControl>
-                        <RadioGroup
-                            aria-label="position"
-                            name="position"
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value="all"
-                                control={<Radio color="default"/>}
-                                label="Wszystko"
-                            />
-                            <FormControlLabel
-                                value="wildlife"
-                                control={<Radio color="default"
-                                                icon={<img src={WildlifeBorderIcon} alt={"dzikie zwierzeta"}
-                                                           style={sortIcon}/>}
-                                                checkedIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
-                                                                  style={sortIcon}/>}/>}
-                                label="Zwierzęta"
-                            />
-                            <FormControlLabel
-                                value="demons"
-                                control={<Radio color="default"
-                                                icon={<img src={DemonBorderIcon} alt={"mordujace demony"}
-                                                           style={sortIcon}/>}
-                                                checkedIcon={<img src={DemonIcon} alt={"wymordowane demony"}
-                                                                  style={sortIcon}/>}/>}
-                                label="Demony"
-                            />
-                            <FormControlLabel
-                                value="undead"
-                                control={<Radio color="default"
-                                                icon={<img src={UndeadBorderIcon} alt={"trupczaki"} style={sortIcon}/>}
-                                                checkedIcon={<img src={UndeadIcon} alt={"umarlaki"}
-                                                                  style={sortIcon}/>}/>}
-                                label="Ożywieńcy"
-                            />
-                            <FormControlLabel
-                                value="muties"
-                                control={<Radio color="default"
-                                                icon={<img src={MutantsBorderIcon} alt={"GMO"} style={sortIcon}/>}
-                                                checkedIcon={<img src={MutantsIcon} alt={"mutaciaki"}
-                                                                  style={sortIcon}/>}/>}
-                                label="Mutanci"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                </div>
+                <Grid container  alignItems={"center"} justify={"flex-start"}>
+                    <Grid item xs={9}>
 
-                {/*<Flipper*/}
-                {/*flipKey={this.state.value}*/}
-                {/*>*/}
+                        <div className={classes.paper}>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-label="position"
+                                    name="position"
+                                    value={this.state.value}
+                                    onChange={this.handleChange}
+                                    row
+                                >
+                                    <FormControlLabel
+                                        value="all"
+                                        control={<Radio color="default"/>}
+                                        label="Wszystko"
+                                    />
+                                    <FormControlLabel
+                                        value="wildlife"
+                                        control={<Radio color="default"
+                                                        icon={<img src={WildlifeBorderIcon} alt={"dzikie zwierzeta"}
+                                                                   style={sortIcon}/>}
+                                                        checkedIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
+                                                                          style={sortIcon}/>}/>}
+                                        label="Zwierzęta"
+                                    />
+                                    <FormControlLabel
+                                        value="demons"
+                                        control={<Radio color="default"
+                                                        icon={<img src={DemonBorderIcon} alt={"mordujace demony"}
+                                                                   style={sortIcon}/>}
+                                                        checkedIcon={<img src={DemonIcon} alt={"wymordowane demony"}
+                                                                          style={sortIcon}/>}/>}
+                                        label="Demony"
+                                    />
+                                    <FormControlLabel
+                                        value="undead"
+                                        control={<Radio color="default"
+                                                        icon={<img src={UndeadBorderIcon} alt={"trupczaki"}
+                                                                   style={sortIcon}/>}
+                                                        checkedIcon={<img src={UndeadIcon} alt={"umarlaki"}
+                                                                          style={sortIcon}/>}/>}
+                                        label="Ożywieńcy"
+                                    />
+                                    <FormControlLabel
+                                        value="muties"
+                                        control={<Radio color="default"
+                                                        icon={<img src={MutantsBorderIcon} alt={"GMO"}
+                                                                   style={sortIcon}/>}
+                                                        checkedIcon={<img src={MutantsIcon} alt={"mutaciaki"}
+                                                                          style={sortIcon}/>}/>}
+                                        label="Mutanci"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+
+                        </div>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Grid container>
+
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon/>
+                                </div>
+                                <InputBase
+                                    placeholder="Wyszukaj.."
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                />
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
                 <Grid container spacing={0} alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
 
-                    <Grid item xs={gridForFlippedCards}>
-                        {/*<Flipped>*/}
-                        <Card className={classes.card}>
-                            <Flippy
+                    <Grid item xs={12}>
+                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
+                            <ExpansionPanelSummary>
+                                <Typography gutterBottom variant="h5" component="h5">Minotaur Bydlak</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
 
-                                flipOnHover={false} // default false
-                                flipOnClick={true} // default false
-                                flipDirection="horizontal" // horizontal or vertical
-                                ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
-                                // if you pass isFlipped prop component will be controlled component.
-                                // and other props, which will go to div
-                                style={{
-                                    paddingTop: 0,
-                                    paddingRight: 0,
-                                    paddingBottom: 0,
-                                    paddingLeft: 0,
-                                    backgroundImage: `url(${BackgroundForFlippedCard})`,
+                                <Grid container alignItems={"flex-start"} justify={"flex-start"}>
+                                    <Grid item xs={2}>
+                                        <img src={"/img/Books/Bestiary/mino.png"} width={"100%"} height={"100%"}
+                                             alt={"img"}/>
+                                    </Grid>
+                                    <Grid item xs={3}>
+
+                                        <Typography>
+                                            Minotaury często bywają strażnikami kaplic poświęconych
+                                            Chaosowi
+                                            oraz grobowców poległych rycerzy Chaosu.
+                                            Gromadzą stosy trofeów, włącznie z pancerzami i
+                                            czaszkami
+                                            pokonanych
+                                            wrogów, które urastają w wielkie kopce,
+                                            czasami całkowicie pokrywające strzeżone miejsce.
+                                            Dlaczego
+                                            bogowie
+                                            Chaosu przeznaczają ich do takiej służby,
+                                            tego nie wiadomo.
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={7}>
+                                        <Paper classes={{root: classes.tableHeader}}>
+                                            Cechy Główne:
+                                        </Paper>
+                                        <Table>
+                                            {/*<TableHead>*/}
+                                            {/*<TableRow >*/}
+                                            {/*<CustomTableCell>Cechy</CustomTableCell>*/}
+                                            {/*<CustomTableCell>Główne</CustomTableCell>*/}
+                                            {/*<CustomTableCell/>*/}
+                                            {/*<CustomTableCell/>*/}
+                                            {/*<CustomTableCell/>*/}
+                                            {/*<CustomTableCell/>*/}
+                                            {/*<CustomTableCell/>*/}
+                                            {/*<CustomTableCell/>*/}
+                                            {/*</TableRow>*/}
+                                            {/*</TableHead>*/}
+                                            <TableBody>
+
+                                                <TableRow key={1}>
+
+                                                    <CustomTableCell>WW</CustomTableCell>
+                                                    <CustomTableCell>US</CustomTableCell>
+                                                    <CustomTableCell>K</CustomTableCell>
+                                                    <CustomTableCell>Odp</CustomTableCell>
+                                                    <CustomTableCell>Zr</CustomTableCell>
+                                                    <CustomTableCell>Int</CustomTableCell>
+                                                    <CustomTableCell>SW</CustomTableCell>
+                                                    <CustomTableCell>Odg</CustomTableCell>
+
+                                                </TableRow>
+                                                <TableRow key={2}>
+
+                                                    <CustomTableCell>25</CustomTableCell>
+                                                    <CustomTableCell>30</CustomTableCell>
+                                                    <CustomTableCell>30</CustomTableCell>
+                                                    <CustomTableCell>30</CustomTableCell>
+                                                    <CustomTableCell>25</CustomTableCell>
+                                                    <CustomTableCell>30</CustomTableCell>
+                                                    <CustomTableCell>30</CustomTableCell>
+                                                    <CustomTableCell>15</CustomTableCell>
+
+                                                </TableRow>
 
 
-                                }}
+                                            </TableBody>
+                                        </Table>
 
-                            >
-                                <FrontSide style={{
-                                    backgroundImage: `url(${frontPaper})`,
-                                    border: "1px solid black",
-                                }}>
-                                    <CardActionArea>
-                                        <CardContent className={classes.cardShrink}>
-                                            <Grid container alignItems={"center"} justify={"center"}>
-                                                <Grid item xs={12}>
-                                                    <Typography gutterBottom variant="h5" component="h2">
-                                                        Minotaur Bydlak
-                                                    </Typography>
-                                                </Grid>
+
+                                        <Paper classes={{root: classes.tableHeader}}>
+                                            Cechy Drugorzędne:
+                                        </Paper>
+                                        <Table>
+
+                                            <TableBody>
+
+                                                <TableRow key={3}>
+                                                    <CustomTableCell>A</CustomTableCell>
+                                                    <CustomTableCell>Żyw</CustomTableCell>
+                                                    <CustomTableCell>S</CustomTableCell>
+                                                    <CustomTableCell>Wt</CustomTableCell>
+                                                    <CustomTableCell>Sz</CustomTableCell>
+                                                    <CustomTableCell>Mag</CustomTableCell>
+                                                    <CustomTableCell>PO</CustomTableCell>
+                                                    <CustomTableCell>PP</CustomTableCell>
+
+                                                </TableRow>
+                                                <TableRow key={4}>
+                                                    <CustomTableCell>1</CustomTableCell>
+                                                    <CustomTableCell>8</CustomTableCell>
+                                                    <CustomTableCell>3</CustomTableCell>
+                                                    <CustomTableCell>3</CustomTableCell>
+                                                    <CustomTableCell>4</CustomTableCell>
+                                                    <CustomTableCell>0</CustomTableCell>
+                                                    <CustomTableCell>0</CustomTableCell>
+                                                    <CustomTableCell>0</CustomTableCell>
+
+                                                </TableRow>
+
+
+                                            </TableBody>
+                                        </Table>
+
+                                        <Grid container>
+                                            <Grid item xs={4}>
+                                                <Typography>
+                                                    <b>Ekwipunek:</b><br/>
+                                                    łuk albo kusza ewentualnie nie
+                                                </Typography>
                                             </Grid>
-
-                                            <Grid container alignItems={"flex-start"} justify={"flex-start"}>
-                                                <Grid item xs={3}>
-                                                    <CardMedia
-
-                                                        className={classes.media}
-                                                        image="/img/Books/Bestiary/mino.png"
-                                                        title="Goddamn minotaur"
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={1}/>
-                                                <Grid item xs={8}>
-                                                    <Typography component="p">
-                                                        Minotaury często bywają strażnikami kaplic poświęconych
-                                                        Chaosowi
-                                                        oraz grobowców poległych rycerzy Chaosu.
-                                                        Gromadzą stosy trofeów, włącznie z pancerzami i
-                                                        czaszkami
-                                                        pokonanych
-                                                        wrogów, które urastają w wielkie kopce,
-                                                        czasami całkowicie pokrywające strzeżone miejsce.
-                                                        Dlaczego
-                                                        bogowie
-                                                        Chaosu przeznaczają ich do takiej służby,
-                                                        tego nie wiadomo.
-                                                    </Typography>
-                                                </Grid>
+                                            <Grid item xs={4}>
+                                                <Typography>
+                                                    <b>Umiejetności:</b><br/>
+                                                    Dowodzenie albo warzenie trucizn, unik, ukrywanie
+                                                    się, śledzenie
+                                                </Typography>
                                             </Grid>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </FrontSide>
-                                <BackSide style={{
-                                    backgroundImage: `url(${frontPaper})`,
-                                    border: "1px solid black"
-                                }}>
-
-                                    <Grid container alignItems={"center"} justify={"center"}>
-                                        <Grid item xs={12}>
-                                            {/*<Typography gutterBottom variant="h6" component="h6">*/}
-                                            {/*Minotaur Bydlak*/}
-                                            {/*</Typography>*/}
-
-
-                                            <Table className={classes.table}>
-                                                <TableHead>
-                                                    <TableRow className={classes.shrinker}>
-                                                        <CustomTableCell>Cechy</CustomTableCell>
-                                                        <CustomTableCell>Główne</CustomTableCell>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-
-                                                    <TableRow className={classes.row} key={1}>
-
-                                                        <CustomTableCell>WW</CustomTableCell>
-                                                        <CustomTableCell>US</CustomTableCell>
-                                                        <CustomTableCell>K</CustomTableCell>
-                                                        <CustomTableCell>Odp</CustomTableCell>
-                                                        <CustomTableCell>Zr</CustomTableCell>
-                                                        <CustomTableCell>Int</CustomTableCell>
-                                                        <CustomTableCell>SW</CustomTableCell>
-                                                        <CustomTableCell>Odg</CustomTableCell>
-
-                                                    </TableRow>
-                                                    <TableRow className={classes.row} key={2}>
-
-                                                        <CustomTableCell>25</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>25</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>15</CustomTableCell>
-
-                                                    </TableRow>
-
-
-                                                </TableBody>
-                                            </Table>
-
-
-                                            <Table className={classes.table}>
-                                                <TableHead>
-                                                    <TableRow className={classes.shrinker}>
-                                                        <CustomTableCell>Cechy</CustomTableCell>
-                                                        <CustomTableCell>Drugo.</CustomTableCell>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-
-                                                    <TableRow className={classes.row} key={3}>
-                                                        <CustomTableCell>A</CustomTableCell>
-                                                        <CustomTableCell>Żyw</CustomTableCell>
-                                                        <CustomTableCell>S</CustomTableCell>
-                                                        <CustomTableCell>Wt</CustomTableCell>
-                                                        <CustomTableCell>Sz</CustomTableCell>
-                                                        <CustomTableCell>Mag</CustomTableCell>
-                                                        <CustomTableCell>PO</CustomTableCell>
-                                                        <CustomTableCell>PP</CustomTableCell>
-
-                                                    </TableRow>
-                                                    <TableRow className={classes.row} key={4}>
-                                                        <CustomTableCell>1</CustomTableCell>
-                                                        <CustomTableCell>8</CustomTableCell>
-                                                        <CustomTableCell>3</CustomTableCell>
-                                                        <CustomTableCell>3</CustomTableCell>
-                                                        <CustomTableCell>4</CustomTableCell>
-                                                        <CustomTableCell>0</CustomTableCell>
-                                                        <CustomTableCell>0</CustomTableCell>
-                                                        <CustomTableCell>0</CustomTableCell>
-
-                                                    </TableRow>
-
-
-                                                </TableBody>
-                                            </Table>
-                                            {popOverIcons ? popOver : mobileInfo}
-
-
+                                            <Grid item xs={4}>
+                                                <Typography>
+                                                    <b>Zdolności:</b><br/>
+                                                    Błyskawiczne przeładowanie albo strzał mierzony,
+                                                    wyczucie kierunku
+                                                </Typography>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
 
-                                </BackSide>
-                            </Flippy>
-                        </Card>
-                        {/*</Flipped>*/}
+                                </Grid>
 
-
-                    </Grid>
-                    <Grid item xs={gridForFlippedCards}>
-                        <Card className={classes.card}>
-                            <Flippy
-
-                                flipOnHover={false} // default false
-                                flipOnClick={true} // default false
-                                flipDirection="horizontal" // horizontal or vertical
-                                ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
-                                // if you pass isFlipped prop component will be controlled component.
-                                // and other props, which will go to div
-                                style={{
-                                    paddingTop: 0,
-                                    paddingRight: 0,
-                                    paddingBottom: 0,
-                                    paddingLeft: 0,
-                                    backgroundImage: `url(${BackgroundForFlippedCardLight})`,
-
-
-                                }}
-
-                            >
-                                <FrontSide style={{
-                                    backgroundImage: `url(${frontPaper})`,
-                                    border: "1px solid black",
-                                }}>
-                                    <CardActionArea>
-                                        <CardContent className={classes.cardShrink}>
-                                            <Grid container alignItems={"center"} justify={"center"}>
-                                                <Grid item xs={12}>
-                                                    <Typography gutterBottom variant="h5" component="h2">
-                                                        Minotaur Bydlak
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-
-                                            <Grid container alignItems={"flex-start"} justify={"flex-start"}>
-                                                <Grid item xs={3}>
-                                                    <CardMedia
-
-                                                        className={classes.media}
-                                                        image="/img/Books/Bestiary/mino.png"
-                                                        title="Goddamn minotaur"
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={1}/>
-                                                <Grid item xs={8}>
-                                                    <Typography component="p">
-                                                        Minotaury często bywają strażnikami kaplic poświęconych
-                                                        Chaosowi
-                                                        oraz grobowców poległych rycerzy Chaosu.
-                                                        Gromadzą stosy trofeów, włącznie z pancerzami i czaszkami
-                                                        pokonanych
-                                                        wrogów, które urastają w wielkie kopce,
-                                                        czasami całkowicie pokrywające strzeżone miejsce. Dlaczego
-                                                        bogowie
-                                                        Chaosu przeznaczają ich do takiej służby,
-                                                        tego nie wiadomo.
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </FrontSide>
-                                <BackSide style={{
-                                    backgroundImage: `url(${frontPaper})`,
-                                    border: "1px solid black"
-                                }}>
-
-                                    <Grid container alignItems={"center"} justify={"center"}>
-                                        <Grid item xs={12}>
-                                            {/*<Typography gutterBottom variant="h6" component="h6">*/}
-                                            {/*Minotaur Bydlak*/}
-                                            {/*</Typography>*/}
-
-
-                                            <Table className={classes.table}>
-                                                <TableHead>
-                                                    <TableRow className={classes.shrinker}>
-                                                        <CustomTableCell>Cechy</CustomTableCell>
-                                                        <CustomTableCell>Główne</CustomTableCell>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-
-                                                    <TableRow className={classes.row} key={1}>
-
-                                                        <CustomTableCell>WW</CustomTableCell>
-                                                        <CustomTableCell>US</CustomTableCell>
-                                                        <CustomTableCell>K</CustomTableCell>
-                                                        <CustomTableCell>Odp</CustomTableCell>
-                                                        <CustomTableCell>Zr</CustomTableCell>
-                                                        <CustomTableCell>Int</CustomTableCell>
-                                                        <CustomTableCell>SW</CustomTableCell>
-                                                        <CustomTableCell>Odg</CustomTableCell>
-
-                                                    </TableRow>
-                                                    <TableRow className={classes.row} key={2}>
-
-                                                        <CustomTableCell>25</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>25</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>30</CustomTableCell>
-                                                        <CustomTableCell>15</CustomTableCell>
-
-                                                    </TableRow>
-
-
-                                                </TableBody>
-                                            </Table>
-
-
-                                            <Table className={classes.table}>
-                                                <TableHead>
-                                                    <TableRow className={classes.shrinker}>
-                                                        <CustomTableCell>Cechy</CustomTableCell>
-                                                        <CustomTableCell>Drugo.</CustomTableCell>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-                                                        <CustomTableCell/>
-
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-
-                                                    <TableRow className={classes.row} key={3}>
-                                                        <CustomTableCell>A</CustomTableCell>
-                                                        <CustomTableCell>Żyw</CustomTableCell>
-                                                        <CustomTableCell>S</CustomTableCell>
-                                                        <CustomTableCell>Wt</CustomTableCell>
-                                                        <CustomTableCell>Sz</CustomTableCell>
-                                                        <CustomTableCell>Mag</CustomTableCell>
-                                                        <CustomTableCell>PO</CustomTableCell>
-                                                        <CustomTableCell>PP</CustomTableCell>
-
-                                                    </TableRow>
-                                                    <TableRow className={classes.row} key={4}>
-                                                        <CustomTableCell>1</CustomTableCell>
-                                                        <CustomTableCell>8</CustomTableCell>
-                                                        <CustomTableCell>3</CustomTableCell>
-                                                        <CustomTableCell>3</CustomTableCell>
-                                                        <CustomTableCell>4</CustomTableCell>
-                                                        <CustomTableCell>0</CustomTableCell>
-                                                        <CustomTableCell>0</CustomTableCell>
-                                                        <CustomTableCell>0</CustomTableCell>
-
-                                                    </TableRow>
-
-
-                                                </TableBody>
-                                            </Table>
-                                            {popOverIcons ? popOver : mobileInfo}
-
-                                        </Grid>
-                                    </Grid>
-
-                                </BackSide>
-                            </Flippy>
-                        </Card>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
+                            <ExpansionPanelSummary>
+                                <Typography>Expansion Panel 1</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
+                                    ex,
+                                    sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
+                            <ExpansionPanelSummary>
+                                <Typography>Expansion Panel 1</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
+                                    ex,
+                                    sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
 
 
                     </Grid>
 
 
                 </Grid>
-                {/*</Flipper>*/}
             </Paper>
 
         )

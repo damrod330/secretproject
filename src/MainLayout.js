@@ -12,7 +12,7 @@ class MainLayout extends React.Component {
         return (
             <div className="bg-mask">
                 <Grid container spacing={0} alignItems={"flex-start"} justify={"center"}>
-                    <Grid item xs={12} md={2} lg={2}>
+                    <Grid item xs={12} md={0} lg={2}>
                         {/*<div className="paper-card">*/}
                             {/*<div className="paper-card-body">*/}
                             {/*Elitr ipsum et et diam sanctus nonumy labore stet dolor, ipsum tempor magna nonumy sadipscing sanctus nonumy et, et diam consetetur no clita et. Eos dolor dolor rebum eirmod dolor et sea rebum aliquyam, no eos labore eirmod aliquyam. Dolor lorem ut sed sea eos erat sed ea. Rebum ipsum.*/}
@@ -20,7 +20,7 @@ class MainLayout extends React.Component {
                         {/*</div>*/}
                         <NavBar/>
                     </Grid>
-                    <Grid item xs={12} md={10} lg={9}>
+                    <Grid item xs={12} md={12} lg={10}>
                         <div className="paper-card">
                             <div className="paper-card-body">
                                 <BOF/>

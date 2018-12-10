@@ -1,19 +1,14 @@
-.banner {
-    background: url("../../img/Kal-A-Nar_War_Banner.png")no-repeat top center ;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: 100% 100%;
-    width: 250px;
-    height: 700px;
-    padding-left: 10px;
+/*.banner {*/
+    /*background: url("../../img/Banner.png")no-repeat top center ;*/
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*-o-background-size: cover;*/
+    /*background-size: 100% 100%;*/
+    /*width: 250px;*/
+    /*height: 700px;*/
+    /*padding-left: 10px;*/
 
-}
-.borderLess{
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0), 0 2px 2px 0 rgba(0, 0, 0, 0), 0 3px 1px -2px rgba(0, 0, 0, 0)!important;
-    color: white!important;
+/*}*/
 
-
-}
 
 

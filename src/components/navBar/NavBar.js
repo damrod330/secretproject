@@ -15,6 +15,7 @@ import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import {compose} from "recompose";
+import Banner from "../../img/Banner.png"
 // import Button from "@material-ui/core/es/Button/Button";
 // import ClickAwayListener from "@material-ui/core/es/ClickAwayListener/ClickAwayListener";
 // import InputBase from "@material-ui/core/es/InputBase/InputBase";
@@ -115,6 +116,15 @@ const styles = theme => ({
     },
     trans: {
         backgroundColor: "transparent",
+        boxShadow:"0 1px 5px 0 rgba(0, 0, 0, 0), 0 2px 2px 0 rgba(0, 0, 0, 0), 0 3px 1px -2px rgba(0, 0, 0, 0)",
+    },
+    banner:{
+        backgroundImage:`url(${Banner})`,
+        backgroundSize:"100% 100%",
+        width:"250px",
+        height:"700px",
+        paddingLeft:"10px"
+
     }
 
 });
@@ -166,9 +176,9 @@ class NavBar extends React.Component {
                             style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
                             timeout={{enter: 4342}}
                         >
-                            <Paper className={classes.trans + " " + "borderLess"}>
+                            <Paper className={classes.trans}>
                                 {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
-                                <MenuList className={"banner"}>
+                                <MenuList className={classes.banner}>
                                     <MenuItem className={classes.menuItem}>Profile</MenuItem>
                                     <MenuItem className={classes.menuItem}>My account</MenuItem>
                                     <MenuItem className={classes.menuItem}>Logout</MenuItem>
@@ -234,12 +244,15 @@ class NavBar extends React.Component {
                         open={this.state.left}
                         onClose={this.toggleDrawer('left', false)}
                         onOpen={this.toggleDrawer('left', true)}
+                        classes={{paper:classes.trans}}
+
                     >
                         <div
                             tabIndex={0}
                             role="button"
                             onClick={this.toggleDrawer('left', false)}
                             onKeyDown={this.toggleDrawer('left', false)}
+                            className={classes.banner}
                         >
 
                             <div className={classes.list}>

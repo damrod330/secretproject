@@ -18,6 +18,20 @@
     width: 64px;
     height: 64px;
 }
+/*.MuiExpansionPanel-expanded-124*/
+/*{*/
+    /*margin-top:1px !important;*/
+    /*margin-bottom:1px !important;*/
+
+/*}*/
+/*.MuiExpansionPanel-expanded-124:first-child{*/
+    /*margin-bottom: 1px!important;*/
+    /*margin-top: 0px!important;*/
+/*}*/
+/*.MuiExpansionPanel-expanded-124:last-child{*/
+    /*margin-top: 1px!important;*/
+    /*margin-bottom: 0 !important;*/
+/*}*/
 /*.MuiTab-textColorPrimary-29.MuiTab-selected-31*/
 /*{*/
     /*color: white !important;*/
