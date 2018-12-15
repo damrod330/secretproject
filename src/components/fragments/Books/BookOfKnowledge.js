@@ -11,6 +11,7 @@ import ArmoryIcon from './../../../img/icon/armory.png';
 import BestiaryIcon from './../../../img/icon/monsters.png';
 import SpellsIcon from './../../../img/icon/magic2.png';
 import MutationsIcon from './../../../img/icon/mutations.png';
+import Mutations from "./PagesOfKnowledge/Mutations"
 
 
 
@@ -83,7 +84,7 @@ class BookOfKnowledge extends React.Component {
                 {value === 0 && <TabContainer><Bestiary/></TabContainer>}
                 {value === 1 && <TabContainer>Item Two</TabContainer>}
                 {value === 2 && <TabContainer>Item Three</TabContainer>}
-                {value === 3 && <TabContainer>Item Four</TabContainer>}
+                {value === 3 && <TabContainer> <Mutations/> </TabContainer>}
 
 
 

@@ -40,6 +40,7 @@ const styles = theme => ({
         backgroundImage: `url(${frontPaper})`,
         paddingLeft: 0
     },
+
     tableHeader: {
         backgroundColor: "black",
         color: "#FFFFFF",
@@ -53,9 +54,9 @@ const styles = theme => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: fade(theme.palette.common.white, 0.45),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: fade(theme.palette.common.white, 0.45),
         },
         marginLeft: 0,
         width: '100%',
@@ -144,6 +145,10 @@ class Bestiary extends React.Component {
         const {classes} = this.props;
         const {width} = this.props;
         let sortIcon;
+        let expandIcon={
+            height:64,
+            width:64
+        };
 
 
         if (isWidthDown('md', width)) {
@@ -246,7 +251,9 @@ class Bestiary extends React.Component {
 
                     <Grid item xs={12}>
                         <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary>
+                            <ExpansionPanelSummary expandIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
+                                                                    style={expandIcon}/>}>
+                                {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
                                 <Typography gutterBottom variant="h5" component="h5">Minotaur Bydlak</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
@@ -356,7 +363,7 @@ class Bestiary extends React.Component {
                                             </TableBody>
                                         </Table>
 
-                                        <Grid container>
+                                        <Grid container spacing={8}>
                                             <Grid item xs={4}>
                                                 <Typography>
                                                     <b>Ekwipunek:</b><br/>
