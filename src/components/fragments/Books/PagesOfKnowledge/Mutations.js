@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
-import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
+import withWidth from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
 import frontPaper from './../../../../img/paper-texture-alt.jpg'
 import Radio from '@material-ui/core/Radio';
@@ -13,14 +13,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import {compose} from "recompose";
-import DemonIcon from './../../../../img/icon/demons2.png';
-import DemonBorderIcon from './../../../../img/icon/demons2Border.png';
-import WildLifeIcon from './../../../../img/icon/wildlife.png';
-import WildlifeBorderIcon from './../../../../img/icon/wildlifeBorder.png';
-import UndeadIcon from './../../../../img/icon/undead.png';
-import UndeadBorderIcon from './../../../../img/icon/undeadBorder.png';
-import MutantsIcon from './../../../../img/icon/tentacle.png';
-import MutantsBorderIcon from './../../../../img/icon/tentacleBorder.png';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -51,7 +43,9 @@ const styles = theme => ({
 
     },
     tableShrink:{
-        height:0
+        height:0,
+        border:"1px solid",
+
     },
     expansionPanel: {
         marginBottom: "1px",
@@ -150,27 +144,10 @@ class Mutations extends React.Component {
     render() {
         const {classes} = this.props;
         const {width} = this.props;
-        let sortIcon;
-        let expandIcon = {
-            height: 64,
-            width: 64
-        };
 
 
-        if (isWidthDown('md', width)) {
 
-            sortIcon = {
-                width: 32,
-                height: 32
-            };
-        }
-        if (isWidthUp('lg', width)) {
-            sortIcon = {
-                width: 64,
-                height: 64
-            };
 
-        }
 
 
         return (
@@ -264,11 +241,10 @@ class Mutations extends React.Component {
                                 <Grid container>
                                     <Grid item xs={8}>
                                         <Typography>
-                                            Typ: Pojedynczy.
+                                            <b>Typ:</b> Pojedynczy.
                                         </Typography>
                                         <Typography>
-                                            Opis:
-                                            Tracisz 1k10 punktów Odporności i otrzymujesz modyfikator -5 do Testów
+                                            <b>Opis:</b>                                             Tracisz 1k10 punktów Odporności i otrzymujesz modyfikator -5 do Testów
                                             spostrzegawczości związanych ze wzrokiem, wykonywanych w jasnym Swietle.
                                         </Typography>
                                     </Grid>
@@ -305,18 +281,18 @@ class Mutations extends React.Component {
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
 
-                                <Grid container>
+                                <Grid container spacing={8}>
                                     <Grid item xs={8}>
                                         <Typography>
-                                            Typ: Wielokrotny.
+                                            <b>Typ:</b> Wielokrotny.
                                         </Typography>
                                         <Typography>
-                                            Opis:
+                                            <b>Opis:</b>
                                             Twoje ciało wytwarza tysiąc rak, uszu, palców, oczu, sutków lub innych czesci ciała. Wyrastaja z kazdego micjsca ciała i nie sposób ich ukryć. Wola bogów Chaosu jest zlośliwa,
                                             dlatego poza potwornym wygladem nie zapewniają żADnych korzyści, choć obniżają wartość Oglady o 2k18 punktów.
                                         </Typography>
                                         <Typography>
-                                            Warianty: Aby określić, jakie organy pokryly ciało mutanta, należy wykonać rzut 1k100 i sprawdzič wynik w tabeli.
+                                            <b>Warianty:</b> Aby określić, jakie organy pokryly ciało mutanta, należy wykonać rzut 1k100 i sprawdzič wynik w tabeli.
 
 
                                         </Typography>

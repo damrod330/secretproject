@@ -26,12 +26,10 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import InputBase from "@material-ui/core/es/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
 import {fade} from '@material-ui/core/styles/colorManipulator';
-
 
 const styles = theme => ({
     paper: {
@@ -246,7 +244,7 @@ class Bestiary extends React.Component {
                     </Grid>
                 </Grid>
 
-                <Grid container spacing={0} alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
+                <Grid container  alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
 
                     <Grid item xs={12}>
@@ -258,7 +256,7 @@ class Bestiary extends React.Component {
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
 
-                                <Grid container alignItems={"flex-start"} justify={"flex-start"}>
+                                <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
                                     <Grid item xs={2}>
                                         <img src={"/img/Books/Bestiary/mino.png"} width={"100%"} height={"100%"}
                                              alt={"img"}/>
