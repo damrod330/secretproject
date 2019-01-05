@@ -16,6 +16,19 @@ import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import {compose} from "recompose";
 import Banner from "../../img/Banner.png"
+import NewWindow from 'react-new-window'
+import Collapse from '@material-ui/core/Collapse';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ArmoryIcon from './../../img/icon/armory.png';
+import BestiaryIcon from './../../img/icon/monsters.png';
+import SpellsIcon from './../../img/icon/magic2.png';
+import MutationsIcon from './../../img/icon/mutations.png';
+
+
+import Button from "@material-ui/core/Button";
+
 // import Button from "@material-ui/core/es/Button/Button";
 // import ClickAwayListener from "@material-ui/core/es/ClickAwayListener/ClickAwayListener";
 // import InputBase from "@material-ui/core/es/InputBase/InputBase";
@@ -116,26 +129,41 @@ const styles = theme => ({
     },
     trans: {
         backgroundColor: "transparent",
-        boxShadow:"0 1px 5px 0 rgba(0, 0, 0, 0), 0 2px 2px 0 rgba(0, 0, 0, 0), 0 3px 1px -2px rgba(0, 0, 0, 0)",
+        boxShadow: "0 1px 5px 0 rgba(0, 0, 0, 0), 0 2px 2px 0 rgba(0, 0, 0, 0), 0 3px 1px -2px rgba(0, 0, 0, 0)",
     },
-    banner:{
-        backgroundImage:`url(${Banner})`,
-        backgroundSize:"100% 100%",
-        width:"250px",
-        height:"700px",
-        paddingLeft:"10px"
+    banner: {
+        backgroundImage: `url(${Banner})`,
+        backgroundSize: "100% 100%",
+        width: "250px",
+        height: "700px",
+        paddingLeft: "10px"
 
+    },
+    icons: {
+        width: 64,
+        height: 64,
     }
 
 });
+const map = <NewWindow copyStyles={true} url={"http://localhost:8080/"}/>
 
 class NavBar extends React.Component {
     state = {
         open: true,
         left: false,
         isSm: false,
+        nestItemOpen: true,
+        openMap:false,
     };
-
+    handleClick = () => {
+        this.setState(state => ({nestItemOpen: !state.nestItemOpen}));
+    };
+    handleMap = () => {
+        this.setState(state => ({openMap: !state.openMap}));
+    };
+    handleUnMap = () => {
+        this.setState(state => ({openMap: false}));
+    };
 
     toggleDrawer = (side, open) => () => {
         this.setState({
@@ -174,20 +202,63 @@ class NavBar extends React.Component {
                             {...TransitionProps}
                             id="menu-list-grow"
                             style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
-                            timeout={{enter: 4342}}
+                            timeout={{enter: 1000}}
                         >
                             <Paper className={classes.trans}>
                                 {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
                                 <MenuList className={classes.banner}>
                                     <MenuItem className={classes.menuItem}>Profile</MenuItem>
                                     <MenuItem className={classes.menuItem}>My account</MenuItem>
+
+                                    <List className={classes.menuItem}>
+                                        <ListItem button onClick={this.handleClick}>
+                                            <ListItemText primary="Przedmioty"/>
+                                            {this.state.nestItemOpen ? <ExpandLess/> : <ExpandMore/>}
+                                        </ListItem>
+                                        <Collapse in={this.state.nestItemOpen} timeout="auto" unmountOnExit>
+                                            <List disablePadding className={classes.menuItem}>
+                                                <ListItem button>
+
+                                                    {/*<img src={ArmoryIcon} alt={"Armory"} className={classes.icons}/>*/}
+
+                                                    <ListItemText primary="Zbrojownia"/>
+                                                </ListItem>
+                                                <ListItem button>
+
+                                                    {/*<img src={BestiaryIcon} alt={"Bestiary"}*/}
+                                                    {/*className={classes.icons}/>*/}
+                                                    <ListItemText primary="Bestiariusz"/>
+                                                </ListItem>
+                                                <ListItem button>
+
+                                                    {/*<img src={SpellsIcon} alt={"Spells"} className={classes.icons}/>*/}
+
+                                                    <ListItemText primary="Księga Zaklęć"/>
+                                                </ListItem>
+                                                <ListItem button>
+                                                    {/*<img src={MutationsIcon} alt={"Mutations"}*/}
+                                                    {/*className={classes.icons}/>*/}
+                                                    <ListItemText primary="Mutacje"/>
+                                                </ListItem>
+                                                <ListItem button onClick={this.handleMap}>
+                                                    <ListItemText primary="Mapa"/>
+                                                    {this.state.openMap ? <NewWindow copyStyles={true} onUnload={this.handleUnMap} url={"http://localhost:8080/"}/> : null}
+
+                                                </ListItem>
+                                            </List>
+                                        </Collapse>
+                                    </List>
+
+
                                     <MenuItem className={classes.menuItem}>Logout</MenuItem>
+                                    <MenuItem className={classes.menuItem}>Mapa</MenuItem>
 
 
                                     {/*<Button disabled className={classes.button}> </Button>/!*invisible sign to keep error away*!/*/}
 
 
                                 </MenuList>
+
                                 {/*</ClickAwayListener>*/}
                             </Paper>
 
@@ -244,7 +315,7 @@ class NavBar extends React.Component {
                         open={this.state.left}
                         onClose={this.toggleDrawer('left', false)}
                         onOpen={this.toggleDrawer('left', true)}
-                        classes={{paper:classes.trans}}
+                        classes={{paper: classes.trans}}
 
                     >
                         <div

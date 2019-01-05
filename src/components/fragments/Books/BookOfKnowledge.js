@@ -13,8 +13,7 @@ import SpellsIcon from './../../../img/icon/magic2.png';
 import MutationsIcon from './../../../img/icon/mutations.png';
 import Mutations from "./PagesOfKnowledge/Mutations"
 import Spells from "./PagesOfKnowledge/Spells"
-import Map from "./../Map"
-
+import Armory from "./PagesOfKnowledge/Armory"
 
 
 
@@ -83,7 +82,7 @@ class BookOfKnowledge extends React.Component {
                     <Tab icon={<img src={MutationsIcon} alt={"Mutations"} className={"icons"}/>} />
                 </Tabs>
 
-                {value === 0 && <TabContainer><Map/></TabContainer>}
+                {value === 0 && <TabContainer><Armory/></TabContainer>}
                 {value === 1 && <TabContainer><Bestiary/></TabContainer>}
                 {value === 2 && <TabContainer><Spells/></TabContainer>}
                 {value === 3 && <TabContainer> <Mutations/> </TabContainer>}
