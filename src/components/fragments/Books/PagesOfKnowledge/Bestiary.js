@@ -20,6 +20,7 @@ import WildlifeBorderIcon from './../../../../img/icon/wildlifeBorder.png';
 import UndeadIcon from './../../../../img/icon/undead.png';
 import UndeadBorderIcon from './../../../../img/icon/undeadBorder.png';
 import MutantsIcon from './../../../../img/icon/tentacle.png';
+import mutant from './../../../../img/icon/tentacle.png';
 import MutantsBorderIcon from './../../../../img/icon/tentacleBorder.png';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -30,6 +31,8 @@ import TableRow from '@material-ui/core/TableRow';
 import InputBase from "@material-ui/core/es/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
 import {fade} from '@material-ui/core/styles/colorManipulator';
+import LazyLoad from 'react-lazyload';
+import {url} from '../../../../Constants'
 
 const styles = theme => ({
     paper: {
@@ -126,26 +129,42 @@ const CustomTableCell = withStyles(theme => ({
 
 }))(TableCell);
 
+let header = {
+    "Content-Type": "application/json"
+};
 
 class Bestiary extends React.Component {
     state = {
         filter: undefined,
         value: 'all',
+        beasts: [],
 
     };
+
 
     handleChange = event => {
         this.setState({value: event.target.value});
     };
 
+    componentDidMount() {
+        fetch(url + "/creatures", {
+            method: 'GET',
+            headers: header,
+            credentials: 'same-origin'
+        }).then((Response) => Response.json()).then((findresponse) => {
+            this.setState({
+                beasts: findresponse,
+            })
+        })
+    }
 
     render() {
         const {classes} = this.props;
         const {width} = this.props;
         let sortIcon;
-        let expandIcon={
-            height:64,
-            width:64
+        let expandIcon = {
+            height: 64,
+            width: 64
         };
 
 
@@ -167,7 +186,7 @@ class Bestiary extends React.Component {
 
         return (
             <Paper className={classes.paper}>
-                <Grid container  alignItems={"center"} justify={"flex-start"}>
+                <Grid container alignItems={"center"} justify={"flex-start"}>
                     <Grid item xs={9}>
 
                         <div className={classes.paper}>
@@ -244,178 +263,136 @@ class Bestiary extends React.Component {
                     </Grid>
                 </Grid>
 
-                <Grid container  alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
+                <Grid container alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
 
                     <Grid item xs={12}>
-                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary expandIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
-                                                                    style={expandIcon}/>}>
-                                {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
-                                <Typography gutterBottom variant="h5" component="h5">Minotaur Bydlak</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-
-                                <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
-                                    <Grid item xs={2}>
-                                        <img src={"/img/Books/Bestiary/mino.png"} width={"100%"} height={"100%"}
-                                             alt={"img"}/>
-                                    </Grid>
-                                    <Grid item xs={3}>
-
-                                        <Typography>
-                                            Minotaury często bywają strażnikami kaplic poświęconych
-                                            Chaosowi
-                                            oraz grobowców poległych rycerzy Chaosu.
-                                            Gromadzą stosy trofeów, włącznie z pancerzami i
-                                            czaszkami
-                                            pokonanych
-                                            wrogów, które urastają w wielkie kopce,
-                                            czasami całkowicie pokrywające strzeżone miejsce.
-                                            Dlaczego
-                                            bogowie
-                                            Chaosu przeznaczają ich do takiej służby,
-                                            tego nie wiadomo.
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={7}>
-                                        <Paper classes={{root: classes.tableHeader}}>
-                                            Cechy Główne:
-                                        </Paper>
-                                        <Table>
-                                            {/*<TableHead>*/}
-                                            {/*<TableRow >*/}
-                                            {/*<CustomTableCell>Cechy</CustomTableCell>*/}
-                                            {/*<CustomTableCell>Główne</CustomTableCell>*/}
-                                            {/*<CustomTableCell/>*/}
-                                            {/*<CustomTableCell/>*/}
-                                            {/*<CustomTableCell/>*/}
-                                            {/*<CustomTableCell/>*/}
-                                            {/*<CustomTableCell/>*/}
-                                            {/*<CustomTableCell/>*/}
-                                            {/*</TableRow>*/}
-                                            {/*</TableHead>*/}
-                                            <TableBody>
-
-                                                <TableRow key={1}>
-
-                                                    <CustomTableCell>WW</CustomTableCell>
-                                                    <CustomTableCell>US</CustomTableCell>
-                                                    <CustomTableCell>K</CustomTableCell>
-                                                    <CustomTableCell>Odp</CustomTableCell>
-                                                    <CustomTableCell>Zr</CustomTableCell>
-                                                    <CustomTableCell>Int</CustomTableCell>
-                                                    <CustomTableCell>SW</CustomTableCell>
-                                                    <CustomTableCell>Odg</CustomTableCell>
-
-                                                </TableRow>
-                                                <TableRow key={2}>
-
-                                                    <CustomTableCell>25</CustomTableCell>
-                                                    <CustomTableCell>30</CustomTableCell>
-                                                    <CustomTableCell>30</CustomTableCell>
-                                                    <CustomTableCell>30</CustomTableCell>
-                                                    <CustomTableCell>25</CustomTableCell>
-                                                    <CustomTableCell>30</CustomTableCell>
-                                                    <CustomTableCell>30</CustomTableCell>
-                                                    <CustomTableCell>15</CustomTableCell>
-
-                                                </TableRow>
+                        <LazyLoad>
+                            {this.state.beasts.map((dynamidData, key) => (
 
 
-                                            </TableBody>
-                                        </Table>
+                                <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
+                                    <ExpansionPanelSummary expandIcon={<img src={dynamidData.type} alt={"Dziki Zwirz"}
+                                                                            style={expandIcon}/>}>
+                                        {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
+                                        <Typography gutterBottom variant="h5"
+                                                    component="h5">{dynamidData.name}</Typography>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails>
 
+                                        <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
+                                            <Grid item xs={2}>
+                                                <img src={"/img/Books/Bestiary/mino.png"} width={"100%"} height={"100%"}
+                                                     alt={"img"}/>
+                                            </Grid>
+                                            <Grid item xs={3}>
 
-                                        <Paper classes={{root: classes.tableHeader}}>
-                                            Cechy Drugorzędne:
-                                        </Paper>
-                                        <Table>
-
-                                            <TableBody>
-
-                                                <TableRow key={3}>
-                                                    <CustomTableCell>A</CustomTableCell>
-                                                    <CustomTableCell>Żyw</CustomTableCell>
-                                                    <CustomTableCell>S</CustomTableCell>
-                                                    <CustomTableCell>Wt</CustomTableCell>
-                                                    <CustomTableCell>Sz</CustomTableCell>
-                                                    <CustomTableCell>Mag</CustomTableCell>
-                                                    <CustomTableCell>PO</CustomTableCell>
-                                                    <CustomTableCell>PP</CustomTableCell>
-
-                                                </TableRow>
-                                                <TableRow key={4}>
-                                                    <CustomTableCell>1</CustomTableCell>
-                                                    <CustomTableCell>8</CustomTableCell>
-                                                    <CustomTableCell>3</CustomTableCell>
-                                                    <CustomTableCell>3</CustomTableCell>
-                                                    <CustomTableCell>4</CustomTableCell>
-                                                    <CustomTableCell>0</CustomTableCell>
-                                                    <CustomTableCell>0</CustomTableCell>
-                                                    <CustomTableCell>0</CustomTableCell>
-
-                                                </TableRow>
-
-
-                                            </TableBody>
-                                        </Table>
-
-                                        <Grid container spacing={8}>
-                                            <Grid item xs={4}>
                                                 <Typography>
-                                                    <b>Ekwipunek:</b><br/>
-                                                    łuk albo kusza ewentualnie nie
+                                                    {dynamidData.description}
                                                 </Typography>
                                             </Grid>
-                                            <Grid item xs={4}>
-                                                <Typography>
-                                                    <b>Umiejetności:</b><br/>
-                                                    Dowodzenie albo warzenie trucizn, unik, ukrywanie
-                                                    się, śledzenie
-                                                </Typography>
+                                            <Grid item xs={7}>
+                                                <Paper classes={{root: classes.tableHeader}}>
+                                                    Cechy Główne:
+                                                </Paper>
+                                                <Table>
+                                                    <TableBody>
+
+                                                        <TableRow key={key}>
+
+                                                            <CustomTableCell>WW</CustomTableCell>
+                                                            <CustomTableCell>US</CustomTableCell>
+                                                            <CustomTableCell>K</CustomTableCell>
+                                                            <CustomTableCell>Odp</CustomTableCell>
+                                                            <CustomTableCell>Zr</CustomTableCell>
+                                                            <CustomTableCell>Int</CustomTableCell>
+                                                            <CustomTableCell>SW</CustomTableCell>
+                                                            <CustomTableCell>Odg</CustomTableCell>
+
+                                                        </TableRow>
+                                                        <TableRow key={key}>
+
+                                                            <CustomTableCell>25</CustomTableCell>
+                                                            <CustomTableCell>30</CustomTableCell>
+                                                            <CustomTableCell>30</CustomTableCell>
+                                                            <CustomTableCell>30</CustomTableCell>
+                                                            <CustomTableCell>25</CustomTableCell>
+                                                            <CustomTableCell>30</CustomTableCell>
+                                                            <CustomTableCell>30</CustomTableCell>
+                                                            <CustomTableCell>15</CustomTableCell>
+
+                                                        </TableRow>
+
+
+                                                    </TableBody>
+                                                </Table>
+
+
+                                                <Paper classes={{root: classes.tableHeader}}>
+                                                    Cechy Drugorzędne:
+                                                </Paper>
+                                                <Table>
+
+                                                    <TableBody>
+
+                                                        <TableRow key={3}>
+                                                            <CustomTableCell>A</CustomTableCell>
+                                                            <CustomTableCell>Żyw</CustomTableCell>
+                                                            <CustomTableCell>S</CustomTableCell>
+                                                            <CustomTableCell>Wt</CustomTableCell>
+                                                            <CustomTableCell>Sz</CustomTableCell>
+                                                            <CustomTableCell>Mag</CustomTableCell>
+                                                            <CustomTableCell>PO</CustomTableCell>
+                                                            <CustomTableCell>PP</CustomTableCell>
+
+                                                        </TableRow>
+                                                        <TableRow key={4}>
+                                                            <CustomTableCell>1</CustomTableCell>
+                                                            <CustomTableCell>8</CustomTableCell>
+                                                            <CustomTableCell>3</CustomTableCell>
+                                                            <CustomTableCell>3</CustomTableCell>
+                                                            <CustomTableCell>4</CustomTableCell>
+                                                            <CustomTableCell>0</CustomTableCell>
+                                                            <CustomTableCell>0</CustomTableCell>
+                                                            <CustomTableCell>0</CustomTableCell>
+
+                                                        </TableRow>
+
+
+                                                    </TableBody>
+                                                </Table>
+
+                                                <Grid container spacing={8}>
+                                                    <Grid item xs={4}>
+                                                        <Typography>
+                                                            <b>Ekwipunek:</b><br/>
+                                                            {dynamidData.armors}<br/>
+                                                            {dynamidData.weapons}<br/>
+                                                            {dynamidData.items}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={4}>
+                                                        <Typography>
+                                                            <b>Umiejetności:</b><br/>
+                                                            {dynamidData.skills.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={4}>
+                                                        <Typography>
+                                                            <b>Zdolności:</b><br/>
+                                                            {dynamidData.abilities.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={4}>
-                                                <Typography>
-                                                    <b>Zdolności:</b><br/>
-                                                    Błyskawiczne przeładowanie albo strzał mierzony,
-                                                    wyczucie kierunku
-                                                </Typography>
-                                            </Grid>
+
                                         </Grid>
-                                    </Grid>
 
-                                </Grid>
-
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary>
-                                <Typography>Expansion Panel 1</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Typography>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                                    ex,
-                                    sit amet blandit leo lobortis eget.
-                                </Typography>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary>
-                                <Typography>Expansion Panel 1</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Typography>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                                    ex,
-                                    sit amet blandit leo lobortis eget.
-                                </Typography>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-
-
-                    </Grid>
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
+                            ))}
+                        </LazyLoad>
+                                            </Grid>
 
 
                 </Grid>

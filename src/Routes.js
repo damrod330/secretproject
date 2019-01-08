@@ -7,10 +7,10 @@ import MainLayout from './MainLayout';
 const Main = ()=> (
     <main>
         <Switch>
-            <Route exact path="/" component={LoginPage}/>
+            <Route exact path="/main" component={LoginPage}/>
             <Route path="/login" component={LoginPage}/>
             <Route path="/register" component={LoginPage}/>
-            <Route path="/main" component={MainLayout}>
+            <Route path="/" component={MainLayout}>
             </Route>
 
         </Switch>
@@ -20,7 +20,7 @@ const Main = ()=> (
 class Routers extends React.Component {
     render() {
         return (
-            <BrowserRouter>
+            <BrowserRouter basename={"/rpg"}>
                 <Main/>
             </BrowserRouter>
         );

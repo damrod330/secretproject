@@ -133,9 +133,9 @@ class Armor extends React.Component {
         const {classes} = this.props;
         const {width} = this.props;
         let sortIcon;
-        let expandIcon={
-            height:64,
-            width:64
+        let expandIcon = {
+            height: 64,
+            width: 64
         };
 
 
@@ -157,7 +157,7 @@ class Armor extends React.Component {
 
         return (
             <Paper className={classes.paper}>
-                <Grid container  alignItems={"center"} justify={"flex-start"}>
+                <Grid container alignItems={"center"} justify={"flex-start"}>
                     <Grid item xs={9}>
 
                         <div className={classes.paper}>
@@ -184,12 +184,12 @@ class Armor extends React.Component {
                     </Grid>
                 </Grid>
 
-                <Grid container  alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
+                <Grid container alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
 
                     <Grid item xs={12}>
                         <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary >
+                            <ExpansionPanelSummary>
                                 <Typography gutterBottom variant="h5" component="h5">Zbroje Skórzane</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
@@ -200,9 +200,9 @@ class Armor extends React.Component {
                                     </Grid>
                                     <Grid item xs={10}>
 
-                                        <Table >
-                                            <TableHead >
-                                                <TableRow classes={{root: classes.tableShrink }}>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow classes={{root: classes.tableShrink}}>
                                                     <CustomTableCell>Typ Zbroi</CustomTableCell>
                                                     <CustomTableCell>Cena</CustomTableCell>
                                                     <CustomTableCell>Obciążenie</CustomTableCell>
@@ -211,48 +211,44 @@ class Armor extends React.Component {
                                                     <CustomTableCell>Dostępność</CustomTableCell>
                                                 </TableRow>
                                             </TableHead>
-                                            <TableBody classes={{root: classes.tableShrink }}>
+                                            <TableBody classes={{root: classes.tableShrink}}>
 
-                                                <TableRow key={1} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell><Typography noWrap={true}>Hełm</Typography></CustomTableCell>
+                                                <TableRow key={1} classes={{root: classes.tableShrink}}>
+                                                    <CustomTableCell><Typography
+                                                        noWrap={true}>Hełm</Typography></CustomTableCell>
                                                     <CustomTableCell>3zk</CustomTableCell>
                                                     <CustomTableCell>10</CustomTableCell>
                                                     <CustomTableCell>Głowa</CustomTableCell>
                                                     <CustomTableCell>1</CustomTableCell>
                                                     <CustomTableCell>Przeciętna</CustomTableCell>
                                                 </TableRow>
-                                                <TableRow key={2} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell><Typography noWrap={true}>Kaftan</Typography></CustomTableCell>
-                                                    <CustomTableCell>6zk</CustomTableCell>
-                                                    <CustomTableCell>40</CustomTableCell>
-                                                    <CustomTableCell>Korpus</CustomTableCell>
+                                                <TableRow key={2} classes={{root: classes.tableShrink}}>
+                                                    <CustomTableCell><Typography
+                                                        noWrap={true}>Hełm</Typography></CustomTableCell>
+                                                    <CustomTableCell>3zk</CustomTableCell>
+                                                    <CustomTableCell>10</CustomTableCell>
+                                                    <CustomTableCell>Głowa</CustomTableCell>
                                                     <CustomTableCell>1</CustomTableCell>
                                                     <CustomTableCell>Przeciętna</CustomTableCell>
                                                 </TableRow>
-                                                <TableRow key={3} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell><Typography noWrap={true}>Kurta</Typography></CustomTableCell>
-                                                    <CustomTableCell>12zk</CustomTableCell>
-                                                    <CustomTableCell>50</CustomTableCell>
-                                                    <CustomTableCell>Kropus, Ręce</CustomTableCell>
+                                                <TableRow key={3} classes={{root: classes.tableShrink}}>
+                                                    <CustomTableCell><Typography
+                                                        noWrap={true}>Hełm</Typography></CustomTableCell>
+                                                    <CustomTableCell>3zk</CustomTableCell>
+                                                    <CustomTableCell>10</CustomTableCell>
+                                                    <CustomTableCell>Głowa</CustomTableCell>
                                                     <CustomTableCell>1</CustomTableCell>
-                                                    <CustomTableCell>Przeciętna</CustomTableCell> </TableRow>
-                                                <TableRow key={4} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell><Typography noWrap={true}>Nogawice</Typography></CustomTableCell>
-                                                    <CustomTableCell>10zk</CustomTableCell>
-                                                    <CustomTableCell>20</CustomTableCell>
-                                                    <CustomTableCell>Nogi</CustomTableCell>
-                                                    <CustomTableCell>1</CustomTableCell>
-                                                    <CustomTableCell>Przeciętna</CustomTableCell> </TableRow>
-                                                <TableRow key={5} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell><Typography noWrap={true}>Skórznia</Typography></CustomTableCell>
-                                                    <CustomTableCell>25zk</CustomTableCell>
-                                                    <CustomTableCell>80</CustomTableCell>
-                                                    <CustomTableCell>Wszystkie</CustomTableCell>
-                                                    <CustomTableCell>1</CustomTableCell>
-                                                    <CustomTableCell>Mała</CustomTableCell>
+                                                    <CustomTableCell>Przeciętna</CustomTableCell>
                                                 </TableRow>
-
-
+                                                <TableRow key={4} classes={{root: classes.tableShrink}}>
+                                                    <CustomTableCell><Typography
+                                                        noWrap={true}>Hełm</Typography></CustomTableCell>
+                                                    <CustomTableCell>3zk</CustomTableCell>
+                                                    <CustomTableCell>10</CustomTableCell>
+                                                    <CustomTableCell>Głowa</CustomTableCell>
+                                                    <CustomTableCell>1</CustomTableCell>
+                                                    <CustomTableCell>Przeciętna</CustomTableCell>
+                                                </TableRow>
 
 
                                             </TableBody>

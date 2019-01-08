@@ -63,7 +63,7 @@ class RegisterForm extends Component {
                     label="Nie przeczytałem warunków korzystania z serwisu i czytać nie będę ale je akceptuję."
                 />
 
-                <Button variant="contained" color="secondary"> Zarejestruj się</Button>
+                <Button variant="contained" color="secondary" href={"/rpg/main"}> Zarejestruj się</Button>
                 <p>Masz konto? <a href="" onClick={this.handleOnLoginClicked.bind(this)}>Przejdź do logowania.</a></p>
             </form>
         );
