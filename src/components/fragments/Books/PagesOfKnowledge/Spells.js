@@ -26,6 +26,10 @@ import {fade} from '@material-ui/core/styles/colorManipulator';
 import Divider from "@material-ui/core/Divider";
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Button from "@material-ui/core/Button";
+import {url} from '../../../../Constants'
+import LazyLoad from 'react-lazyload';
+
+
 
 
 const styles = theme => ({
@@ -88,13 +92,13 @@ const styles = theme => ({
         [theme.breakpoints.down('sm')]: {
             width: 0,
             '&:focus': {
-                width: 140,
+                width: 70,
             },
         },
         [theme.breakpoints.up('md')]: {
             width: 0,
             '&:focus': {
-                width: 300,
+                width: 120,
             },
         },
 
@@ -128,17 +132,57 @@ const CustomTableCell = withStyles(theme => ({
 
 }))(TableCell);
 
-
+let header = {
+    "Content-Type": "application/json"
+};
 class Spells extends React.Component {
     state = {
         filter: undefined,
         value: 'all',
+        spells:[],
+        isTable:false,
+        filteredSpells:[],
 
     };
 
     handleChange = event => {
         this.setState({value: event.target.value});
     };
+
+
+    componentDidMount() {
+        fetch(url + "/spells", {
+            method: 'GET',
+            headers: header,
+            credentials: 'same-origin'
+        }).then((Response) => Response.json()).then((findresponse) => {
+            this.setState({
+                spells: findresponse,
+                filteredSpells:findresponse
+            });
+            if (this.state.spells.table ===''||this.state.spells.table ===null){
+                this.setState({isTable:false});
+
+            }else {
+                this.setState({isTable:true})
+            }
+        })
+    }
+
+
+    filterList = event =>{
+        let filteredList= this.state.spells;
+        filteredList = filteredList.filter((item)=> {
+            return item.name.toString().toLowerCase().search(
+                event.target.value.toString().toLowerCase())!==-1;
+
+        });
+        this.setState({filteredSpells:filteredList})
+
+    };
+    componentWillMount(){
+        this.setState({filteredSpells:this.state.spells})
+    }
 
 
     render() {
@@ -197,7 +241,9 @@ class Spells extends React.Component {
 
                         {/*</div>*/}
                     {/*</Grid>*/}
-                    <Grid item xs={12} >
+                    <Grid item xs={8} >
+                    </Grid>
+                    <Grid item xs={3} >
                         <Grid container alignItems={"center"} justify={"center"}>
 
                             <div className={classes.search}>
@@ -210,6 +256,7 @@ class Spells extends React.Component {
                                         root: classes.inputRoot,
                                         input: classes.inputInput,
                                     }}
+                                    onChange={this.filterList}
                                 />
                             </div>
                         </Grid>
@@ -220,140 +267,78 @@ class Spells extends React.Component {
 
 
                     <Grid item xs={12}>
-                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary>
+                        <LazyLoad height={300}>
+                            {this.state.filteredSpells.map((dynamicData, key) => (
+
+                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}} key={key}>
+                            <ExpansionPanelSummary key={key}>
                                 <Grid container>
                                     <Grid item xs={10}>
                                         <Typography gutterBottom variant="h5" component="h5">
-                                            Sobowtór
+                                            {dynamicData.name}
                                         </Typography>
 
                                     </Grid>
                                     <Grid item xs={2}>
-                                        {/*<Typography gutterBottom variant="h5" component="h5" align={"right"} > <b>PS: 0</b></Typography>*/}
                                     </Grid>
                                 </Grid>
 
 
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            <ExpansionPanelDetails key={key}>
 
                                 <Grid container>
-                                    <Grid item xs={8}>
-                                        <Typography>
-                                            <b>Wymagany poziom mocy:</b> 7
-                                        </Typography>
-                                        <Typography>
-                                            <b>Czas rzucania:</b> 3 akcje
-
-                                        </Typography>
-                                        <Typography>
-                                            <b>Składnik:</b> pukiel włosów przedstawiciela rasy, w którego chce przeobraźić się czarodziej (+1)
-                                        </Typography>
-                                        <Typography>
-                                            <b>Czas trwania:</b> liczba minut równa wartości Magii czarodzieja
-                                        </Typography>
-                                        <Typography>
-                                            <b>Opis:</b> Czarodziej przybiera wygląd (wraz z ubraniem, zbroją, itp.)
-                                            dowolnej żywej istoty humanoidalnej majac Zaklęcie rwy glos mającej poniżej 3 metrów wzrostu
-                                            (człowiek, elf, ork, itp.). Zaklęcie zmienia tylko wygląd zewnętrzny, nie modyfikacja barwy głosu ani nie zapewnia wiedzy i umiejętności typowych dla przedstawicieli danej rasy.
-                                            Na przykład czarodziej, który wygląda jak ork, ale nie zna języka goblińskiego, powinien raczej milczeć w gronie zielonoskórych. Jeśli czarodziej zachowuje się podejrzanie,
-                                            obserwująca go osoba może wykonać test Inteligencji. Udany test oznacza, że orientuje się, że ma do czynienia z iluzją. Jeśli czarodziej chce przybrać wygląd konkretnej osoby,
-                                            musi wykonać udany test splatania magii.
-                                            W przeciwnym wypadku przyjmuje postać przeciętnego osobnika danej rasy
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                    </Grid>
-                                </Grid>
-
-
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-
-
-                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                            <ExpansionPanelSummary>
-                                <Grid container>
-                                    <Grid item xs={10}>
-                                        <Typography gutterBottom variant="h5" component="h5">
-                                            Oszołomienie
-                                        </Typography>
-
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        {/*<Typography gutterBottom variant="h5" component="h5" align={"right"} > <b>PS: 3</b></Typography>*/}
-                                    </Grid>
-                                </Grid>
-
-
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-
-                                <Grid container spacing={8}>
                                     <Grid item xs={7}>
                                         <Typography>
-                                            <b>Wymagany poziom mocy:</b> 8
+                                            <b>Wymagany poziom mocy:</b> {dynamicData.powerLevel}
                                         </Typography>
                                         <Typography>
-                                            <b>Czas rzucania:</b>akcja
+                                            <b>Czas rzucania:</b> {dynamicData.castTime}
 
                                         </Typography>
                                         <Typography>
-                                            <b>Składnik:</b>trochę piwa (+1)
+                                            <b>Składnik:</b> {dynamicData.component} (+1)
                                         </Typography>
                                         <Typography>
-                                            <b>Czas trwania:</b> liczba rund równa wartości Magii czarodzieja
+                                            <b>Czas trwania:</b> {dynamicData.duration}
                                         </Typography>
                                         <Typography>
-                                            <b>Opis:</b> Czarodziej mocą swojego umyslu ogłupia dowolną postać znajdującą się w odległości do 24 metrów.
-                                            Ofiara moze odeprzeć czar, wykonując udany test Siły Woli.
-                                            Nieudany test oznacza, ze w trakcie trwania czaru postac pozostaje oszołomiona przez magiczną moc.
-                                            Należy wykonać rzut Ik100 i sprawdzić wynik w poniższej tabeli, aby określić, co się dzieje z postacią do chwili wygaśnięcia czaru.
+                                            <b>Opis:</b> {dynamicData.description}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={5}>
-                                        <Table >
-                                            <TableHead >
-                                                <TableRow classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell>Rzut</CustomTableCell>
-                                                    <CustomTableCell>Efekt</CustomTableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody classes={{root: classes.tableShrink }}>
+                                        {this.state.isTable ? dynamicData.table.map((table,key)=>{
+                                            return(
 
-                                                <TableRow key={1} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell><Typography noWrap={true}>01-20</Typography></CustomTableCell>
-                                                    <CustomTableCell>Otępienie. W każdej rundzie postać może wykonać tylko 1 akcję zwykłą</CustomTableCell>
-                                                </TableRow>
-                                                <TableRow key={2} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell>21-40</CustomTableCell>
-                                                    <CustomTableCell>Ucieczka: Postać biegnie w losowym kierunku (uustalonym przez MG)</CustomTableCell>
-                                                </TableRow>
-                                                <TableRow key={3} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell>41-60</CustomTableCell>
-                                                    <CustomTableCell>Atak: Oszołomiana ofiara atakuje najbliższą postać, bez względu na to, czy jest to wróg czy przyjaciel. Jeżeli niema nikogo w zasięgu ataku, rusza biegiem w kierunku najbliższej istoty(wykonując akcję "szarża", jeśli to możliwe)</CustomTableCell>
-                                                </TableRow>
-                                                <TableRow key={4} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell>61-80</CustomTableCell>
-                                                    <CustomTableCell>Paraliż:Postać stoi bez ruchu. Nie może wykonywać żadnych akcji ani unikać ciosów</CustomTableCell>
-                                                </TableRow>
-                                                <TableRow key={5} classes={{root: classes.tableShrink }}>
-                                                    <CustomTableCell>81-00</CustomTableCell>
-                                                    <CustomTableCell>Lęk: Postać zwija się w kłębek i zamyka oczy. Jest traktowana jako bezbronna.</CustomTableCell>
-                                                </TableRow>
+                                                <Table  key={key}>
+                                                    <TableHead key={key}>
+                                                        <TableRow classes={{root: classes.tableShrink }} key={key}>
+                                                            <CustomTableCell>Rzut</CustomTableCell>
+                                                            <CustomTableCell>Efekt</CustomTableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody classes={{root: classes.tableShrink }}  key={key+1}>
 
+                                                        <TableRow key={key+1} classes={{root: classes.tableShrink }}>
+                                                            <CustomTableCell><Typography noWrap={true}>{table.first}</Typography></CustomTableCell>
+                                                            <CustomTableCell>{table.second}</CustomTableCell>
+                                                        </TableRow>
 
+                                                    </TableBody>
+                                                </Table>
 
+                                            )
+                                        })
 
-                                            </TableBody>
-                                        </Table>
+                                         : null}
                                     </Grid>
                                 </Grid>
 
 
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
+                            ))}
+                        </LazyLoad>
 
 
                     </Grid>

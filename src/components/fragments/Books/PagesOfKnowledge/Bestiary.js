@@ -20,7 +20,6 @@ import WildlifeBorderIcon from './../../../../img/icon/wildlifeBorder.png';
 import UndeadIcon from './../../../../img/icon/undead.png';
 import UndeadBorderIcon from './../../../../img/icon/undeadBorder.png';
 import MutantsIcon from './../../../../img/icon/tentacle.png';
-import mutant from './../../../../img/icon/tentacle.png';
 import MutantsBorderIcon from './../../../../img/icon/tentacleBorder.png';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -136,14 +135,26 @@ let header = {
 class Bestiary extends React.Component {
     state = {
         filter: undefined,
-        value: 'all',
+        value: 'ALL',
         beasts: [],
+        mutants: [],
+        wildlife: [],
+        undead: [],
+        demons: [],
+        filteredBeasts: [],
+        filteredBeastsAfterSearch:[],
+        searchValue:""
+
 
     };
 
 
     handleChange = event => {
         this.setState({value: event.target.value});
+        this.showBeasts(event.target.value);
+        this.setState({
+            searchValue:""
+        });
     };
 
     componentDidMount() {
@@ -155,10 +166,118 @@ class Bestiary extends React.Component {
             this.setState({
                 beasts: findresponse,
             })
+        }).then(()=>{
+            this.filterBeasts();
+
+        }).then(()=>{
+            this.showBeasts(this.state.value);
+            this.setState({
+                filteredBeastsAfterSearch:this.state.filteredBeasts
+
+            })
         })
     }
 
+    filterList = event =>{
+        this.setState({
+            searchValue:event.target.value
+        });
+        let filteredList= this.state.filteredBeasts;
+        filteredList = filteredList.filter((item)=> {
+            return item.name.toString().toLowerCase().search(
+                event.target.value.toString().toLowerCase())!==-1;
+
+        });
+        this.setState({filteredBeastsAfterSearch:filteredList})
+
+    };
+    componentWillMount(){
+        this.setState({filteredBeastsAfterSearch:this.state.filteredBeasts})
+
+    }
+
+    filterBeasts() {
+        this.state.beasts.map((beast) => {
+            switch (beast.type) {
+                case "DEMON": {
+
+                    return this.state.demons.push(beast);
+
+
+                }
+                case "MUTANT": {
+                    return this.state.mutants.push(beast);
+
+                }
+                case "WILDLIFE": {
+                    return this.state.wildlife.push(beast);
+
+                }
+                case "UNDEAD": {
+                    return this.state.undead.push(beast);
+
+                }
+                case "ALL": {
+                    return this.state.beasts;
+
+                }
+                default:
+                    return this.state.beasts;
+            }
+
+        })
+    }
+
+    showBeasts(String) {
+        switch (String) {
+            case "DEMON": {
+                this.setState({
+                    filteredBeasts: this.state.demons,
+                    filteredBeastsAfterSearch: this.state.demons
+
+                });
+                break;
+            }
+            case "MUTANT": {
+                this.setState({
+                    filteredBeasts: this.state.mutants,
+                    filteredBeastsAfterSearch: this.state.mutants
+
+                });
+                break;
+            }
+            case "UNDEAD": {
+                this.setState({
+                    filteredBeasts: this.state.undead,
+                    filteredBeastsAfterSearch: this.state.undead
+
+                });
+                break;
+            }
+            case "WILDLIFE": {
+                this.setState({
+                    filteredBeasts: this.state.wildlife,
+                    filteredBeastsAfterSearch: this.state.wildlife
+
+                });
+                break;
+            }
+            case "ALL": {
+                this.setState({
+                    filteredBeasts: this.state.beasts,
+                    filteredBeastsAfterSearch: this.state.beasts
+
+                });
+                break;
+            }
+        }
+
+    }
+
+
+
     render() {
+
         const {classes} = this.props;
         const {width} = this.props;
         let sortIcon;
@@ -199,12 +318,12 @@ class Bestiary extends React.Component {
                                     row
                                 >
                                     <FormControlLabel
-                                        value="all"
+                                        value="ALL"
                                         control={<Radio color="default"/>}
                                         label="Wszystko"
                                     />
                                     <FormControlLabel
-                                        value="wildlife"
+                                        value="WILDLIFE"
                                         control={<Radio color="default"
                                                         icon={<img src={WildlifeBorderIcon} alt={"dzikie zwierzeta"}
                                                                    style={sortIcon}/>}
@@ -213,7 +332,7 @@ class Bestiary extends React.Component {
                                         label="Zwierzęta"
                                     />
                                     <FormControlLabel
-                                        value="demons"
+                                        value="DEMON"
                                         control={<Radio color="default"
                                                         icon={<img src={DemonBorderIcon} alt={"mordujace demony"}
                                                                    style={sortIcon}/>}
@@ -222,7 +341,7 @@ class Bestiary extends React.Component {
                                         label="Demony"
                                     />
                                     <FormControlLabel
-                                        value="undead"
+                                        value="UNDEAD"
                                         control={<Radio color="default"
                                                         icon={<img src={UndeadBorderIcon} alt={"trupczaki"}
                                                                    style={sortIcon}/>}
@@ -231,7 +350,7 @@ class Bestiary extends React.Component {
                                         label="Ożywieńcy"
                                     />
                                     <FormControlLabel
-                                        value="muties"
+                                        value="MUTANT"
                                         control={<Radio color="default"
                                                         icon={<img src={MutantsBorderIcon} alt={"GMO"}
                                                                    style={sortIcon}/>}
@@ -252,6 +371,8 @@ class Bestiary extends React.Component {
                                     <SearchIcon/>
                                 </div>
                                 <InputBase
+                                    value={this.state.searchValue}
+                                    onChange={this.filterList}
                                     placeholder="Wyszukaj.."
                                     classes={{
                                         root: classes.inputRoot,
@@ -267,132 +388,152 @@ class Bestiary extends React.Component {
 
 
                     <Grid item xs={12}>
-                        <LazyLoad>
-                            {this.state.beasts.map((dynamidData, key) => (
+                        <LazyLoad height={300}>
 
 
-                                <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
-                                    <ExpansionPanelSummary expandIcon={<img src={dynamidData.type} alt={"Dziki Zwirz"}
-                                                                            style={expandIcon}/>}>
-                                        {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
-                                        <Typography gutterBottom variant="h5"
-                                                    component="h5">{dynamidData.name}</Typography>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails>
-
-                                        <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
-                                            <Grid item xs={2}>
-                                                <img src={"/img/Books/Bestiary/mino.png"} width={"100%"} height={"100%"}
-                                                     alt={"img"}/>
-                                            </Grid>
-                                            <Grid item xs={3}>
-
-                                                <Typography>
-                                                    {dynamidData.description}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={7}>
-                                                <Paper classes={{root: classes.tableHeader}}>
-                                                    Cechy Główne:
-                                                </Paper>
-                                                <Table>
-                                                    <TableBody>
-
-                                                        <TableRow key={key}>
-
-                                                            <CustomTableCell>WW</CustomTableCell>
-                                                            <CustomTableCell>US</CustomTableCell>
-                                                            <CustomTableCell>K</CustomTableCell>
-                                                            <CustomTableCell>Odp</CustomTableCell>
-                                                            <CustomTableCell>Zr</CustomTableCell>
-                                                            <CustomTableCell>Int</CustomTableCell>
-                                                            <CustomTableCell>SW</CustomTableCell>
-                                                            <CustomTableCell>Odg</CustomTableCell>
-
-                                                        </TableRow>
-                                                        <TableRow key={key}>
-
-                                                            <CustomTableCell>25</CustomTableCell>
-                                                            <CustomTableCell>30</CustomTableCell>
-                                                            <CustomTableCell>30</CustomTableCell>
-                                                            <CustomTableCell>30</CustomTableCell>
-                                                            <CustomTableCell>25</CustomTableCell>
-                                                            <CustomTableCell>30</CustomTableCell>
-                                                            <CustomTableCell>30</CustomTableCell>
-                                                            <CustomTableCell>15</CustomTableCell>
-
-                                                        </TableRow>
+                            {this.state.filteredBeastsAfterSearch.map((dynamicData, key) => (
 
 
-                                                    </TableBody>
-                                                </Table>
 
+                                    <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}
+                                                    key={key}>
+                                        <ExpansionPanelSummary expandIcon={<img
+                                            src={require("./../../../../img/icon/" + `${dynamicData.type}` + ".png")}
+                                            alt={"Dziki Zwirz"}
+                                            style={expandIcon}/>} key={key}>
+                                            {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
+                                            <Typography gutterBottom variant="h5"
+                                                        component="h5" key={key}>{dynamicData.name}</Typography>
+                                        </ExpansionPanelSummary>
+                                        <ExpansionPanelDetails>
 
-                                                <Paper classes={{root: classes.tableHeader}}>
-                                                    Cechy Drugorzędne:
-                                                </Paper>
-                                                <Table>
-
-                                                    <TableBody>
-
-                                                        <TableRow key={3}>
-                                                            <CustomTableCell>A</CustomTableCell>
-                                                            <CustomTableCell>Żyw</CustomTableCell>
-                                                            <CustomTableCell>S</CustomTableCell>
-                                                            <CustomTableCell>Wt</CustomTableCell>
-                                                            <CustomTableCell>Sz</CustomTableCell>
-                                                            <CustomTableCell>Mag</CustomTableCell>
-                                                            <CustomTableCell>PO</CustomTableCell>
-                                                            <CustomTableCell>PP</CustomTableCell>
-
-                                                        </TableRow>
-                                                        <TableRow key={4}>
-                                                            <CustomTableCell>1</CustomTableCell>
-                                                            <CustomTableCell>8</CustomTableCell>
-                                                            <CustomTableCell>3</CustomTableCell>
-                                                            <CustomTableCell>3</CustomTableCell>
-                                                            <CustomTableCell>4</CustomTableCell>
-                                                            <CustomTableCell>0</CustomTableCell>
-                                                            <CustomTableCell>0</CustomTableCell>
-                                                            <CustomTableCell>0</CustomTableCell>
-
-                                                        </TableRow>
-
-
-                                                    </TableBody>
-                                                </Table>
-
-                                                <Grid container spacing={8}>
-                                                    <Grid item xs={4}>
-                                                        <Typography>
-                                                            <b>Ekwipunek:</b><br/>
-                                                            {dynamidData.armors}<br/>
-                                                            {dynamidData.weapons}<br/>
-                                                            {dynamidData.items}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item xs={4}>
-                                                        <Typography>
-                                                            <b>Umiejetności:</b><br/>
-                                                            {dynamidData.skills.name}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item xs={4}>
-                                                        <Typography>
-                                                            <b>Zdolności:</b><br/>
-                                                            {dynamidData.abilities.name}
-                                                        </Typography>
-                                                    </Grid>
+                                            <Grid container spacing={8} alignItems={"flex-start"}
+                                                  justify={"flex-start"}>
+                                                <Grid item xs={2}>
+                                                    <img src={"/img/Books/Bestiary/mino.png"} width={"100%"}
+                                                         height={"100%"}
+                                                         alt={"img"} key={key}/>
                                                 </Grid>
+                                                <Grid item xs={3}>
+
+                                                    <Typography>
+                                                        {dynamicData.description}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={7}>
+                                                    <Paper classes={{root: classes.tableHeader}}>
+                                                        Cechy Główne:
+                                                    </Paper>
+                                                    <Table>
+                                                        <TableBody>
+
+                                                            <TableRow key={-1}>
+
+                                                                <CustomTableCell>WW</CustomTableCell>
+                                                                <CustomTableCell>US</CustomTableCell>
+                                                                <CustomTableCell>K</CustomTableCell>
+                                                                <CustomTableCell>Odp</CustomTableCell>
+                                                                <CustomTableCell>Zr</CustomTableCell>
+                                                                <CustomTableCell>Int</CustomTableCell>
+                                                                <CustomTableCell>SW</CustomTableCell>
+                                                                <CustomTableCell>Odg</CustomTableCell>
+
+                                                            </TableRow>
+                                                            <TableRow key={key}>
+
+                                                                <CustomTableCell>25</CustomTableCell>
+                                                                <CustomTableCell>30</CustomTableCell>
+                                                                <CustomTableCell>30</CustomTableCell>
+                                                                <CustomTableCell>30</CustomTableCell>
+                                                                <CustomTableCell>25</CustomTableCell>
+                                                                <CustomTableCell>30</CustomTableCell>
+                                                                <CustomTableCell>30</CustomTableCell>
+                                                                <CustomTableCell>15</CustomTableCell>
+
+                                                            </TableRow>
+
+
+                                                        </TableBody>
+                                                    </Table>
+
+
+                                                    <Paper classes={{root: classes.tableHeader}}>
+                                                        Cechy Drugorzędne:
+                                                    </Paper>
+                                                    <Table>
+
+                                                        <TableBody>
+
+                                                            <TableRow key={-1}>
+                                                                <CustomTableCell>A</CustomTableCell>
+                                                                <CustomTableCell>Żyw</CustomTableCell>
+                                                                <CustomTableCell>S</CustomTableCell>
+                                                                <CustomTableCell>Wt</CustomTableCell>
+                                                                <CustomTableCell>Sz</CustomTableCell>
+                                                                <CustomTableCell>Mag</CustomTableCell>
+                                                                <CustomTableCell>PO</CustomTableCell>
+                                                                <CustomTableCell>PP</CustomTableCell>
+
+                                                            </TableRow>
+                                                            <TableRow key={key + 1}>
+                                                                <CustomTableCell>1</CustomTableCell>
+                                                                <CustomTableCell>8</CustomTableCell>
+                                                                <CustomTableCell>3</CustomTableCell>
+                                                                <CustomTableCell>3</CustomTableCell>
+                                                                <CustomTableCell>4</CustomTableCell>
+                                                                <CustomTableCell>0</CustomTableCell>
+                                                                <CustomTableCell>0</CustomTableCell>
+                                                                <CustomTableCell>0</CustomTableCell>
+
+                                                            </TableRow>
+
+
+                                                        </TableBody>
+                                                    </Table>
+
+                                                    <Grid container spacing={8}>
+                                                        <Grid item xs={4}>
+                                                            <Typography>
+                                                                <b>Ekwipunek:</b><br/>
+                                                                {dynamicData.armors}<br/>
+                                                                {dynamicData.weapons}<br/>
+                                                                {dynamicData.items}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <Typography>
+                                                                <b>Umiejetności:</b><br/>
+                                                                {dynamicData.skills.map((skill) => {
+                                                                    return (skill.name)
+                                                                })
+
+                                                                }
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <Typography>
+                                                                <b>Zdolności:</b><br/>
+                                                                {dynamicData.abilities.map((ability) => {
+                                                                    return (ability.name)
+                                                                })
+
+                                                                }
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Typography>
+                                                        <b>Zasady Specialne:</b>
+                                                        {dynamicData.specialRules}
+                                                    </Typography>
+                                                </Grid>
+
                                             </Grid>
 
-                                        </Grid>
-
-                                    </ExpansionPanelDetails>
-                                </ExpansionPanel>
-                            ))}
+                                        </ExpansionPanelDetails>
+                                    </ExpansionPanel>
+                                ))}
                         </LazyLoad>
-                                            </Grid>
+                    </Grid>
 
 
                 </Grid>

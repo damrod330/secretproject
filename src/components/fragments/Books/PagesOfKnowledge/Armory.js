@@ -7,11 +7,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import ArmorIcon from './../../../../img/icon/armor.png';
-import MeleeIcon from './../../../../img/icon/melee.png';
-import RangedIcon from './../../../../img/icon/ranged.png';
+import WeaponIcon from './../../../../img/icon/weapons.png';
+import AmmoIcon from './../../../../img/icon/ranged.png';
 import Armors from "./Armory/Armor"
-import Melee from "./Armory/Melee"
-import Ranged from "./Armory/Ranged"
+import Weapons from "./Armory/Weapons"
+import Ammo from "./Armory/Ammo"
 
 
 
@@ -69,19 +69,17 @@ class Armory extends React.Component {
                 <Tabs
                     value={this.state.value}
                     onChange={this.handleChange}
-                    fullWidth
+                    variant={"fullWidth"}
                     indicatorColor="secondary"
                     textColor="secondary"
                     className={classes.root}
                 >
                     <Tab color={"secondary"} icon={<img src={ArmorIcon} alt={"Armory"} className={"icons"}/>} />
-                    <Tab icon={<img src={MeleeIcon} alt={"Bestiary"} className={"icons"}/>} />
-                    <Tab icon={<img src={RangedIcon} alt={"Spells"} className={"icons"}/>} />
+                    <Tab icon={<img src={WeaponIcon} alt={"Bestiary"} className={"icons"}/>} />
                 </Tabs>
 
                 {value === 0 && <TabContainer> <Armors/> </TabContainer>}
-                {value === 1 && <TabContainer> <Melee/> </TabContainer>}
-                {value === 2 && <TabContainer> <Ranged/> </TabContainer>}
+                {value === 1 && <TabContainer> <Weapons/> </TabContainer>}
 
 
 

@@ -11,8 +11,8 @@ import './NavBar.css'
 import Slide from "@material-ui/core/es/Slide/Slide";
 import SwipeableDrawer from "@material-ui/core/es/SwipeableDrawer/SwipeableDrawer";
 import List from "@material-ui/core/es/List/List";
-import ListItem from "@material-ui/core/es/ListItem/ListItem";
-import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import Divider from "@material-ui/core/es/Divider/Divider";
 import {compose} from "recompose";
 import Banner from "../../img/Banner.png"
@@ -145,7 +145,7 @@ const styles = theme => ({
     }
 
 });
-const map = <NewWindow copyStyles={true} url={"http://localhost:8080/"}/>
+const map = <NewWindow copyStyles={true} url={"http://localhost:8080/"}/>;
 
 class NavBar extends React.Component {
     state = {
@@ -217,25 +217,25 @@ class NavBar extends React.Component {
                                         </ListItem>
                                         <Collapse in={this.state.nestItemOpen} timeout="auto" unmountOnExit>
                                             <List disablePadding className={classes.menuItem}>
-                                                <ListItem button>
+                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(0) }}>
 
                                                     {/*<img src={ArmoryIcon} alt={"Armory"} className={classes.icons}/>*/}
 
                                                     <ListItemText primary="Zbrojownia"/>
                                                 </ListItem>
-                                                <ListItem button>
+                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(1) }}>
 
                                                     {/*<img src={BestiaryIcon} alt={"Bestiary"}*/}
                                                     {/*className={classes.icons}/>*/}
                                                     <ListItemText primary="Bestiariusz"/>
                                                 </ListItem>
-                                                <ListItem button>
+                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(2) }}>
 
                                                     {/*<img src={SpellsIcon} alt={"Spells"} className={classes.icons}/>*/}
 
-                                                    <ListItemText primary="Księga Zaklęć"/>
+                                                    <ListItemText primary="Księga Zaklęć" />
                                                 </ListItem>
-                                                <ListItem button>
+                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(3) }}>
                                                     {/*<img src={MutationsIcon} alt={"Mutations"}*/}
                                                     {/*className={classes.icons}/>*/}
                                                     <ListItemText primary="Mutacje"/>

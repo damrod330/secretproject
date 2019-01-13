@@ -158,32 +158,32 @@ class Ranged extends React.Component {
 
         return (
             <Paper className={classes.paper}>
-                <Grid container  alignItems={"center"} justify={"flex-start"}>
-                    <Grid item xs={9}>
+                {/*<Grid container  alignItems={"center"} justify={"flex-start"}>*/}
+                    {/*<Grid item xs={9}>*/}
 
-                        <div className={classes.paper}>
+                        {/*<div className={classes.paper}>*/}
 
 
-                        </div>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Grid container>
+                        {/*</div>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={3}>*/}
+                        {/*<Grid container>*/}
 
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon/>
-                                </div>
-                                <InputBase
-                                    placeholder="Wyszukaj.."
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                />
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                            {/*<div className={classes.search}>*/}
+                                {/*<div className={classes.searchIcon}>*/}
+                                    {/*<SearchIcon/>*/}
+                                {/*</div>*/}
+                                {/*<InputBase*/}
+                                    {/*placeholder="Wyszukaj.."*/}
+                                    {/*classes={{*/}
+                                        {/*root: classes.inputRoot,*/}
+                                        {/*input: classes.inputInput,*/}
+                                    {/*}}*/}
+                                {/*/>*/}
+                            {/*</div>*/}
+                        {/*</Grid>*/}
+                    {/*</Grid>*/}
+                {/*</Grid>*/}
 
                 <Grid container  alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
