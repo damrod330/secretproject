@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
 import frontPaper from './../../../../../img/paper-texture-alt.jpg'
-
 import {compose} from "recompose";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
