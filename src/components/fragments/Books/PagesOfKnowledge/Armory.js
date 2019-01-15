@@ -8,6 +8,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import ArmorIcon from './../../../../img/icon/armor.png';
 import WeaponIcon from './../../../../img/icon/weapons.png';
+import AmmoIcon from './../../../../img/icon/ranged.png';
 import Armors from "./Armory/Armor"
 import Weapons from "./Armory/Weapons"
 import Ammo from "./Armory/Ammo"
@@ -98,4 +99,3 @@ Armory.propTypes = {
 };
 
 export default withStyles(styles,{withTheme : true})(Armory);
-
