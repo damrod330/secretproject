@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
 import frontPaper from './../../../../../img/paper-texture-alt.jpg'
-
 import {compose} from "recompose";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -184,7 +183,11 @@ class Melee extends React.Component {
                                             <TableRow key={key} classes={{root: classes.tableShrink}}>
                                                 <CustomTableCell><Typography
                                                     noWrap={true}>{dynamicData.name}</Typography></CustomTableCell>
-                                                <CustomTableCell>{dynamicData.price}</CustomTableCell>
+                                                <CustomTableCell>
+                                                    {dynamicData.price.gold!==0?<Typography>{dynamicData.price.gold}zk</Typography>:null}
+                                                    {dynamicData.price.silver!==0?<Typography>{dynamicData.price.silver}s</Typography>:null}
+                                                    {dynamicData.price.bronze!==0?<Typography>{dynamicData.price.bronze}p</Typography>:null}
+                                                </CustomTableCell>
                                                 <CustomTableCell>{dynamicData.weight}</CustomTableCell>
                                                 <CustomTableCell>{this.changeCategoryENUM(dynamicData.category)}</CustomTableCell>
                                                 <CustomTableCell>{dynamicData.power}</CustomTableCell>
@@ -288,7 +291,7 @@ class Melee extends React.Component {
             case "MECHANICAL":
                 return "Mechaniczna";
             case "FIREARM":
-                return "Palna"
+                return "Palna";
             default: return "sie zjebalo";
         }
     }

@@ -138,12 +138,183 @@ class Mutations extends React.Component {
 
     handleChange = event => {
         this.setState({value: event.target.value});
+<<<<<<< HEAD
+=======
+        this.showMutations(event.target.value);
+        this.setState({
+            searchValue:""
+        });
+
+    };
+
+    componentDidMount() {
+        fetch(url + "/mutations", {
+            method: 'GET',
+            headers: header,
+            credentials: 'same-origin'
+        }).then((Response) => Response.json()).then((findresponse) => {
+            this.setState({
+                mutations: findresponse,
+            });
+            if (this.state.mutations.table === '' || this.state.mutations.table === null) {
+                this.setState({isTable: false});
+
+            } else {
+                this.setState({isTable: true})
+                this.fromPairsToRows(this.state.mutations);
+            }
+        }).then(()=>{
+            this.filterMutations();
+
+        }).then(()=>{
+            this.showMutations(this.state.value);
+            this.setState({
+                filteredMutationsAfterSearch:this.state.filteredMutations
+
+            })
+
+
+        })
+    }
+    fromPairsToRows(table){
+        let rows=[];
+        let temp=0;
+        table.map((pairs)=> {
+
+
+            for(let i=0;i<20;i++){
+                pairs.table.map((pair) => {
+
+
+                    console.log(pair.second[i])
+
+                    // pair.second[0].map((value)=>{
+                    //     console.log(value)
+                    //
+                    // })
+
+
+                    // for (let j = 0; j < pair.second.length; j++) {
+                    //
+                    //     for (let i = 0; i < pair.second.length; i++) {
+                    //         rows.push(pair.second[j]);
+                    //         continue;
+                    //
+                    //     }
+                    //
+                    //     for (let i = 0; i < pair.second.length; i++) {
+                    //         rows.push();
+                    //
+                    //
+                    //     }
+                    // }
+
+
+                })}
+
+
+            }
+        );
+        console.log(rows);
+
+    }
+
+    filterMutations() {
+        this.state.mutations.map((mutation) => {
+            switch (mutation.type) {
+                case "KHORNE": {
+
+                    return this.state.khorn.push(mutation);
+
+                }
+                case "NURGL": {
+                    return this.state.nurgl.push(mutation);
+
+                }
+                case "SLAANESH": {
+                    return this.state.slaanesh.push(mutation);
+
+                }
+                case "TZEENTCH": {
+                    return this.state.tzeentch.push(mutation);
+
+                }
+                case "ALL": {
+                    return this.state.mutations;
+
+                }
+                default:
+                    return this.state.mutations;
+            }
+
+        })
+    }
+    filterList = event =>{
+        this.setState({
+            searchValue:event.target.value
+        });
+        let filteredList= this.state.filteredMutations;
+        filteredList = filteredList.filter((item)=> {
+            return item.name.toString().toLowerCase().search(
+                event.target.value.toString().toLowerCase())!==-1;
+
+        });
+        this.setState({filteredMutationsAfterSearch:filteredList})
+
+>>>>>>> f82d1a30f9a6b292bfe4b819040d896e5e5432fa
     };
 
 
+<<<<<<< HEAD
     render() {
         const {classes} = this.props;
         const {width} = this.props;
+=======
+    showMutations(String) {
+        switch (String) {
+            case "KHORNE": {
+                this.setState({
+                    filteredMutations: this.state.khorn,
+                    filteredMutationsAfterSearch: this.state.khorn
+                });
+                break;
+            }
+            case "NURGL": {
+                this.setState({
+                    filteredMutations: this.state.nurgl,
+                    filteredMutationsAfterSearch: this.state.nurgl
+                });
+                break;
+            }
+            case "SLAANESH": {
+                this.setState({
+                    filteredMutations: this.state.slaanesh,
+                    filteredMutationsAfterSearch: this.state.slaanesh
+                });
+                break;
+            }
+            case "TZEENTCH": {
+                this.setState({
+                    filteredMutations: this.state.tzeentch,
+                    filteredMutationsAfterSearch: this.state.tzeentch
+                });
+                break;
+            }
+            case "ALL": {
+                this.setState({
+                    filteredMutations: this.state.mutations,
+                    filteredMutationsAfterSearch: this.state.mutations
+                });
+                break;
+            }
+            default :{
+                this.setState({
+                    filteredMutations: this.state.mutations,
+                    filteredMutationsAfterSearch: this.state.mutations
+                });
+            }
+        }
+>>>>>>> f82d1a30f9a6b292bfe4b819040d896e5e5432fa
 
 
 
@@ -170,7 +341,11 @@ class Mutations extends React.Component {
                                         label="Mutacje"
                                     />
                                     <FormControlLabel
+<<<<<<< HEAD
                                         value="khorn"
+=======
+                                        value="KHORNE"
+>>>>>>> f82d1a30f9a6b292bfe4b819040d896e5e5432fa
                                         control={<Radio color="default"/>}
                                         label="Mutacje Khorna"
                                     />
@@ -220,6 +395,7 @@ class Mutations extends React.Component {
 
 
                     <Grid item xs={12}>
+<<<<<<< HEAD
                         <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
                             <ExpansionPanelSummary>
                                 <Grid container>
@@ -227,6 +403,26 @@ class Mutations extends React.Component {
                                         <Typography gutterBottom variant="h5" component="h5">001-005
                                             Albinos
                                         </Typography>
+=======
+                        <LazyLoad height={300}>
+                        {this.state.filteredMutationsAfterSearch.map((dynamicData, key) => (
+
+                            <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}  key={key}>
+                                <ExpansionPanelSummary key={key}>
+                                    <Grid container>
+                                        <Grid item xs={10}>
+                                            <Typography gutterBottom variant="h5" component="h5">
+                                                {dynamicData.roll} {dynamicData.name}
+                                            </Typography>
+
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Typography gutterBottom variant="h5" component="h5" align={"right"}> <b>
+                                                PS: {dynamicData.ps}
+                                            </b></Typography>
+                                        </Grid>
+                                    </Grid>
+>>>>>>> f82d1a30f9a6b292bfe4b819040d896e5e5432fa
 
                                     </Grid>
                                     <Grid item xs={2}>
