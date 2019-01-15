@@ -1,18 +1,17 @@
 import React from 'react';
 import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import CharacterPage from './pages/CharacterPage';
 import MainLayout from './MainLayout';
 
 
 const Main = ()=> (
     <main>
         <Switch>
-            <Route exact path="/main" component={LoginPage}/>
+            <Route path="/character" component={CharacterPage}/>
             <Route path="/login" component={LoginPage}/>
             <Route path="/register" component={LoginPage}/>
-            <Route path="/" component={MainLayout}>
-            </Route>
-
+            <Route path="/" component={MainLayout}/>
         </Switch>
     </main>
 );

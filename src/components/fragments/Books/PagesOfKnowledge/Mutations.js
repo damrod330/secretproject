@@ -26,8 +26,6 @@ import {fade} from '@material-ui/core/styles/colorManipulator';
 import Divider from "@material-ui/core/Divider";
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Button from "@material-ui/core/Button";
-import LazyLoad from 'react-lazyload';
-import {url} from '../../../../Constants'
 
 
 const styles = theme => ({
@@ -44,9 +42,9 @@ const styles = theme => ({
         padding: "2px",
 
     },
-    tableShrink: {
-        height: 0,
-        border: "1px solid",
+    tableShrink:{
+        height:0,
+        border:"1px solid",
 
     },
     expansionPanel: {
@@ -130,173 +128,26 @@ const CustomTableCell = withStyles(theme => ({
 
 }))(TableCell);
 
-let header = {
-    "Content-Type": "application/json"
-};
 
 class Mutations extends React.Component {
     state = {
         filter: undefined,
-        value: 'ALL',
-        mutations: [],
-        isTable: false,
-        khorn: [],
-        nurgl: [],
-        slaanesh: [],
-        tzeentch: [],
-        filteredMutations: [],
-        filteredMutationsAfterSearch:[],
-        searchValue:""
+        value: 'all',
 
     };
-    changeENUM(String){
-        switch(String){
-            case "SINGLE":
-                return "Pojedyńcza";
-            case "MULTIPLE":
-                return "Wielokrotna";
-            default: return "sie zjebalo";
 
-        }
-    }
     handleChange = event => {
         this.setState({value: event.target.value});
-        this.showMutations(event.target.value);
-        this.setState({
-            searchValue:""
-        });
-
     };
 
-    componentDidMount() {
-        fetch(url + "/mutations", {
-            method: 'GET',
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
-            this.setState({
-                mutations: findresponse,
-            });
-            if (this.state.mutations.table === '' || this.state.mutations.table === null) {
-                this.setState({isTable: false});
-
-            } else {
-                this.setState({isTable: true})
-            }
-        }).then(()=>{
-            this.filterMutations();
-
-        }).then(()=>{
-            this.showMutations(this.state.value);
-            this.setState({
-                filteredMutationsAfterSearch:this.state.filteredMutations
-
-            })
-
-
-        })
-    }
-
-    filterMutations() {
-        this.state.mutations.map((mutation) => {
-            switch (mutation.type) {
-                case "KHORN": {
-
-                    return this.state.khorn.push(mutation);
-
-                }
-                case "NURGL": {
-                    return this.state.nurgl.push(mutation);
-
-                }
-                case "SLAANESH": {
-                    return this.state.slaanesh.push(mutation);
-
-                }
-                case "TZEENTCH": {
-                    return this.state.tzeentch.push(mutation);
-
-                }
-                case "ALL": {
-                    return this.state.mutations;
-
-                }
-                default:
-                    return this.state.mutations;
-            }
-
-        })
-    }
-    filterList = event =>{
-        this.setState({
-            searchValue:event.target.value
-        });
-        let filteredList= this.state.filteredMutations;
-        filteredList = filteredList.filter((item)=> {
-            return item.name.toString().toLowerCase().search(
-                event.target.value.toString().toLowerCase())!==-1;
-
-        });
-        this.setState({filteredMutationsAfterSearch:filteredList})
-
-    };
-    componentWillMount(){
-        this.setState({filteredMutationsAfterSearch:this.state.filteredMutations})
-
-    }
-
-    showMutations(String) {
-        switch (String) {
-            case "KHORN": {
-                this.setState({
-                    filteredMutations: this.state.khorn,
-                    filteredMutationsAfterSearch: this.state.khorn
-                });
-                break;
-            }
-            case "NURGL": {
-                this.setState({
-                    filteredMutations: this.state.nurgl,
-                    filteredMutationsAfterSearch: this.state.nurgl
-                });
-                break;
-            }
-            case "SLAANESH": {
-                this.setState({
-                    filteredMutations: this.state.slaanesh,
-                    filteredMutationsAfterSearch: this.state.slaanesh
-                });
-                break;
-            }
-            case "TZEENTCH": {
-                this.setState({
-                    filteredMutations: this.state.tzeentch,
-                    filteredMutationsAfterSearch: this.state.tzeentch
-                });
-                break;
-            }
-            case "ALL": {
-                this.setState({
-                    filteredMutations: this.state.mutations,
-                    filteredMutationsAfterSearch: this.state.mutations
-                });
-                break;
-            }
-            default :{
-                this.setState({
-                    filteredMutations: this.state.mutations,
-                    filteredMutationsAfterSearch: this.state.mutations
-                });
-            }
-        }
-
-
-
-    }
 
     render() {
         const {classes} = this.props;
         const {width} = this.props;
+
+
+
+
 
 
         return (
@@ -314,29 +165,29 @@ class Mutations extends React.Component {
                                     row
                                 >
                                     <FormControlLabel
-                                        value="ALL"
+                                        value="all"
                                         control={<Radio color="default"/>}
                                         label="Mutacje"
                                     />
                                     <FormControlLabel
-                                        value="KHORN"
+                                        value="khorn"
                                         control={<Radio color="default"/>}
                                         label="Mutacje Khorna"
                                     />
                                     <FormControlLabel
-                                        value="NURGL"
+                                        value="nurgl"
                                         control={<Radio color="default"
                                         />}
                                         label="Mutacje Nurgla"
                                     />
                                     <FormControlLabel
-                                        value="SLAANESH"
+                                        value="slaanesh"
                                         control={<Radio color="default"
                                         />}
                                         label="Mutacje Slaanesha"
                                     />
                                     <FormControlLabel
-                                        value="TZEENTCH"
+                                        value="treentch"
                                         control={<Radio color="default"
                                         />}
                                         label="Mutacje Tzeentcha"
@@ -354,8 +205,6 @@ class Mutations extends React.Component {
                                     <SearchIcon/>
                                 </div>
                                 <InputBase
-                                    onChange={this.filterList}
-                                    value={this.state.searchValue}
                                     placeholder="Wyszukaj.."
                                     classes={{
                                         root: classes.inputRoot,
@@ -371,105 +220,152 @@ class Mutations extends React.Component {
 
 
                     <Grid item xs={12}>
-                        <LazyLoad height={300}>
-                        {this.state.filteredMutationsAfterSearch.map((dynamicData, key) => (
+                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
+                            <ExpansionPanelSummary>
+                                <Grid container>
+                                    <Grid item xs={10}>
+                                        <Typography gutterBottom variant="h5" component="h5">001-005
+                                            Albinos
+                                        </Typography>
 
-                            <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}  key={key}>
-                                <ExpansionPanelSummary key={key}>
-                                    <Grid container>
-                                        <Grid item xs={10}>
-                                            <Typography gutterBottom variant="h5" component="h5">
-                                                {/*TODO POBIERAC DANE O RZUTACH*/}
-                                                001-005 {dynamicData.name}
-                                            </Typography>
-
-                                        </Grid>
-                                        <Grid item xs={2}>
-                                            <Typography gutterBottom variant="h5" component="h5" align={"right"}> <b>
-                                                {/*TODO POBIERAC PUNKTY STRACHU*/}
-                                                PS: 0
-                                            </b></Typography>
-                                        </Grid>
                                     </Grid>
+                                    <Grid item xs={2}>
+                                        <Typography gutterBottom variant="h5" component="h5" align={"right"} > <b>PS: 0</b></Typography>
+                                    </Grid>
+                                </Grid>
 
 
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails key={key}>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
 
-                                    <Grid container>
-                                        <Grid item xs={7}>
-                                            <Typography>
-                                                <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
-                                            </Typography>
-                                            <Typography>
-                                                <b>Opis:</b> {dynamicData.description}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={5}>
+                                <Grid container>
+                                    <Grid item xs={8}>
+                                        <Typography>
+                                            <b>Typ:</b> Pojedynczy.
+                                        </Typography>
+                                        <Typography>
+                                            <b>Opis:</b>                                             Tracisz 1k10 punktów Odporności i otrzymujesz modyfikator -5 do Testów
+                                            spostrzegawczości związanych ze wzrokiem, wykonywanych w jasnym Swietle.
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                    </Grid>
+                                </Grid>
 
-                                            {this.state.isTable ?
 
-                                                <Table key={key}>
-                                                <TableHead key={key}>
-                                                <TableRow classes={{root: classes.tableShrink}} key={key}>
-                                                {dynamicData.table.map((table, key) => {
+                            </ExpansionPanelDetails>
+                            <Divider/>
+                            <ExpansionPanelActions>
+                                <Button size="small" color="primary">
+                                    MUTUJ
+                                </Button>
+                            </ExpansionPanelActions>
+                        </ExpansionPanel>
 
-                                                    return (
-                                                        <CustomTableCell key={key}>{table.first}</CustomTableCell>
-                                                    )
-                                                })}
+
+                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}>
+                            <ExpansionPanelSummary>
+                                <Grid container>
+                                    <Grid item xs={10}>
+                                        <Typography gutterBottom variant="h5" component="h5">011-015
+                                            Bestia o tysiącu...
+                                        </Typography>
+
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Typography gutterBottom variant="h5" component="h5" align={"right"} > <b>PS: 3</b></Typography>
+                                    </Grid>
+                                </Grid>
+
+
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+
+                                <Grid container spacing={8}>
+                                    <Grid item xs={8}>
+                                        <Typography>
+                                            <b>Typ:</b> Wielokrotny.
+                                        </Typography>
+                                        <Typography>
+                                            <b>Opis:</b>
+                                            Twoje ciało wytwarza tysiąc rak, uszu, palców, oczu, sutków lub innych czesci ciała. Wyrastaja z kazdego micjsca ciała i nie sposób ich ukryć. Wola bogów Chaosu jest zlośliwa,
+                                            dlatego poza potwornym wygladem nie zapewniają żADnych korzyści, choć obniżają wartość Oglady o 2k18 punktów.
+                                        </Typography>
+                                        <Typography>
+                                            <b>Warianty:</b> Aby określić, jakie organy pokryly ciało mutanta, należy wykonać rzut 1k100 i sprawdzič wynik w tabeli.
+
+
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Table >
+                                            <TableHead >
+                                            <TableRow classes={{root: classes.tableShrink }}>
+                                            <CustomTableCell>Rzut</CustomTableCell>
+                                            <CustomTableCell>Narośl</CustomTableCell>
+                                            </TableRow>
+                                            </TableHead>
+                                            <TableBody classes={{root: classes.tableShrink }}>
+
+                                                <TableRow key={1} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>01-10</CustomTableCell>
+                                                    <CustomTableCell>Oczy</CustomTableCell>
                                                 </TableRow>
-                                                </TableHead>
-                                                <TableBody classes={{root: classes.tableShrink}} key={key+1}>
+                                                <TableRow key={2} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>11-20</CustomTableCell>
+                                                    <CustomTableCell>Nosy</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={3} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>21-30</CustomTableCell>
+                                                    <CustomTableCell>Uszy</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={4} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>31-40</CustomTableCell>
+                                                    <CustomTableCell>Wrzody</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={5} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>41-50</CustomTableCell>
+                                                    <CustomTableCell>Języki</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={6} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>51-60</CustomTableCell>
+                                                    <CustomTableCell>Sutki</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={7} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>61-70</CustomTableCell>
+                                                    <CustomTableCell>Nogi lub ręce</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={8} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>81-90</CustomTableCell>
+                                                    <CustomTableCell>Stopy lub dłonie</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={9} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>91-99</CustomTableCell>
+                                                    <CustomTableCell>Odbyt</CustomTableCell>
+                                                </TableRow>
+                                                <TableRow key={10} classes={{root: classes.tableShrink }}>
+                                                    <CustomTableCell>00</CustomTableCell>
+                                                    <CustomTableCell>Twarze</CustomTableCell>
+                                                </TableRow>
 
 
 
-
-                                                {dynamicData.table.map((table, key) => {
-                                                    return (
-                                                        <TableRow key={key}
-                                                                  classes={{root: classes.tableShrink}}>
-
-                                                            {dynamicData.table.map((table,secondKey) => {
-                                                                return (
-
-
-                                                                    <CustomTableCell key={secondKey}>
-                                                                        {table.first==="Roll"? <Typography noWrap>{table.second[key]}</Typography>: table.second[key]}
-
-                                                                        </CustomTableCell>
-
-
-
-                                                                )
-                                                            })}
-                                                        </TableRow>
-                                                    )
-                                                })}
-
-
-
-                                                </TableBody>
-                                                </Table>
-
-
-                                                :null}
-
-
-                                        </Grid>
+                                            </TableBody>
+                                        </Table>
                                     </Grid>
+                                </Grid>
 
 
-                                </ExpansionPanelDetails>
-                                <Divider/>
-                                <ExpansionPanelActions>
-                                    <Button size="small" color="primary">
-                                        MUTUJ
-                                    </Button>
-                                </ExpansionPanelActions>
-                            </ExpansionPanel>
-                        ))}
-                        </LazyLoad>
+                            </ExpansionPanelDetails>
+                            <Divider/>
+                            <ExpansionPanelActions>
+                                <Button size="small" color="primary">
+                                    MUTUJ
+                                </Button>
+                            </ExpansionPanelActions>
+                        </ExpansionPanel>
+
+
                     </Grid>
 
 

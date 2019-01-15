@@ -1,3 +1,35 @@
+body {
+    background: url('../img/main-bg.jpg')no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 0px;
+    margin: 0px;
+}
+
+.container {
+    margin-right: 300px;
+    padding: 22px;
+    height: 100%;
+}
+
+.logo-img {
+width:100%;
+}
+
+.side-nav {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    /* background-color: #111; */
+    overflow-x: hidden;
+    padding-top: 20px;
+    width: 300px;
+    height: 100%;
+}
+
 .paper-card {
     background-image: url('../img/paper-texture-alt.jpg');
     border-radius: 4px;
@@ -6,7 +38,7 @@
     box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
 }
 
-#login-card{
+#login-card {
     margin: 140px auto;
     max-width: 460px;
 }
@@ -17,14 +49,30 @@
 
 .paper-card .paper-card-body {
     padding: 42px;
-}
-
-.paper-card .paper-card-body form {
     display: flex;
     flex-direction: column;
 }
 
-.bg-mask {
+.paper-card .paper-card-title {
+    padding:8px;
+    background-color: #0a0a0aea;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
+}
+
+.paper-card .paper-card-title h2 {
+    margin: 0px;
+}
+
+.paper-card .paper-card-body-sm {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* .bg-mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -35,11 +83,4 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-}
-
-.bg-mask .logo-img {
-    height: 140px;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
+} */

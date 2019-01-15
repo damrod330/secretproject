@@ -23,10 +23,6 @@ const styles = theme => ( {
         flexGrow: 1,
         width: '100%',
         backgroundColor: "#545454",
-
-
-
-
         // backgroundColor:"#383838",
     },
     customTab:{
@@ -50,26 +46,16 @@ TabContainer.propTypes = {
 
 
 class BookOfKnowledge extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            value: 0,
-        };
-    }
+    state = {
+        value: 0,
+    };
 
-    // static getDerivedStateFromProps(props,state){
-    //     this.setState({ value:this.props.componentToRender });
-    //
-    // }
-    //
-    // handleChange = (event, value) => {
-    //     this.setState({ value:this.props.componentToRender });
-    // };
-
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
 
 
     render() {
-
         const {classes} = this.props;
         const { value } = this.state;
 
@@ -78,24 +64,24 @@ class BookOfKnowledge extends React.Component {
         return (
             <Paper className={"paper"}>
 
-                {/*<Tabs*/}
-                    {/*value={this.state.value}*/}
-                    {/*onChange={this.handleChange}*/}
-                    {/*variant={"fullWidth"}*/}
-                    {/*indicatorColor="secondary"*/}
-                    {/*textColor="secondary"*/}
-                    {/*className={classes.root}*/}
-                {/*>*/}
-                    {/*<Tab color={"secondary"} icon={<img src={ArmoryIcon} alt={"Armory"} className={"icons"}/>} />*/}
-                    {/*<Tab icon={<img src={BestiaryIcon} alt={"Bestiary"} className={"icons"}/>} />*/}
-                    {/*<Tab icon={<img src={SpellsIcon} alt={"Spells"} className={"icons"}/>} />*/}
-                    {/*<Tab icon={<img src={MutationsIcon} alt={"Mutations"} className={"icons"}/>} />*/}
-                {/*</Tabs>*/}
+                <Tabs
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    fullWidth
+                    indicatorColor="secondary"
+                    textColor="secondary"
+                    className={classes.root}
+                >
+                    <Tab color={"secondary"} icon={<img src={ArmoryIcon} alt={"Armory"} className={"icons"}/>} />
+                    <Tab icon={<img src={BestiaryIcon} alt={"Bestiary"} className={"icons"}/>} />
+                    <Tab icon={<img src={SpellsIcon} alt={"Spells"} className={"icons"}/>} />
+                    <Tab icon={<img src={MutationsIcon} alt={"Mutations"} className={"icons"}/>} />
+                </Tabs>
 
-                {this.props.componentToRender === 0 && <TabContainer><Armory/></TabContainer>}
-                {this.props.componentToRender === 1 && <TabContainer><Bestiary/></TabContainer>}
-                {this.props.componentToRender === 2 && <TabContainer><Spells/></TabContainer>}
-                {this.props.componentToRender === 3 && <TabContainer> <Mutations/> </TabContainer>}
+                {value === 0 && <TabContainer><Armory/></TabContainer>}
+                {value === 1 && <TabContainer><Bestiary/></TabContainer>}
+                {value === 2 && <TabContainer><Spells/></TabContainer>}
+                {value === 3 && <TabContainer> <Mutations/> </TabContainer>}
 
 
 
