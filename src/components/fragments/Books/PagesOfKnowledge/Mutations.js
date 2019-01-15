@@ -181,13 +181,7 @@ class Mutations extends React.Component {
             this.setState({
                 mutations: findresponse,
             });
-            if (this.state.mutations.table === '' || this.state.mutations.table === null) {
-                this.setState({isTable: false});
 
-            } else {
-                this.setState({isTable: true});
-                this.fromPairsToRows(this.state.mutations);
-            }
         }).then(() => {
             this.filterMutations();
 
@@ -202,38 +196,16 @@ class Mutations extends React.Component {
         })
     }
 
-    fromPairsToRows(table) {
-        let rows = [];
-        let pairRows=[];
-        table.map((pairs) => {
-
-
-                for (let i = 0; i < this.state.mutations[0].table[0].second.length; i++) {
-                    pairs.table.map((pair) => {
-
-                        rows.push(pair.second[i])
-                    })
-                    pairRows.push(rows);
-
-
-                }
-            }
-        );
-        console.log(pairRows);
-        this.setState({
-            pairsParsedForTable: pairRows
-        })
-    }
 
     filterMutations() {
         this.state.mutations.map((mutation) => {
-            switch (mutation.type) {
+            switch (mutation.godType) {
                 case "KHORNE": {
 
                     return this.state.khorn.push(mutation);
 
                 }
-                case "NURGL": {
+                case "NURGLE": {
                     return this.state.nurgl.push(mutation);
 
                 }
@@ -284,7 +256,7 @@ class Mutations extends React.Component {
                 });
                 break;
             }
-            case "NURGL": {
+            case "NURGLE": {
                 this.setState({
                     filteredMutations: this.state.nurgl,
                     filteredMutationsAfterSearch: this.state.nurgl
@@ -312,15 +284,69 @@ class Mutations extends React.Component {
                 });
                 break;
             }
-            default : {
-                this.setState({
-                    filteredMutations: this.state.mutations,
-                    filteredMutationsAfterSearch: this.state.mutations
-                });
-            }
+
         }
 
 
+    }
+
+
+
+    generateTable(dynamicData,key,classes){
+
+            return(<Table key={key}>
+                <TableHead key={key+"head"}>
+                    <TableRow classes={{root: classes.tableShrink}} key={key}>
+                        {dynamicData.table.map((table, keyHeader) => {
+
+                            return (
+                                <CustomTableCell
+                                    key={keyHeader}>{table.first}</CustomTableCell>
+                            )
+                        })}
+                    </TableRow>
+                </TableHead>
+                {this.generateBodyTable(dynamicData,classes,key)}
+
+            </Table>)
+
+    }
+    generateBodyTable(Data,classes,key){
+        let mutationTable=this.fromPairsToRows(Data);
+        return(<TableBody classes={{root: classes.tableShrink}} key={key}>
+
+
+            {mutationTable.map((row,rowKey)=>(
+
+                <TableRow key={rowKey} classes={{root: classes.tableShrink}}>
+                    {row.map((item,itemKey)=>
+                        <CustomTableCell key={itemKey}>{item}</CustomTableCell>
+
+                    )}
+
+                </TableRow>
+            ))}
+
+
+
+        </TableBody>)
+    }
+
+    fromPairsToRows(oldTable) {
+        let rows = [];
+        let pairRows=[];
+
+        for (let i = 0; i < oldTable.table[0].second.length; i++) {
+            oldTable.table.map((pair) => {
+
+                rows.push(pair.second[i])
+            });
+            pairRows.push(rows);
+            rows=[];
+
+        }
+        let newTable=pairRows;
+        return newTable;
     }
 
     render() {
@@ -353,7 +379,7 @@ class Mutations extends React.Component {
                                         label="Mutacje Khorna"
                                     />
                                     <FormControlLabel
-                                        value="NURGL"
+                                        value="NURGLE"
                                         control={<Radio color="default"
                                         />}
                                         label="Mutacje Nurgla"
@@ -403,6 +429,7 @@ class Mutations extends React.Component {
                         <LazyLoad height={300}>
                             {this.state.filteredMutationsAfterSearch.map((dynamicData, key) => (
 
+
                                 <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}
                                                 key={key}>
                                     <ExpansionPanelSummary key={key}>
@@ -421,7 +448,6 @@ class Mutations extends React.Component {
                                             </Grid>
                                         </Grid>
 
-
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails key={key}>
 
@@ -435,41 +461,12 @@ class Mutations extends React.Component {
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={5}>
+                                                {
 
-                                                {this.state.isTable ?
-
-                                                    <Table key={key}>
-                                                        <TableHead key={key}>
-                                                            <TableRow classes={{root: classes.tableShrink}} key={key}>
-                                                                {dynamicData.table.map((table, key) => {
-
-                                                                    return (
-                                                                        <CustomTableCell
-                                                                            key={key}>{table.first}</CustomTableCell>
-                                                                    )
-                                                                })}
-                                                            </TableRow>
-                                                        </TableHead>
-                                                        <TableBody classes={{root: classes.tableShrink}} key={key + 1}>
-
-
-                                                            <TableRow key={key}
-                                                                      classes={{root: classes.tableShrink}}>
-
-
-
-                                                                {console.log(this.state.pairsParsedForTable)}
-
-
-                                                            </TableRow>
-
-
-                                                        </TableBody>
-                                                    </Table>
-
-
-                                                    : null}
-
+                                                    dynamicData.table === '' || dynamicData.table !== null? this.generateTable(dynamicData,key,classes)
+                                                        :
+                                                        null
+                                                }
 
                                             </Grid>
                                         </Grid>
