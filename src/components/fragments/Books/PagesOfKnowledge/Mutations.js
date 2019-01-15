@@ -182,6 +182,7 @@ class Mutations extends React.Component {
 
             } else {
                 this.setState({isTable: true})
+                this.fromPairsToRows(this.state.mutations);
             }
         }).then(()=>{
             this.filterMutations();
@@ -196,11 +197,53 @@ class Mutations extends React.Component {
 
         })
     }
+    fromPairsToRows(table){
+        let rows=[];
+        let temp=0;
+        table.map((pairs)=> {
+
+
+            for(let i=0;i<20;i++){
+                pairs.table.map((pair) => {
+
+
+                    console.log(pair.second[i])
+
+                    // pair.second[0].map((value)=>{
+                    //     console.log(value)
+                    //
+                    // })
+
+
+                    // for (let j = 0; j < pair.second.length; j++) {
+                    //
+                    //     for (let i = 0; i < pair.second.length; i++) {
+                    //         rows.push(pair.second[j]);
+                    //         continue;
+                    //
+                    //     }
+                    //
+                    //     for (let i = 0; i < pair.second.length; i++) {
+                    //         rows.push();
+                    //
+                    //
+                    //     }
+                    // }
+
+
+                })}
+
+
+            }
+        );
+        console.log(rows);
+
+    }
 
     filterMutations() {
         this.state.mutations.map((mutation) => {
             switch (mutation.type) {
-                case "KHORN": {
+                case "KHORNE": {
 
                     return this.state.khorn.push(mutation);
 
@@ -247,7 +290,7 @@ class Mutations extends React.Component {
 
     showMutations(String) {
         switch (String) {
-            case "KHORN": {
+            case "KHORNE": {
                 this.setState({
                     filteredMutations: this.state.khorn,
                     filteredMutationsAfterSearch: this.state.khorn
@@ -319,7 +362,7 @@ class Mutations extends React.Component {
                                         label="Mutacje"
                                     />
                                     <FormControlLabel
-                                        value="KHORN"
+                                        value="KHORNE"
                                         control={<Radio color="default"/>}
                                         label="Mutacje Khorna"
                                     />
@@ -379,15 +422,13 @@ class Mutations extends React.Component {
                                     <Grid container>
                                         <Grid item xs={10}>
                                             <Typography gutterBottom variant="h5" component="h5">
-                                                {/*TODO POBIERAC DANE O RZUTACH*/}
-                                                001-005 {dynamicData.name}
+                                                {dynamicData.roll} {dynamicData.name}
                                             </Typography>
 
                                         </Grid>
                                         <Grid item xs={2}>
                                             <Typography gutterBottom variant="h5" component="h5" align={"right"}> <b>
-                                                {/*TODO POBIERAC PUNKTY STRACHU*/}
-                                                PS: 0
+                                                PS: {dynamicData.ps}
                                             </b></Typography>
                                         </Grid>
                                     </Grid>

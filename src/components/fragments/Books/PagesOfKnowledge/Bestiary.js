@@ -276,6 +276,7 @@ class Bestiary extends React.Component {
 
 
 
+
     render() {
 
         const {classes} = this.props;
@@ -410,7 +411,10 @@ class Bestiary extends React.Component {
                                             <Grid container spacing={8} alignItems={"flex-start"}
                                                   justify={"flex-start"}>
                                                 <Grid item xs={2}>
-                                                    <img src={"/img/Books/Bestiary/mino.png"} width={"100%"}
+                                                    <img
+                                                        // src={"/img/Books/Bestiary/mino.png"}
+                                                        //  src={require("./../../../../img/Beasts/" + `${dynamicData.imageName}` + ".png")}
+                                                         width={"100%"}
                                                          height={"100%"}
                                                          alt={"img"} key={key}/>
                                                 </Grid>
@@ -429,26 +433,21 @@ class Bestiary extends React.Component {
 
                                                             <TableRow key={-1}>
 
-                                                                <CustomTableCell>WW</CustomTableCell>
-                                                                <CustomTableCell>US</CustomTableCell>
-                                                                <CustomTableCell>K</CustomTableCell>
-                                                                <CustomTableCell>Odp</CustomTableCell>
-                                                                <CustomTableCell>Zr</CustomTableCell>
-                                                                <CustomTableCell>Int</CustomTableCell>
-                                                                <CustomTableCell>SW</CustomTableCell>
-                                                                <CustomTableCell>Odg</CustomTableCell>
+
+
+                                                                {dynamicData.traits.slice(0,8).map((trait,traitKey)=>(
+                                                                <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
+                                                                ))}
+
 
                                                             </TableRow>
-                                                            <TableRow key={key}>
 
-                                                                <CustomTableCell>25</CustomTableCell>
-                                                                <CustomTableCell>30</CustomTableCell>
-                                                                <CustomTableCell>30</CustomTableCell>
-                                                                <CustomTableCell>30</CustomTableCell>
-                                                                <CustomTableCell>25</CustomTableCell>
-                                                                <CustomTableCell>30</CustomTableCell>
-                                                                <CustomTableCell>30</CustomTableCell>
-                                                                <CustomTableCell>15</CustomTableCell>
+                                                            <TableRow key={key}>
+                                                                {dynamicData.traits.slice(0,8).map((trait,traitKey)=>(
+                                                                    <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
+                                                                ))}
+
+
 
                                                             </TableRow>
 
@@ -465,25 +464,17 @@ class Bestiary extends React.Component {
                                                         <TableBody>
 
                                                             <TableRow key={-1}>
-                                                                <CustomTableCell>A</CustomTableCell>
-                                                                <CustomTableCell>Żyw</CustomTableCell>
-                                                                <CustomTableCell>S</CustomTableCell>
-                                                                <CustomTableCell>Wt</CustomTableCell>
-                                                                <CustomTableCell>Sz</CustomTableCell>
-                                                                <CustomTableCell>Mag</CustomTableCell>
-                                                                <CustomTableCell>PO</CustomTableCell>
-                                                                <CustomTableCell>PP</CustomTableCell>
+                                                                {dynamicData.traits.slice(8,16).map((trait,traitKey)=>(
+                                                                    <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
+                                                                ))}
+
 
                                                             </TableRow>
                                                             <TableRow key={key + 1}>
-                                                                <CustomTableCell>1</CustomTableCell>
-                                                                <CustomTableCell>8</CustomTableCell>
-                                                                <CustomTableCell>3</CustomTableCell>
-                                                                <CustomTableCell>3</CustomTableCell>
-                                                                <CustomTableCell>4</CustomTableCell>
-                                                                <CustomTableCell>0</CustomTableCell>
-                                                                <CustomTableCell>0</CustomTableCell>
-                                                                <CustomTableCell>0</CustomTableCell>
+                                                                {dynamicData.traits.slice(8,16).map((trait,traitKey)=>(
+                                                                    <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
+                                                                ))}
+
 
                                                             </TableRow>
 
