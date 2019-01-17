@@ -160,12 +160,7 @@ class Spells extends React.Component {
                 spells: findresponse,
                 filteredSpells:findresponse
             });
-            if (this.state.spells.table ===''||this.state.spells.table ===null){
-                this.setState({isTable:false});
 
-            }else {
-                this.setState({isTable:true})
-            }
         })
     }
 
@@ -307,8 +302,8 @@ class Spells extends React.Component {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={5}>
-                                        {this.state.isTable ? dynamicData.table.map((table,key)=>{
-                                            return(
+                                        { dynamicData.table === '' || dynamicData.table !== null?
+
 
                                                 <Table  key={key}>
                                                     <TableHead key={key}>
@@ -318,17 +313,19 @@ class Spells extends React.Component {
                                                         </TableRow>
                                                     </TableHead>
                                                     <TableBody classes={{root: classes.tableShrink }}  key={key+1}>
+                                                        {dynamicData.table.map((table,RowKey)=>(
+                                                        <TableRow key={RowKey} classes={{root: classes.tableShrink }}>
 
-                                                        <TableRow key={key+1} classes={{root: classes.tableShrink }}>
                                                             <CustomTableCell><Typography noWrap={true}>{table.first}</Typography></CustomTableCell>
                                                             <CustomTableCell>{table.second}</CustomTableCell>
-                                                        </TableRow>
 
+                                                        </TableRow>
+                                                        ))}
                                                     </TableBody>
                                                 </Table>
 
-                                            )
-                                        })
+
+
 
                                          : null}
                                     </Grid>

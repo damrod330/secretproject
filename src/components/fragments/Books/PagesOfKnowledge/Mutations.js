@@ -28,6 +28,11 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Button from "@material-ui/core/Button";
 import LazyLoad from 'react-lazyload';
 import {url} from '../../../../Constants'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 const styles = theme => ({
@@ -36,6 +41,53 @@ const styles = theme => ({
         //   fontFamily:"Garamond",
         backgroundImage: `url(${frontPaper})`,
         paddingLeft: 0
+    },
+    fab: {
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 20,
+        left: 'auto',
+        position: 'fixed',
+    },
+    modal: {
+        position: 'absolute',
+        width: 600,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+        outline: 'none',
+        top: "15%",
+        left: "30%",
+    },
+    modalForTable: {
+        position: 'absolute',
+        width: 1200,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+        outline: 'none',
+        top: "15%",
+        left: "15%",
+        height: 600,
+        overflowY: "auto"
+
+    },
+
+
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    },
+    textFieldHead: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+        backgroundColor: "rgba(0,0,0,0.3)",
+    },
+    menu: {
+        width: 200,
     },
 
     tableHeader: {
@@ -148,6 +200,183 @@ class Mutations extends React.Component {
         filteredMutationsAfterSearch: [],
         searchValue: "",
         pairsParsedForTable: [],
+        openAddModal: false,
+        numberOfColumns: 0,
+        numberOfRows: 0,
+        openAddModalTable: false,
+        allowTable: false,
+        addMutation: {
+            name: "",
+            type: "",
+            description: "",
+            godType: "",
+            ps: 0,
+            roll: 0,
+            comment: "",
+            variants: "",
+            table: [],
+            id: "",
+
+        },
+        tableToPairs: [],
+        tableHeader: [],
+        tableBody: [],
+        tableSubBody: [],
+    };
+
+    handleAllowTable = name => event => {
+        this.setState({[name]: event.target.checked});
+    };
+    handleOpenModalTable = () => {
+        this.setState({openAddModalTable: true})
+
+    };
+    // handleCloseModalTable = () => {
+    //     this.setState({openAddModalTable: false})
+    //
+    // };
+    handleModalAdd = (name) => event => {
+
+        this.setState({
+                addMutation:{
+                    ...this.state.addMutation,
+                    [name]: event.target.value
+                }
+
+
+
+        })
+    };
+    handleModalAddTable = name => event => {
+        this.setState({
+            [name]: event.target.value
+        })
+    };
+    openAddModal = () => {
+        this.setState({openAddModal: true})
+
+    };
+    // closeAddModal = () => {
+    //     this.setState({openAddModal: false})
+    // };
+    handlePushToTableHeader = i => event => {
+        let table = this.state.tableHeader.slice();
+        table[i] = event.target.value;
+        this.setState({
+            tableHeader: table
+        });
+    };
+    handlePushToTableBody = (j, i,D1Array,D2Array) => event => {
+        console.log(j, i);
+
+        D1Array = this.state.tableBody.slice();
+        D2Array = this.state.tableSubBody.slice();
+        this.setState({
+            tableBody: D1Array,
+            tableSubBody: D2Array
+        });
+        D2Array[i] = event.target.value;
+        D1Array[j] = D2Array;
+
+
+        // console.log(D1Array);
+
+    };
+    fromTableToPairs = () => {
+        let table = {
+            first:"",
+            second:""
+
+        };
+
+        for (let i=0;i<this.state.numberOfColumns;i++){
+            table.first=(this.state.tableHeader[i]);
+            table.second=(this.state.tableBody[i]);
+
+            this.state.addMutation.table.push(table);
+            table={
+                first:"",
+                second:""};
+        }
+
+
+        this.setState({
+            openAddModalTable: false
+        });
+    };
+
+    fillAddMutations=()=>{
+
+
+        this.setState({
+            openAddModal: false
+        });
+
+
+
+        fetch(url + "/mutations", {
+            method: 'POST',
+            body: JSON.stringify({
+                name: this.state.addMutation.name,
+                type: this.state.addMutation.type,
+                description: this.state.addMutation.description,
+                godType: this.state.addMutation.godType,
+                ps: this.state.addMutation.ps,
+                roll: this.state.addMutation.roll,
+                comment: this.state.addMutation.comment,
+                variants: this.state.addMutation.variants,
+                table: this.state.addMutation.table,
+            }),
+            headers: header,
+            credentials: 'same-origin'
+        }).then((Response) => Response.json()).then((findresponse) => {
+            this.setState({
+
+            })
+        });
+    };
+
+
+    generateTableForNewMutation = (classes) => {
+        let nbrOfRows = this.state.numberOfRows;
+        let nbrOfColumns = this.state.numberOfColumns;
+        let table = [];
+        let temp = [];
+        let key = "";
+        let D1Array = new Array(nbrOfColumns);
+        let D2Array = new Array(nbrOfRows);
+
+
+        for (let i = 0; i < nbrOfColumns; i++) {
+            temp.push(
+                <TextField key={"nagłówek" + i}
+                           className={classes.textFieldHead}
+                    // value={this.state.tableHeader[i]}
+                           onChange={this.handlePushToTableHeader(i)}
+                           margin="normal"
+                           error
+                           label={"Nagłówek: " + i}
+                />);
+            for (let j = 0; j < nbrOfRows; j++) {
+
+
+                key = i.toString();
+                key += j.toString();
+                temp.push(<TextField key={key}
+                                     className={classes.textField}
+                    // value={this.state.tableBody}
+                                     onChange={this.handlePushToTableBody(i, j,D1Array,D2Array)}
+                                     margin="normal"
+                                     label={"Rząd: " + j + " Kolumna: " + i}
+                />)
+
+
+            }
+            table.push(temp);
+            temp = [];
+        }
+
+        return table;
 
     };
 
@@ -157,9 +386,29 @@ class Mutations extends React.Component {
                 return "Pojedyńcza";
             case "MULTIPLE":
                 return "Wielokrotna";
-            default:
-                return "sie zjebalo";
 
+        }
+    }
+
+    changeGodTypeENUM(String) {
+        switch (String) {
+            case "KHORNE": {
+
+                return "Khorn"
+
+            }
+            case "NURGLE": {
+                return "Nurgl"
+
+            }
+            case "SLAANESH": {
+                return "Slaanesh";
+
+            }
+            case "TZEENTCH": {
+                return "Izeentch";
+
+            }
         }
     }
 
@@ -291,42 +540,40 @@ class Mutations extends React.Component {
     }
 
 
+    generateTable(dynamicData, key, classes) {
 
-    generateTable(dynamicData,key,classes){
+        return (<Table key={key}>
+            <TableHead key={key + "head"}>
+                <TableRow classes={{root: classes.tableShrink}} key={key}>
+                    {dynamicData.table.map((table, keyHeader) => {
 
-            return(<Table key={key}>
-                <TableHead key={key+"head"}>
-                    <TableRow classes={{root: classes.tableShrink}} key={key}>
-                        {dynamicData.table.map((table, keyHeader) => {
+                        return (
+                            <CustomTableCell
+                                key={keyHeader}>{table.first}</CustomTableCell>
+                        )
+                    })}
+                </TableRow>
+            </TableHead>
+            {this.generateBodyTable(dynamicData, classes, key)}
 
-                            return (
-                                <CustomTableCell
-                                    key={keyHeader}>{table.first}</CustomTableCell>
-                            )
-                        })}
-                    </TableRow>
-                </TableHead>
-                {this.generateBodyTable(dynamicData,classes,key)}
-
-            </Table>)
+        </Table>)
 
     }
-    generateBodyTable(Data,classes,key){
-        let mutationTable=this.fromPairsToRows(Data);
-        return(<TableBody classes={{root: classes.tableShrink}} key={key}>
+
+    generateBodyTable(Data, classes, key) {
+        let mutationTable = this.fromPairsToRows(Data);
+        return (<TableBody classes={{root: classes.tableShrink}} key={key}>
 
 
-            {mutationTable.map((row,rowKey)=>(
+            {mutationTable.map((row, rowKey) => (
 
                 <TableRow key={rowKey} classes={{root: classes.tableShrink}}>
-                    {row.map((item,itemKey)=>
+                    {row.map((item, itemKey) =>
                         <CustomTableCell key={itemKey}>{item}</CustomTableCell>
-
                     )}
 
                 </TableRow>
             ))}
-
 
 
         </TableBody>)
@@ -334,7 +581,7 @@ class Mutations extends React.Component {
 
     fromPairsToRows(oldTable) {
         let rows = [];
-        let pairRows=[];
+        let pairRows = [];
 
         for (let i = 0; i < oldTable.table[0].second.length; i++) {
             oldTable.table.map((pair) => {
@@ -342,14 +589,16 @@ class Mutations extends React.Component {
                 rows.push(pair.second[i])
             });
             pairRows.push(rows);
-            rows=[];
+            rows = [];
 
         }
-        let newTable=pairRows;
+        let newTable = pairRows;
         return newTable;
     }
 
     render() {
+        let mutationType = ["","SINGLE", "MULTIPLE"];
+        let godType = ["","NURGLE", "KHORNE", "TZEENTCH", "SLAANESH"];
         const {classes} = this.props;
         const {width} = this.props;
 
@@ -463,7 +712,7 @@ class Mutations extends React.Component {
                                             <Grid item xs={5}>
                                                 {
 
-                                                    dynamicData.table === '' || dynamicData.table !== null? this.generateTable(dynamicData,key,classes)
+                                                    dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
                                                         :
                                                         null
                                                 }
@@ -486,7 +735,186 @@ class Mutations extends React.Component {
 
 
                 </Grid>
+
+                <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.openAddModal}>
+                    <AddIcon/>
+                </Fab>
+                <Modal
+                    disableBackdropClick
+                    open={this.state.openAddModal}
+                    // onClose={this.closeAddModal}
+                >
+                    <div className={classes.modal}>
+                        <Typography variant="h6" id="modal-title">
+                            Dodaj Mutację
+                        </Typography>
+                        <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
+                            <Grid item xs={4}>
+
+                                <TextField
+                                    label="Nazwa Mutacji"
+                                    className={classes.textField}
+                                    // value={this.state.addMutation.name}
+                                    onChange={this.handleModalAdd('name')}
+                                    margin="normal"
+                                />
+
+                                <TextField
+                                    label="Punkty Strachu"
+                                    // value={this.state.addMutation.ps}
+                                    onChange={this.handleModalAdd('ps')}
+                                    type="number"
+                                    className={classes.textField}
+                                    margin="normal"
+                                />
+                                <TextField
+                                    label="Rzut Kością By Otrzymać"
+                                    className={classes.textField}
+                                    // value={this.state.addMutation.roll}
+                                    onChange={this.handleModalAdd('roll')}
+                                    margin="normal"
+                                />
+
+
+                                <TextField
+                                    label="Dodatkowy Komentarz"
+                                    className={classes.textField}
+                                    // value={this.state.addMutation.comment}
+                                    onChange={this.handleModalAdd('comment')}
+                                    margin="normal"
+                                /><TextField
+                                select
+                                label="Typ"
+                                className={classes.textField}
+                                // value={this.state.addMutation.type}
+                                onChange={this.handleModalAdd('type')}
+                                SelectProps={{
+                                    native: true,
+                                    MenuProps: {
+                                        className: classes.menu,
+                                    },
+                                }}
+                                margin="normal"
+                            >
+                                {mutationType.map(option => (
+                                    <option key={option} value={option}>
+                                        {this.changeENUM(option)}
+                                    </option>
+                                ))}
+                            </TextField>
+                                <TextField
+                                    select
+                                    label="Bóstwo"
+                                    className={classes.textField}
+                                    // value={this.state.addMutation.godType}
+                                    onChange={this.handleModalAdd('godType')}
+                                    SelectProps={{
+                                        native: true,
+                                        MenuProps: {
+                                            className: classes.menu,
+                                        },
+                                    }}
+                                    margin="normal"
+                                >
+                                    {godType.map(option => (
+                                        <option key={option} value={option}>
+                                            {this.changeGodTypeENUM(option)}
+                                        </option>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    label="Opis"
+                                    multiline
+                                    rows="7"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    // value={this.state.addMutation.description}
+                                    onChange={this.handleModalAdd('description')}
+                                />
+                                <TextField
+                                    label="Warianty"
+                                    multiline
+                                    rows={4}
+                                    className={classes.textField}
+                                    // value={this.state.addMutation.variants}
+                                    onChange={this.handleModalAdd('variants')}
+                                    margin="normal"
+                                />
+
+
+                            </Grid>
+                            <Grid item xs={4}>
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        checked={this.state.allowTable}
+                                        onChange={this.handleAllowTable('allowTable')}
+                                        value="Tabela istnieje?"
+                                    />
+                                }
+                                                  label={"Istnieje Tabela?"}/>
+                                <TextField
+                                    disabled={!this.state.allowTable}
+                                    label="Liczba Nagłówków"
+                                    className={classes.textField}
+                                    value={this.state.numberOfColumns}
+                                    onChange={this.handleModalAddTable('numberOfColumns')}
+                                    margin="normal"
+                                />
+                                <TextField
+                                    disabled={!this.state.allowTable}
+
+                                    label="Liczba Rzędów"
+                                    className={classes.textField}
+                                    value={this.state.numberOfRows}
+                                    onChange={this.handleModalAddTable('numberOfRows')}
+                                    margin="normal"
+                                />
+                                <Button size="large" color="primary" onClick={this.handleOpenModalTable}
+                                        disabled={!this.state.allowTable}>
+                                    ¿Tabela?
+                                </Button>
+                            </Grid>
+
+                        </Grid>
+                        <Button size="large" color="primary" onClick={this.fillAddMutations}>
+                            Dodaj
+                        </Button>
+                    </div>
+
+                </Modal>
+
+
+                <Modal
+
+                    open={this.state.openAddModalTable}
+                    // onClose={this.handleCloseModalTable}
+                    disableBackdropClick
+                >
+                    <div className={classes.modalForTable}>
+                        <Typography variant="h6" id="modal-title">
+                            Tabela Efektów
+                        </Typography>
+                        <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
+
+                            {this.generateTableForNewMutation(classes).map((item, key) => (
+                                <Grid item xs={3} key={key}>
+                                    {item}
+                                </Grid>
+                            ))}
+
+
+                        </Grid>
+                        <Button size="large" color="primary" onClick={this.fromTableToPairs}>
+                            Dodaj
+                        </Button>
+                    </div>
+                </Modal>
+
+
             </Paper>
+
 
         )
     }
