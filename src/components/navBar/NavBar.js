@@ -27,6 +27,14 @@ import SpellsIcon from './../../img/icon/magic2.png';
 import MutationsIcon from './../../img/icon/mutations.png';
 
 
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import {LOGOUT_SUCCESS} from '../../store/const/messages';
+
+import * as actions from '../../store/actions/index';
+
+
 import Button from "@material-ui/core/Button";
 
 // import Button from "@material-ui/core/es/Button/Button";
@@ -154,6 +162,7 @@ class NavBar extends React.Component {
         isSm: false,
         nestItemOpen: true,
         openMap:false,
+        logoutClicked: false
     };
     handleClick = () => {
         this.setState(state => ({nestItemOpen: !state.nestItemOpen}));
@@ -171,7 +180,16 @@ class NavBar extends React.Component {
         });
     };
 
+    handleLogout = () => {
+        this.props.onLogout(LOGOUT_SUCCESS);
+        this.setState({logoutClicked: true});
+    }
+
     render() {
+        let redirect = null;
+        if(this.state.logoutClicked){
+            redirect = <Redirect to="/login"/>
+        }
         const {classes} = this.props;
         const {width} = this.props;
         let {open} = this.state;
@@ -193,7 +211,7 @@ class NavBar extends React.Component {
 
 
             <div className={classes.root}>
-
+            {redirect}
 
                 <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
                     {({TransitionProps, placement}) => (
@@ -250,7 +268,7 @@ class NavBar extends React.Component {
                                     </List>
 
 
-                                    <MenuItem className={classes.menuItem}>Logout</MenuItem>
+                                    <MenuItem onClick={this.handleLogout} className={classes.menuItem}>Logout</MenuItem>
                                     <MenuItem className={classes.menuItem}>Mapa</MenuItem>
 
 
@@ -351,9 +369,15 @@ class NavBar extends React.Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogout: (message) => dispatch(actions.logout(message))
+    };
+};
+
 NavBar.propTypes = {
     classes: PropTypes.object.isRequired,
     width: PropTypes.string.isRequired,
 };
 
-export default compose(withStyles(styles), withWidth())(NavBar);
+export default connect(null , mapDispatchToProps)(compose(withStyles(styles), withWidth()) (NavBar));

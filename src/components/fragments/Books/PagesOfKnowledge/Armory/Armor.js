@@ -298,11 +298,11 @@ class Armor extends React.Component {
                                         <TableRow  key={key} classes={{root: classes.tableShrink}}>
                                             <CustomTableCell><Typography
                                                 noWrap={true}>{dynamicData.name}</Typography></CustomTableCell>
-                                            <CustomTableCell>
+                                            {/* <CustomTableCell>
                                                 {dynamicData.price.gold!==0?<Typography>{dynamicData.price.gold}zk</Typography>:null}
                                                 {dynamicData.price.silver!==0?<Typography>{dynamicData.price.silver}s</Typography>:null}
                                                 {dynamicData.price.bronze!==0?<Typography>{dynamicData.price.bronze}p</Typography>:null}
-                                            </CustomTableCell>
+                                            </CustomTableCell> */}
                                             <CustomTableCell>{dynamicData.weight}</CustomTableCell>
                                             <CustomTableCell>
 

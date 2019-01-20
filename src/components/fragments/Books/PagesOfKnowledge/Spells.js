@@ -29,6 +29,7 @@ import Button from "@material-ui/core/Button";
 import {url} from '../../../../Constants'
 import LazyLoad from 'react-lazyload';
 
+import axios from '../../../../axios';
 
 
 
@@ -151,16 +152,13 @@ class Spells extends React.Component {
 
 
     componentDidMount() {
-        fetch(url + "/spells", {
-            method: 'GET',
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
+        axios.get('/spells')
+        .then(res => {
+            console.log(res);
             this.setState({
-                spells: findresponse,
-                filteredSpells:findresponse
+                spells: res.data,
+                filteredSpells: res.data
             });
-
         })
     }
 

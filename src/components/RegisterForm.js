@@ -3,18 +3,26 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FormControlLabel } from '@material-ui/core';
+import {Redirect} from 'react-router-dom';
 
 class RegisterForm extends Component {
 
     constructor() {
         super();
         this.state = {
-            formData: {}
+            formData: {
+                username: "",
+                password: "",
+                rePassword: ""
+            },
+            registerSuccess: false,
+            registerError: null
         }
     }
 
-    handleOnSubmit(e) {
+    handleOnSubmit = (e) =>  {
         e.preventDefault();
+
     }
 
     handleOnLoginClicked(e) {
@@ -22,9 +30,13 @@ class RegisterForm extends Component {
         this.props.onLoginClicked(true);
     }
 
+
+
     render() {
+        const redirect = this.state.registerSuccess ? <Redirect to="/login"/>: null;
         return (
-            <form onSubmit={this.handleOnSubmit.bind(this)}>
+            <form onSubmit={this.handleOnSubmit}>
+                {redirect}
                 <TextField
                     className="white-text"
                     label="Nazwa użytkownika"
