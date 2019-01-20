@@ -15,8 +15,6 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
-import InputBase from "@material-ui/core/es/InputBase";
-import SearchIcon from '@material-ui/icons/Search';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import TableHead from '@material-ui/core/TableHead';
 import {url} from '../../../../../Constants'
@@ -25,7 +23,6 @@ import LazyLoad from 'react-lazyload';
 
 const styles = theme => ({
     paper: {
-        // boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0), 0px 2px 1px -1px rgba(0, 0, 0, 0)",
         //   fontFamily:"Garamond",
         backgroundImage: `url(${frontPaper})`,
         paddingLeft: 0
@@ -134,26 +131,20 @@ class Melee extends React.Component {
         fireArmTable:[],
         balistaTable:[],
         ammoTable:[],
+        typeOfWeapon:[],
 
     };
-
-    handleChange = event => {
-        this.setState({value: event.target.value});
-    };
-
 
     generatePanels = (weaponsTable, props, masterKey) => {
-        let name = weaponsTable[0];
+        let typeOfWeapon = this.state.typeOfWeapon;
         const {classes} = props;
-
-        weaponsTable.splice(0, 1);
 
 
         return (
 
             <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}} key={masterKey}>
                 <ExpansionPanelSummary key={masterKey}>
-                    <Typography gutterBottom variant="h5" component="h5">Broń Biała</Typography>
+                    <Typography gutterBottom variant="h5" component="h5">{typeOfWeapon[masterKey]}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
 
@@ -220,37 +211,53 @@ class Melee extends React.Component {
     addToAccordingTable(String, weaponData) {
         switch (String) {
             case "MELEE": {
-                this.state.meleeTable.push("Broń Biała");
+                if (!this.state.typeOfWeapon.includes("Broń Biała")) {
+                    this.state.typeOfWeapon.push("Broń Biała");
+                    this.state.segregatedWeapons.push(this.state.meleeTable);
+
+                }
                 this.state.meleeTable.push(weaponData);
-                this.state.segregatedWeapons.push(this.state.meleeTable);
 
                 break;
             }
             case "RANGED": {
-                this.state.rangedTable.push("Broń Dystansowa");
+                if (!this.state.typeOfWeapon.includes("Broń Dystansowa")) {
+                    this.state.segregatedWeapons.push(this.state.rangedTable);
+                    this.state.typeOfWeapon.push("Broń Dystansowa");
+                }
                 this.state.rangedTable.push(weaponData);
-                this.state.segregatedWeapons.push(this.state.rangedTable);
+
 
                 break;
             }
             case "FIREARM": {
-                this.state.fireArmTable.push("Broń Palna");
+                if (!this.state.typeOfWeapon.includes("Broń Palna")) {
+                    this.state.segregatedWeapons.push(this.state.fireArmTable);
+
+                    this.state.typeOfWeapon.push("Broń Palna");
+                }
                 this.state.fireArmTable.push(weaponData);
-                this.state.segregatedWeapons.push(this.state.fireArmTable);
 
                 break;
             }
             case "BALISTA": {
-                this.state.balistaTable.push("Balisty");
+                if (!this.state.typeOfWeapon.includes("Balisty")) {
+                    this.state.segregatedWeapons.push(this.state.balistaTable);
+
+                    this.state.typeOfWeapon.push("Balisty");
+                }
                 this.state.balistaTable.push(weaponData);
-                this.state.segregatedWeapons.push(this.state.balistaTable);
 
                 break;
             }
             case "AMMO": {
-                this.state.ammoTable.push("Amunicja");
+                if (!this.state.typeOfWeapon.includes("Amunicja")) {
+
+                    this.state.typeOfWeapon.push("Amunicja");
+                    this.state.segregatedWeapons.push(this.state.ammoTable);
+
+                }
                 this.state.ammoTable.push(weaponData);
-                this.state.segregatedWeapons.push(this.state.ammoTable);
 
                 break;
             }
@@ -266,15 +273,17 @@ class Melee extends React.Component {
         switch (String) {
             case "NORMAL":
                 return "Zwykła";
+            case "BASIC":
+                return "Zwykła";
             case "CROSSBOW":
                 return "Kusza";
             case "LONG_BOW":
                 return "Długi Łuk";
-            case "THROW":
+            case "THROWN":
                 return "Rzucana";
             case "SLINGSHOT":
                 return "Proca";
-            case "IMMOBILIZING":
+            case "IMMOBILISATION":
                 return "Unieruchamiająca";
             case "CAVALERY":
                 return "Kawaleryjska";
@@ -288,11 +297,13 @@ class Melee extends React.Component {
                 return "Szermiercza";
             case "EXPLOSIVE":
                 return "Palna";
-            case "MECHANICAL":
+            case "MECHANIC":
                 return "Mechaniczna";
+            case "SLING":
+                return "Proca";
             case "FIREARM":
                 return "Palna";
-            default: return "sie zjebalo";
+            default: return "Brak";
         }
     }
     changeTraitEMUM(String){
@@ -325,7 +336,7 @@ class Melee extends React.Component {
                 return "Zawodny";
             case "EXPERIMENTAL":
                 return "Eksperymentalny";
-            default: return "sie zjebalo";
+            default: return "Brak";
 
 
         }
@@ -344,21 +355,7 @@ class Melee extends React.Component {
                 return "Mała";
             case "NONE":
                 return "Brak";
-            case "HEAD":
-                return "Głowa ";
-            case "LEFT_HAND":
-                return "Lewa Ręka ";
-            case "RIGHT_HAND":
-                return "Prawa Ręka ";
-            case "LEFT_LEG":
-                return "Lewa Noga ";
-            case "RIGHT_LEG":
-                return "Prawa Noga ";
-            case "BODY":
-                return "Korpus ";
-            case "ALL":
-                return "Wszystkie";
-            default: return "sie zjebalo";
+            default: return "Brak";
 
         }
     }
@@ -401,58 +398,19 @@ class Melee extends React.Component {
     render() {
         const {classes} = this.props;
         const {width} = this.props;
-        let sortIcon;
-        let expandIcon = {
-            height: 64,
-            width: 64
-        };
-
 
         if (isWidthDown('md', width)) {
 
-            sortIcon = {
-                width: 32,
-                height: 32
-            };
+
         }
         if (isWidthUp('lg', width)) {
-            sortIcon = {
-                width: 64,
-                height: 64
-            };
+
 
         }
 
 
         return (
             <Paper className={classes.paper}>
-                {/*<Grid container  alignItems={"center"} justify={"flex-start"}>*/}
-                {/*<Grid item xs={9}>*/}
-
-                {/*<div className={classes.paper}>*/}
-
-
-                {/*</div>*/}
-                {/*</Grid>*/}
-                {/*<Grid item xs={3}>*/}
-                {/*<Grid container>*/}
-
-                {/*<div className={classes.search}>*/}
-                {/*<div className={classes.searchIcon}>*/}
-                {/*<SearchIcon/>*/}
-                {/*</div>*/}
-                {/*<InputBase*/}
-                {/*placeholder="Wyszukaj.."*/}
-                {/*classes={{*/}
-                {/*root: classes.inputRoot,*/}
-                {/*input: classes.inputInput,*/}
-                {/*}}*/}
-                {/*/>*/}
-                {/*</div>*/}
-                {/*</Grid>*/}
-                {/*</Grid>*/}
-                {/*</Grid>*/}
-
                 <Grid container alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
 

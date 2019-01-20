@@ -15,8 +15,6 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
-import InputBase from "@material-ui/core/es/InputBase";
-import SearchIcon from '@material-ui/icons/Search';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import TableHead from '@material-ui/core/TableHead';
 import {url} from '../../../../../Constants'
@@ -24,7 +22,6 @@ import LazyLoad from 'react-lazyload';
 
 const styles = theme => ({
     paper: {
-        // boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0), 0px 2px 1px -1px rgba(0, 0, 0, 0)",
         //   fontFamily:"Garamond",
         backgroundImage: `url(${frontPaper})`,
         paddingLeft: 0
@@ -120,72 +117,95 @@ const CustomTableCell = withStyles(theme => ({
 let header = {
     "Content-Type": "application/json"
 };
+
 class Armor extends React.Component {
     state = {
         filter: undefined,
         value: 'all',
-        armors:[],
-        leatherArmors:[],
-        studdedArmors:[],
-        chainArmors:[],
-        scaleArmors:[],
-        plateArmors:[],
-        ithilmarArmors:[],
-        gromrilArmor:[],
-        segregatedArmors:[],
-        tables:[],
-
+        armors: [],
+        leatherArmors: [],
+        studdedArmors: [],
+        chainArmors: [],
+        scaleArmors: [],
+        plateArmors: [],
+        ithilmarArmors: [],
+        gromrilArmor: [],
+        segregatedArmors: [],
+        tables: [],
+        typeOfArmor: [],
 
 
     };
-    addToAccordingTable (String, armorData){
-        switch (String){
-            case "CHAIN":{
-                this.state.chainArmors.push("Zbroje Kolcze");
+
+    addToAccordingTable(String, armorData) {
+        switch (String) {
+            case "CHAIN": {
+                if (!this.state.typeOfArmor.includes("Zbroje Kolcze")) {
+                    this.state.typeOfArmor.push("Zbroje Kolcze");
+                    this.state.segregatedArmors.push(this.state.chainArmors);
+                }
+
                 this.state.chainArmors.push(armorData);
-                this.state.segregatedArmors.push(this.state.chainArmors);
 
                 break;
             }
-            case "LEATHER":{
-                this.state.leatherArmors.push("Zbroje Skórzane");
+            case "LEATHER": {
+                if (!this.state.typeOfArmor.includes("Zbroje Skórzane")) {
+                    this.state.typeOfArmor.push("Zbroje Skórzane");
+                    this.state.segregatedArmors.push(this.state.leatherArmors);
+                }
+
                 this.state.leatherArmors.push(armorData);
-                this.state.segregatedArmors.push(this.state.leatherArmors);
 
                 break;
             }
-            case "STUDDED":{
-                this.state.studdedArmors.push("Zbroje Ćwiekowane");
+            case "STUDDED": {
+                if (!this.state.typeOfArmor.includes("Zbroje Ćwiekowane")) {
+                    this.state.typeOfArmor.push("Zbroje Ćwiekowane");
+                    this.state.segregatedArmors.push(this.state.studdedArmors);
+                }
+
                 this.state.studdedArmors.push(armorData);
-                this.state.segregatedArmors.push(this.state.studdedArmors);
+
 
                 break;
             }
-            case "SCALE":{
-                this.state.scaleArmors.push("Zbroje Łuskowe");
+            case "SCALE": {
+                if (!this.state.typeOfArmor.includes("Zbroje Łuskowe")) {
+                    this.state.typeOfArmor.push("Zbroje Łuskowe");
+                    this.state.segregatedArmors.push(this.state.scaleArmors);
+                }
                 this.state.scaleArmors.push(armorData);
-                this.state.segregatedArmors.push(this.state.scaleArmors);
 
                 break;
             }
-            case "PLATE":{
-                this.state.plateArmors.push("Zbroje Płytowe");
+            case "PLATE": {
+                if (!this.state.typeOfArmor.includes("Zbroje Płytowe")) {
+                    this.state.segregatedArmors.push(this.state.plateArmors);
+
+                    this.state.typeOfArmor.push("Zbroje Płytowe");
+                }
                 this.state.plateArmors.push(armorData);
-                this.state.segregatedArmors.push(this.state.plateArmors);
 
                 break;
             }
-            case "ITHILMAR":{
-                this.state.ithilmarArmors.push("Zbroje Kolcze z Ithilmaru");
+            case "ITHILMAR": {
+                if (!this.state.typeOfArmor.includes("Zbroje Kolcze z Ithilmar")) {
+                    this.state.segregatedArmors.push(this.state.ithilmarArmors);
+
+                    this.state.typeOfArmor.push("Zbroje Kolcze z Ithilmaru");
+                }
                 this.state.ithilmarArmors.push(armorData);
-                this.state.segregatedArmors.push(this.state.ithilmarArmors);
 
                 break;
             }
-            case "GROMRIL":{
-                this.state.gromrilArmor.push("Zbroje Płytowe z Gromrilu");
+            case "GROMRIL": {
+                if (!this.state.typeOfArmor.includes("broje Płytowe z Gromrilu")) {
+                    this.state.typeOfArmor.push("Zbroje Płytowe z Gromrilu");
+                    this.state.segregatedArmors.push(this.state.gromrilArmor);
+
+                }
                 this.state.gromrilArmor.push(armorData);
-                this.state.segregatedArmors.push(this.state.gromrilArmor);
 
                 break;
             }
@@ -195,6 +215,7 @@ class Armor extends React.Component {
 
         }
     };
+
     componentDidMount() {
         fetch(url + "/armors", {
             method: 'GET',
@@ -205,15 +226,13 @@ class Armor extends React.Component {
                 armors: findresponse,
             })
 
-        }).then(()=>{
+        }).then(() => {
             this.state.armors.map((dynamicData) => (
-                this.addToAccordingTable(dynamicData.type,dynamicData)
-        ))
+                this.addToAccordingTable(dynamicData.type, dynamicData)
+            ))
 
 
-
-
-        }).then(()=>{
+        }).then(() => {
             this.setState({
                 tables: this.renderTables(this.props)
             })
@@ -224,8 +243,8 @@ class Armor extends React.Component {
         this.setState({value: event.target.value});
     };
 
-    changeENUM(String){
-        switch(String){
+    changeENUM(String) {
+        switch (String) {
             case "RARE":
                 return "Rzadkie";
             case "COMMON":
@@ -252,157 +271,114 @@ class Armor extends React.Component {
                 return "Korpus ";
             case "ALL":
                 return "Wszystkie";
-            default: return "sie zjebalo";
+            default:
+                return "sie zjebalo";
 
         }
     }
 
 
-
-
-
-    generatePanels=(armorTables,props,mainKey)=>{
-        let name = armorTables[0];
+    generatePanels = (armorTables, props, mainKey) => {
+        let typeOfArmor = this.state.typeOfArmor;
         const {classes} = props;
-
-        armorTables.splice(0,1);
 
 
         return (
 
 
-                <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}} key={mainKey}>
-                    <ExpansionPanelSummary  key={1}>
-                        <Typography gutterBottom variant="h5" component="h5" key={mainKey}>{name}</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+            <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}} key={mainKey}>
+                <ExpansionPanelSummary key={1}>
+                    <Typography gutterBottom variant="h5" component="h5"
+                                key={mainKey}>{typeOfArmor[mainKey]}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
 
-                        <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
-                            <Grid item xs={1}>
-                            </Grid>
-                            <Grid item xs={10}>
-                                <Table>
-                                    <TableHead key={mainKey}>
-                                        <TableRow  key={-1} classes={{root: classes.tableShrink}}>
-                                            <CustomTableCell>Typ Zbroi</CustomTableCell>
-                                            <CustomTableCell>Cena</CustomTableCell>
-                                            <CustomTableCell>Obciążenie</CustomTableCell>
-                                            <CustomTableCell>Chronione lokacje</CustomTableCell>
-                                            <CustomTableCell>Punkty Zbroi</CustomTableCell>
-                                            <CustomTableCell>Dostępność</CustomTableCell>
-                                        </TableRow>
-                                    </TableHead>
+                    <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
+                        <Grid item xs={1}>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <Table>
+                                <TableHead key={mainKey}>
+                                    <TableRow key={-1} classes={{root: classes.tableShrink}}>
+                                        <CustomTableCell>Typ Zbroi</CustomTableCell>
+                                        <CustomTableCell>Cena</CustomTableCell>
+                                        <CustomTableCell>Obciążenie</CustomTableCell>
+                                        <CustomTableCell>Chronione lokacje</CustomTableCell>
+                                        <CustomTableCell>Punkty Zbroi</CustomTableCell>
+                                        <CustomTableCell>Dostępność</CustomTableCell>
+                                    </TableRow>
+                                </TableHead>
 
-                                    <TableBody classes={{root: classes.tableShrink}}>
-                                        {armorTables.map((dynamicData,key) => (
-                                        <TableRow  key={key} classes={{root: classes.tableShrink}}>
-                                            <CustomTableCell><Typography
-                                                noWrap={true}>{dynamicData.name}</Typography></CustomTableCell>
-                                            <CustomTableCell>
-                                                {dynamicData.price.gold!==0?<Typography>{dynamicData.price.gold}zk</Typography>:null}
-                                                {dynamicData.price.silver!==0?<Typography>{dynamicData.price.silver}s</Typography>:null}
-                                                {dynamicData.price.bronze!==0?<Typography>{dynamicData.price.bronze}p</Typography>:null}
-                                            </CustomTableCell>
-                                            <CustomTableCell>{dynamicData.weight}</CustomTableCell>
-                                            <CustomTableCell>
+                                <TableBody classes={{root: classes.tableShrink}}>
+                                    {armorTables.map((dynamicData, key) => (
+                                            <TableRow key={key} classes={{root: classes.tableShrink}}>
+                                                <CustomTableCell><Typography
+                                                    noWrap={true}>{dynamicData.name}</Typography></CustomTableCell>
+                                                <CustomTableCell>
+                                                    {dynamicData.price.gold !== 0 ?
+                                                        <Typography>{dynamicData.price.gold}zk</Typography> : null}
+                                                    {dynamicData.price.silver !== 0 ?
+                                                        <Typography>{dynamicData.price.silver}s</Typography> : null}
+                                                    {dynamicData.price.bronze !== 0 ?
+                                                        <Typography>{dynamicData.price.bronze}p</Typography> : null}
+                                                </CustomTableCell>
+                                                <CustomTableCell>{dynamicData.weight}</CustomTableCell>
+                                                <CustomTableCell>
 
-                                                {dynamicData.protectionAreas.map((locations,key) => {
-                                                    return (<Typography  key={key}>
-                                                            {this.changeENUM(locations)}
-                                                        </Typography>
-                                                    )
-                                                })}
-                                            </CustomTableCell>
-                                            <CustomTableCell>{dynamicData.pz}</CustomTableCell>
-                                            <CustomTableCell>{this.changeENUM(dynamicData.availability)}</CustomTableCell>
+                                                    {dynamicData.protectionAreas.map((locations, key) => {
+                                                        return (<Typography key={key}>
+                                                                {this.changeENUM(locations)}
+                                                            </Typography>
+                                                        )
+                                                    })}
+                                                </CustomTableCell>
+                                                <CustomTableCell>{dynamicData.pz}</CustomTableCell>
+                                                <CustomTableCell>{this.changeENUM(dynamicData.availability)}</CustomTableCell>
 
 
-
-
-                                        </TableRow>
+                                            </TableRow>
                                         )
                                     )}
-                                    </TableBody>
-                                </Table>
-                            </Grid>
-                            <Grid item xs={1}>
-                            </Grid>
+                                </TableBody>
+                            </Table>
                         </Grid>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                        <Grid item xs={1}>
+                        </Grid>
+                    </Grid>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
         )
 
 
-
     };
-    renderTables=(props)=>{
+    renderTables = (props) => {
 
-        return this.state.segregatedArmors.map((segregatedArmor,key)=>(
-            this.generatePanels(segregatedArmor,props,key)
+
+        return this.state.segregatedArmors.map((segregatedArmor, key) => (
+            this.generatePanels(segregatedArmor, props, key)
 
         ))
     };
 
 
-
-
-
-
     render() {
         const {classes} = this.props;
         const {width} = this.props;
-        let sortIcon;
-        let expandIcon = {
-            height: 64,
-            width: 64
-        };
+
 
 
         if (isWidthDown('md', width)) {
 
-            sortIcon = {
-                width: 32,
-                height: 32
-            };
+
         }
         if (isWidthUp('lg', width)) {
-            sortIcon = {
-                width: 64,
-                height: 64
-            };
+
 
         }
 
 
         return (
             <Paper className={classes.paper}>
-                {/*<Grid container alignItems={"center"} justify={"flex-start"}>*/}
-                    {/*<Grid item xs={9}>*/}
-
-                        {/*<div className={classes.paper}>*/}
-
-
-
-                        {/*</div>*/}
-                    {/*</Grid>*/}
-                    {/*<Grid item xs={3}>*/}
-                        {/*<Grid container>*/}
-
-                            {/*<div className={classes.search}>*/}
-                                {/*<div className={classes.searchIcon}>*/}
-                                    {/*<SearchIcon/>*/}
-                                {/*</div>*/}
-                                {/*<InputBase*/}
-                                    {/*placeholder="Wyszukaj.."*/}
-                                    {/*classes={{*/}
-                                        {/*root: classes.inputRoot,*/}
-                                        {/*input: classes.inputInput,*/}
-                                    {/*}}*/}
-                                {/*/>*/}
-                            {/*</div>*/}
-                        {/*</Grid>*/}
-                    {/*</Grid>*/}
-                {/*</Grid>*/}
 
                 <Grid container alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
@@ -410,7 +386,7 @@ class Armor extends React.Component {
                     <Grid item xs={12}>
 
                         <LazyLoad height={300}>
-                        {this.state.tables}
+                            {this.state.tables}
                         </LazyLoad>
 
                     </Grid>

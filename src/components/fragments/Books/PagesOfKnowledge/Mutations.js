@@ -37,7 +37,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = theme => ({
     paper: {
-        // boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0), 0px 2px 1px -1px rgba(0, 0, 0, 0)",
         //   fontFamily:"Garamond",
         backgroundImage: `url(${frontPaper})`,
         paddingLeft: 0
@@ -231,10 +230,6 @@ class Mutations extends React.Component {
         this.setState({openAddModalTable: true})
 
     };
-    // handleCloseModalTable = () => {
-    //     this.setState({openAddModalTable: false})
-    //
-    // };
     handleModalAdd = (name) => event => {
 
         this.setState({
@@ -256,9 +251,7 @@ class Mutations extends React.Component {
         this.setState({openAddModal: true})
 
     };
-    // closeAddModal = () => {
-    //     this.setState({openAddModal: false})
-    // };
+
     handlePushToTableHeader = i => event => {
         let table = this.state.tableHeader.slice();
         table[i] = event.target.value;
@@ -277,10 +270,6 @@ class Mutations extends React.Component {
         });
         D2Array[i] = event.target.value;
         D1Array[j] = D2Array;
-
-
-        // console.log(D1Array);
-
     };
     fromTableToPairs = () => {
         let table = {
@@ -330,9 +319,7 @@ class Mutations extends React.Component {
             headers: header,
             credentials: 'same-origin'
         }).then((Response) => Response.json()).then((findresponse) => {
-            this.setState({
 
-            })
         });
     };
 
@@ -351,7 +338,6 @@ class Mutations extends React.Component {
             temp.push(
                 <TextField key={"nagłówek" + i}
                            className={classes.textFieldHead}
-                    // value={this.state.tableHeader[i]}
                            onChange={this.handlePushToTableHeader(i)}
                            margin="normal"
                            error
@@ -364,7 +350,6 @@ class Mutations extends React.Component {
                 key += j.toString();
                 temp.push(<TextField key={key}
                                      className={classes.textField}
-                    // value={this.state.tableBody}
                                      onChange={this.handlePushToTableBody(i, j,D1Array,D2Array)}
                                      margin="normal"
                                      label={"Rząd: " + j + " Kolumna: " + i}
@@ -742,7 +727,6 @@ class Mutations extends React.Component {
                 <Modal
                     disableBackdropClick
                     open={this.state.openAddModal}
-                    // onClose={this.closeAddModal}
                 >
                     <div className={classes.modal}>
                         <Typography variant="h6" id="modal-title">
@@ -754,14 +738,12 @@ class Mutations extends React.Component {
                                 <TextField
                                     label="Nazwa Mutacji"
                                     className={classes.textField}
-                                    // value={this.state.addMutation.name}
                                     onChange={this.handleModalAdd('name')}
                                     margin="normal"
                                 />
 
                                 <TextField
                                     label="Punkty Strachu"
-                                    // value={this.state.addMutation.ps}
                                     onChange={this.handleModalAdd('ps')}
                                     type="number"
                                     className={classes.textField}
@@ -770,7 +752,6 @@ class Mutations extends React.Component {
                                 <TextField
                                     label="Rzut Kością By Otrzymać"
                                     className={classes.textField}
-                                    // value={this.state.addMutation.roll}
                                     onChange={this.handleModalAdd('roll')}
                                     margin="normal"
                                 />
@@ -786,7 +767,6 @@ class Mutations extends React.Component {
                                 select
                                 label="Typ"
                                 className={classes.textField}
-                                // value={this.state.addMutation.type}
                                 onChange={this.handleModalAdd('type')}
                                 SelectProps={{
                                     native: true,
@@ -806,7 +786,6 @@ class Mutations extends React.Component {
                                     select
                                     label="Bóstwo"
                                     className={classes.textField}
-                                    // value={this.state.addMutation.godType}
                                     onChange={this.handleModalAdd('godType')}
                                     SelectProps={{
                                         native: true,
@@ -830,7 +809,6 @@ class Mutations extends React.Component {
                                     rows="7"
                                     className={classes.textField}
                                     margin="normal"
-                                    // value={this.state.addMutation.description}
                                     onChange={this.handleModalAdd('description')}
                                 />
                                 <TextField
@@ -838,7 +816,6 @@ class Mutations extends React.Component {
                                     multiline
                                     rows={4}
                                     className={classes.textField}
-                                    // value={this.state.addMutation.variants}
                                     onChange={this.handleModalAdd('variants')}
                                     margin="normal"
                                 />
@@ -889,7 +866,6 @@ class Mutations extends React.Component {
                 <Modal
 
                     open={this.state.openAddModalTable}
-                    // onClose={this.handleCloseModalTable}
                     disableBackdropClick
                 >
                     <div className={classes.modalForTable}>
