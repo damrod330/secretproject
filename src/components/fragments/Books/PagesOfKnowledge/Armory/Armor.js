@@ -294,9 +294,9 @@ class Armor extends React.Component {
                 <ExpansionPanelDetails>
 
                     <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
-                        <Grid item xs={1}>
+                        <Grid item>
                         </Grid>
-                        <Grid item xs={10}>
+                        <Grid item xs={12}>
                             <Table>
                                 <TableHead key={mainKey}>
                                     <TableRow key={-1} classes={{root: classes.tableShrink}}>
@@ -342,7 +342,7 @@ class Armor extends React.Component {
                                 </TableBody>
                             </Table>
                         </Grid>
-                        <Grid item xs={1}>
+                        <Grid item >
                         </Grid>
                     </Grid>
                 </ExpansionPanelDetails>

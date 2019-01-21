@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
-import withWidth from '@material-ui/core/withWidth';
+import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
 import frontPaper from './../../../../img/paper-texture-alt.jpg'
 import Radio from '@material-ui/core/Radio';
@@ -30,8 +30,6 @@ import {url} from '../../../../Constants'
 import LazyLoad from 'react-lazyload';
 
 
-
-
 const styles = theme => ({
     paper: {
         // boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0), 0px 2px 1px -1px rgba(0, 0, 0, 0)",
@@ -46,9 +44,9 @@ const styles = theme => ({
         padding: "2px",
 
     },
-    tableShrink:{
-        height:0,
-        border:"1px solid",
+    tableShrink: {
+        height: 0,
+        border: "1px solid",
 
     },
     expansionPanel: {
@@ -92,7 +90,7 @@ const styles = theme => ({
         [theme.breakpoints.down('sm')]: {
             width: 0,
             '&:focus': {
-                width: 70,
+                width: 220,
             },
         },
         [theme.breakpoints.up('md')]: {
@@ -135,13 +133,15 @@ const CustomTableCell = withStyles(theme => ({
 let header = {
     "Content-Type": "application/json"
 };
+
 class Spells extends React.Component {
     state = {
         filter: undefined,
         value: 'all',
-        spells:[],
-        isTable:false,
-        filteredSpells:[],
+        spells: [],
+        isTable: false,
+        filteredSpells: [],
+        mobile: false,
 
     };
 
@@ -158,105 +158,195 @@ class Spells extends React.Component {
         }).then((Response) => Response.json()).then((findresponse) => {
             this.setState({
                 spells: findresponse,
-                filteredSpells:findresponse
+                filteredSpells: findresponse
             });
 
         })
     }
 
+    showForDesktop = (dynamicData, classes, key) => {
+        return (<Grid container>
+            <Grid item xs={7}>
+                <Typography>
+                    <b>Wymagany poziom mocy:</b> {dynamicData.powerLevel}
+                </Typography>
+                <Typography>
+                    <b>Czas rzucania:</b> {dynamicData.castTime}
 
-    filterList = event =>{
-        let filteredList= this.state.spells;
-        filteredList = filteredList.filter((item)=> {
+                </Typography>
+                <Typography>
+                    <b>Składnik:</b> {dynamicData.component} (+1)
+                </Typography>
+                <Typography>
+                    <b>Czas trwania:</b> {dynamicData.duration}
+                </Typography>
+                <Typography>
+                    <b>Opis:</b> {dynamicData.description}
+                </Typography>
+            </Grid>
+            <Grid item xs={5}>
+                {dynamicData.table === '' || dynamicData.table !== null ?
+
+
+                    <Table key={key}>
+                        <TableHead key={key}>
+                            <TableRow classes={{root: classes.tableShrink}} key={key}>
+                                <CustomTableCell>Rzut</CustomTableCell>
+                                <CustomTableCell>Efekt</CustomTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody classes={{root: classes.tableShrink}} key={key + 1}>
+                            {dynamicData.table.map((table, RowKey) => (
+                                <TableRow key={RowKey} classes={{root: classes.tableShrink}}>
+
+                                    <CustomTableCell><Typography
+                                        noWrap={true}>{table.first}</Typography></CustomTableCell>
+                                    <CustomTableCell>{table.second}</CustomTableCell>
+
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+
+
+                    : null}
+            </Grid>
+        </Grid>);
+    };
+    showForMobile = (dynamicData, classes, key) => {
+        return (
+            <Grid container>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography>
+                            <b>Wymagany poziom mocy:</b> {dynamicData.powerLevel}
+                        </Typography>
+                        <Typography>
+                            <b>Czas rzucania:</b> {dynamicData.castTime}
+
+                        </Typography>
+                        <Typography>
+                            <b>Składnik:</b> {dynamicData.component} (+1)
+                        </Typography>
+                        <Typography>
+                            <b>Czas trwania:</b> {dynamicData.duration}
+                        </Typography>
+                        <Typography>
+                            <b>Opis:</b> {dynamicData.description}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container>
+
+                    <Grid item xs={12}>
+                        {dynamicData.table === '' || dynamicData.table !== null ?
+
+
+                            <Table key={key}>
+                                <TableHead key={key}>
+                                    <TableRow classes={{root: classes.tableShrink}} key={key}>
+                                        <CustomTableCell>Rzut</CustomTableCell>
+                                        <CustomTableCell>Efekt</CustomTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody classes={{root: classes.tableShrink}} key={key + 1}>
+                                    {dynamicData.table.map((table, RowKey) => (
+                                        <TableRow key={RowKey} classes={{root: classes.tableShrink}}>
+
+                                            <CustomTableCell><Typography
+                                                noWrap={true}>{table.first}</Typography></CustomTableCell>
+                                            <CustomTableCell>{table.second}</CustomTableCell>
+
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+
+
+                            : null}
+                    </Grid>
+                </Grid>
+            </Grid>
+        );
+    };
+
+    filterList = event => {
+        let filteredList = this.state.spells;
+        filteredList = filteredList.filter((item) => {
             return item.name.toString().toLowerCase().search(
-                event.target.value.toString().toLowerCase())!==-1;
+                event.target.value.toString().toLowerCase()) !== -1;
 
         });
-        this.setState({filteredSpells:filteredList})
+        this.setState({filteredSpells: filteredList})
 
     };
-    componentWillMount(){
-        this.setState({filteredSpells:this.state.spells})
+
+    componentWillMount() {
+        this.setState({filteredSpells: this.state.spells})
     }
 
 
     render() {
         const {classes} = this.props;
         const {width} = this.props;
+        let mobile = this.state;
+        if (isWidthDown('md', width)) {
 
+            mobile = true;
+        }
+        if (isWidthUp('lg', width)) {
 
+            mobile = false;
 
+        }
 
+        let headerDesktop = <Grid container alignItems={"center"} justify={"flex-start"}>
+            <Grid item xs={8}>
+            </Grid>
+            <Grid item xs={3}>
+                <Grid container alignItems={"center"} justify={"center"}>
 
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            placeholder="Wyszukaj.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            onChange={this.filterList}
+                        />
+                    </div>
+                </Grid>
+            </Grid>
+        </Grid>;
+        let headerMobile = <Grid container alignItems={"center"} justify={"flex-start"}>
+
+            <Grid item xs={12}>
+                <Grid container alignItems={"center"} justify={"center"}>
+
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            placeholder="Wyszukaj.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            onChange={this.filterList}
+                        />
+                    </div>
+                </Grid>
+            </Grid>
+        </Grid>;
 
         return (
             <Paper className={classes.paper}>
-                <Grid container alignItems={"center"} justify={"flex-start"}>
-                    {/*<Grid item xs={6}>*/}
-
-                        {/*<div className={classes.paper}>*/}
-                            {/*<FormControl>*/}
-                                {/*<RadioGroup*/}
-                                    {/*aria-label="position"*/}
-                                    {/*name="position"*/}
-                                    {/*value={this.state.value}*/}
-                                    {/*onChange={this.handleChange}*/}
-                                    {/*row*/}
-                                {/*>*/}
-                                    {/*<FormControlLabel*/}
-                                        {/*value="all"*/}
-                                        {/*control={<Radio color="default"/>}*/}
-                                        {/*label="Mutacje"*/}
-                                    {/*/>*/}
-                                    {/*<FormControlLabel*/}
-                                        {/*value="khorn"*/}
-                                        {/*control={<Radio color="default"/>}*/}
-                                        {/*label="Mutacje Khorna"*/}
-                                    {/*/>*/}
-                                    {/*<FormControlLabel*/}
-                                        {/*value="nurgl"*/}
-                                        {/*control={<Radio color="default"*/}
-                                        {/*/>}*/}
-                                        {/*label="Mutacje Nurgla"*/}
-                                    {/*/>*/}
-                                    {/*<FormControlLabel*/}
-                                        {/*value="slaanesh"*/}
-                                        {/*control={<Radio color="default"*/}
-                                        {/*/>}*/}
-                                        {/*label="Mutacje Slaanesha"*/}
-                                    {/*/>*/}
-                                    {/*<FormControlLabel*/}
-                                        {/*value="treentch"*/}
-                                        {/*control={<Radio color="default"*/}
-                                        {/*/>}*/}
-                                        {/*label="Mutacje Tzeentcha"*/}
-                                    {/*/>*/}
-                                {/*</RadioGroup>*/}
-                            {/*</FormControl>*/}
-
-                        {/*</div>*/}
-                    {/*</Grid>*/}
-                    <Grid item xs={8} >
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Grid container alignItems={"center"} justify={"center"}>
-
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon/>
-                                </div>
-                                <InputBase
-                                    placeholder="Wyszukaj.."
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                    onChange={this.filterList}
-                                />
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                {mobile===false? headerDesktop:headerMobile}
 
                 <Grid container spacing={0} alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
@@ -265,75 +355,29 @@ class Spells extends React.Component {
                         <LazyLoad height={300}>
                             {this.state.filteredSpells.map((dynamicData, key) => (
 
-                        <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}} key={key}>
-                            <ExpansionPanelSummary key={key}>
-                                <Grid container>
-                                    <Grid item xs={10}>
-                                        <Typography gutterBottom variant="h5" component="h5">
-                                            {dynamicData.name}
-                                        </Typography>
+                                <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}
+                                                key={key}>
+                                    <ExpansionPanelSummary key={key}>
+                                        <Grid container>
+                                            <Grid item xs={10}>
+                                                <Typography gutterBottom variant="h5" component="h5">
+                                                    {dynamicData.name}
+                                                </Typography>
 
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                    </Grid>
-                                </Grid>
-
-
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails key={key}>
-
-                                <Grid container>
-                                    <Grid item xs={7}>
-                                        <Typography>
-                                            <b>Wymagany poziom mocy:</b> {dynamicData.powerLevel}
-                                        </Typography>
-                                        <Typography>
-                                            <b>Czas rzucania:</b> {dynamicData.castTime}
-
-                                        </Typography>
-                                        <Typography>
-                                            <b>Składnik:</b> {dynamicData.component} (+1)
-                                        </Typography>
-                                        <Typography>
-                                            <b>Czas trwania:</b> {dynamicData.duration}
-                                        </Typography>
-                                        <Typography>
-                                            <b>Opis:</b> {dynamicData.description}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={5}>
-                                        { dynamicData.table === '' || dynamicData.table !== null?
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                            </Grid>
+                                        </Grid>
 
 
-                                                <Table  key={key}>
-                                                    <TableHead key={key}>
-                                                        <TableRow classes={{root: classes.tableShrink }} key={key}>
-                                                            <CustomTableCell>Rzut</CustomTableCell>
-                                                            <CustomTableCell>Efekt</CustomTableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody classes={{root: classes.tableShrink }}  key={key+1}>
-                                                        {dynamicData.table.map((table,RowKey)=>(
-                                                        <TableRow key={RowKey} classes={{root: classes.tableShrink }}>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails key={key}>
 
-                                                            <CustomTableCell><Typography noWrap={true}>{table.first}</Typography></CustomTableCell>
-                                                            <CustomTableCell>{table.second}</CustomTableCell>
-
-                                                        </TableRow>
-                                                        ))}
-                                                    </TableBody>
-                                                </Table>
+                                        {mobile === false ? this.showForDesktop(dynamicData, classes, key) : this.showForMobile(dynamicData, classes, key)}
 
 
-
-
-                                         : null}
-                                    </Grid>
-                                </Grid>
-
-
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
                             ))}
                         </LazyLoad>
 

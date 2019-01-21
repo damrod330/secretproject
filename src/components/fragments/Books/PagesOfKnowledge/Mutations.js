@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
-import withWidth from '@material-ui/core/withWidth';
+import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
 import frontPaper from './../../../../img/paper-texture-alt.jpg'
 import Radio from '@material-ui/core/Radio';
@@ -141,7 +141,7 @@ const styles = theme => ({
         [theme.breakpoints.down('sm')]: {
             width: 0,
             '&:focus': {
-                width: 70,
+                width: 220,
             },
         },
         [theme.breakpoints.up('md')]: {
@@ -221,6 +221,8 @@ class Mutations extends React.Component {
         tableHeader: [],
         tableBody: [],
         tableSubBody: [],
+        fabVisible:true,
+        mobile:false,
     };
 
     handleAllowTable = name => event => {
@@ -554,7 +556,10 @@ class Mutations extends React.Component {
 
                 <TableRow key={rowKey} classes={{root: classes.tableShrink}}>
                     {row.map((item, itemKey) =>
-                        <CustomTableCell key={itemKey}>{item}</CustomTableCell>
+
+                        <CustomTableCell key={itemKey}>
+                            {itemKey%row.length===0? <Typography noWrap={true}>{item}</Typography>:<Typography>{item}</Typography>}
+                            </CustomTableCell>
                     )}
 
                 </TableRow>
@@ -581,80 +586,211 @@ class Mutations extends React.Component {
         return newTable;
     }
 
+    showForDesktop=(dynamicData,classes,key)=>{
+      return(<Grid container>
+          <Grid item xs={7}>
+              <Typography>
+                  <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
+              </Typography>
+              <Typography>
+                  <b>Opis:</b> {dynamicData.description}
+              </Typography>
+          </Grid>
+          <Grid item xs={5}>
+              {
+
+                  dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
+                      :
+                      null
+              }
+
+          </Grid>
+      </Grid>)
+    };
+    showForMobile=(dynamicData,classes,key)=>{
+        return(<Grid container>
+            <Grid item xs={12}>
+                <Typography>
+                    <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
+                </Typography>
+                <Typography>
+                    <b>Opis:</b> {dynamicData.description}
+                </Typography>
+            </Grid>
+
+            <Grid container>
+            <Grid item xs={12}>
+                {
+
+                    dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
+                        :
+                        null
+                }
+
+            </Grid>
+        </Grid>
+        </Grid>
+        )
+    };
+
     render() {
         let mutationType = ["","SINGLE", "MULTIPLE"];
         let godType = ["","NURGLE", "KHORNE", "TZEENTCH", "SLAANESH"];
         const {classes} = this.props;
         const {width} = this.props;
+        let {mobile}=this.state;
+        let {fabVisible}=this.state;
+
+        if (isWidthDown('md', width)) {
+            fabVisible = false;
+            mobile=true;
+        }
+        if (isWidthUp('lg', width)) {
+            fabVisible = true;
+            mobile=false;
+        }
+        const desktopVersion = <Grid container alignItems={"center"} justify={"flex-start"}>
+            <Grid item xs={9}>
+
+                <div className={classes.paper}>
+                    <FormControl>
+                        <RadioGroup
+                            aria-label="position"
+                            name="position"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value="ALL"
+                                control={<Radio color="default"/>}
+                                label="Mutacje"
+                            />
+                            <FormControlLabel
+                                value="KHORNE"
+                                control={<Radio color="default"/>}
+                                label="Mutacje Khorna"
+                            />
+                            <FormControlLabel
+                                value="NURGLE"
+                                control={<Radio color="default"
+                                />}
+                                label="Mutacje Nurgla"
+                            />
+                            <FormControlLabel
+                                value="SLAANESH"
+                                control={<Radio color="default"
+                                />}
+                                label="Mutacje Slaanesha"
+                            />
+                            <FormControlLabel
+                                value="TZEENTCH"
+                                control={<Radio color="default"
+                                />}
+                                label="Mutacje Tzeentcha"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+
+                </div>
+            </Grid>
+            <Grid item xs={3}>
+                <Grid container>
+
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            onChange={this.filterList}
+                            value={this.state.searchValue}
+                            placeholder="Wyszukaj.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                        />
+                    </div>
+                </Grid>
+            </Grid>
+        </Grid>;
+
+        const mobileVersion =
+            <Grid container >
+            <Grid item xs={12}>
+                <Grid container justify={"center"}>
+                    <Grid item >
+
+
+                    <FormControl>
+                        <RadioGroup
+                            aria-label="position"
+                            name="position"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value="ALL"
+                                control={<Radio color="default"/>}
+                                label="Mutacje"
+                            />
+                            <FormControlLabel
+                                value="KHORNE"
+                                control={<Radio color="default"/>}
+                                label="Khorn"
+                            />
+                            <FormControlLabel
+                                value="NURGLE"
+                                control={<Radio color="default"
+                                />}
+                                label="Nurgl"
+                            />
+                            <FormControlLabel
+                                value="SLAANESH"
+                                control={<Radio color="default"
+                                />}
+                                label="Slaanesh"
+                            />
+                            <FormControlLabel
+                                value="TZEENTCH"
+                                control={<Radio color="default"
+                                />}
+                                label="Tzeentch"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+            <Grid container justify={"center"}>
+            <Grid item xs={12}>
+                <Grid container justify={"center"}>
+
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            onChange={this.filterList}
+                            value={this.state.searchValue}
+                            placeholder="Wyszukaj.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                        />
+                    </div>
+                </Grid>
+            </Grid>
+            </Grid>
+        </Grid>;
 
 
         return (
             <Paper className={classes.paper}>
-                <Grid container alignItems={"center"} justify={"flex-start"}>
-                    <Grid item xs={9}>
-
-                        <div className={classes.paper}>
-                            <FormControl>
-                                <RadioGroup
-                                    aria-label="position"
-                                    name="position"
-                                    value={this.state.value}
-                                    onChange={this.handleChange}
-                                    row
-                                >
-                                    <FormControlLabel
-                                        value="ALL"
-                                        control={<Radio color="default"/>}
-                                        label="Mutacje"
-                                    />
-                                    <FormControlLabel
-                                        value="KHORNE"
-                                        control={<Radio color="default"/>}
-                                        label="Mutacje Khorna"
-                                    />
-                                    <FormControlLabel
-                                        value="NURGLE"
-                                        control={<Radio color="default"
-                                        />}
-                                        label="Mutacje Nurgla"
-                                    />
-                                    <FormControlLabel
-                                        value="SLAANESH"
-                                        control={<Radio color="default"
-                                        />}
-                                        label="Mutacje Slaanesha"
-                                    />
-                                    <FormControlLabel
-                                        value="TZEENTCH"
-                                        control={<Radio color="default"
-                                        />}
-                                        label="Mutacje Tzeentcha"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-
-                        </div>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Grid container>
-
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon/>
-                                </div>
-                                <InputBase
-                                    onChange={this.filterList}
-                                    value={this.state.searchValue}
-                                    placeholder="Wyszukaj.."
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                />
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                {mobile===false? desktopVersion: mobileVersion}
 
                 <Grid container spacing={0} alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
@@ -685,25 +821,7 @@ class Mutations extends React.Component {
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails key={key}>
 
-                                        <Grid container>
-                                            <Grid item xs={7}>
-                                                <Typography>
-                                                    <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
-                                                </Typography>
-                                                <Typography>
-                                                    <b>Opis:</b> {dynamicData.description}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={5}>
-                                                {
-
-                                                    dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
-                                                        :
-                                                        null
-                                                }
-
-                                            </Grid>
-                                        </Grid>
+                                        {mobile===false? this.showForDesktop(dynamicData,classes,key): this.showForMobile(dynamicData,classes,key)}
 
 
                                     </ExpansionPanelDetails>
@@ -721,9 +839,10 @@ class Mutations extends React.Component {
 
                 </Grid>
 
-                <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.openAddModal}>
+                {fabVisible ? <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.openAddModal}>
                     <AddIcon/>
-                </Fab>
+                </Fab> : null}
+
                 <Modal
                     disableBackdropClick
                     open={this.state.openAddModal}

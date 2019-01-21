@@ -88,7 +88,7 @@ const styles = theme => ({
         [theme.breakpoints.down('sm')]: {
             width: 0,
             '&:focus': {
-                width: 70,
+                width: 220,
             },
         },
         [theme.breakpoints.up('md')]: {
@@ -142,8 +142,9 @@ class Bestiary extends React.Component {
         undead: [],
         demons: [],
         filteredBeasts: [],
-        filteredBeastsAfterSearch:[],
-        searchValue:""
+        filteredBeastsAfterSearch: [],
+        searchValue: "",
+        mobile: false,
 
 
     };
@@ -153,7 +154,7 @@ class Bestiary extends React.Component {
         this.setState({value: event.target.value});
         this.showBeasts(event.target.value);
         this.setState({
-            searchValue:""
+            searchValue: ""
         });
     };
 
@@ -166,33 +167,34 @@ class Bestiary extends React.Component {
             this.setState({
                 beasts: findresponse,
             })
-        }).then(()=>{
+        }).then(() => {
             this.filterBeasts();
 
-        }).then(()=>{
+        }).then(() => {
             this.showBeasts(this.state.value);
             this.setState({
-                filteredBeastsAfterSearch:this.state.filteredBeasts
+                filteredBeastsAfterSearch: this.state.filteredBeasts
 
             })
         })
     }
 
-    filterList = event =>{
+    filterList = event => {
         this.setState({
-            searchValue:event.target.value
+            searchValue: event.target.value
         });
-        let filteredList= this.state.filteredBeasts;
-        filteredList = filteredList.filter((item)=> {
+        let filteredList = this.state.filteredBeasts;
+        filteredList = filteredList.filter((item) => {
             return item.name.toString().toLowerCase().search(
-                event.target.value.toString().toLowerCase())!==-1;
+                event.target.value.toString().toLowerCase()) !== -1;
 
         });
-        this.setState({filteredBeastsAfterSearch:filteredList})
+        this.setState({filteredBeastsAfterSearch: filteredList})
 
     };
-    componentWillMount(){
-        this.setState({filteredBeastsAfterSearch:this.state.filteredBeasts})
+
+    componentWillMount() {
+        this.setState({filteredBeastsAfterSearch: this.state.filteredBeasts})
 
     }
 
@@ -272,15 +274,240 @@ class Bestiary extends React.Component {
             }
         }
 
-    }
+    };
+
+    showDesktop = (dynamicData, classes, key) => {
+        return (<Grid container spacing={8} alignItems={"flex-start"}
+                      justify={"flex-start"}>
+            <Grid item xs={2}>
+                <img
+                    // src={"/img/Books/Bestiary/mino.png"}
+                    //  src={require("./../../../../img/Beasts/" + `${dynamicData.imageName}` + ".png")}
+                    width={"100%"}
+                    height={"100%"}
+                    alt={"img"} key={key}/>
+            </Grid>
+            <Grid item xs={3}>
+
+                <Typography>
+                    {dynamicData.description}
+                </Typography>
+            </Grid>
+            <Grid item xs={7}>
+                <Paper classes={{root: classes.tableHeader}}>
+                    Cechy Główne:
+                </Paper>
+                <Table>
+                    <TableBody>
+
+                        <TableRow key={-1}>
 
 
+                            {dynamicData.traits.slice(0, 8).map((trait, traitKey) => (
+                                <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
+                            ))}
+
+
+                        </TableRow>
+
+                        <TableRow key={key}>
+                            {dynamicData.traits.slice(0, 8).map((trait, traitKey) => (
+                                <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
+                            ))}
+
+
+                        </TableRow>
+
+
+                    </TableBody>
+                </Table>
+
+
+                <Paper classes={{root: classes.tableHeader}}>
+                    Cechy Drugorzędne:
+                </Paper>
+                <Table>
+
+                    <TableBody>
+
+                        <TableRow key={-1}>
+                            {dynamicData.traits.slice(8, 16).map((trait, traitKey) => (
+                                <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
+                            ))}
+
+
+                        </TableRow>
+                        <TableRow key={key + 1}>
+                            {dynamicData.traits.slice(8, 16).map((trait, traitKey) => (
+                                <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
+                            ))}
+
+
+                        </TableRow>
+
+
+                    </TableBody>
+                </Table>
+
+                <Grid container spacing={8}>
+                    <Grid item xs={4}>
+                        <Typography>
+                            <b>Ekwipunek:</b><br/>
+                            {dynamicData.armors}<br/>
+                            {dynamicData.weapons}<br/>
+                            {dynamicData.items}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography>
+                            <b>Umiejetności:</b><br/>
+                            {dynamicData.skills.map((skill) => {
+                                return (skill.name)
+                            })
+
+                            }
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography>
+                            <b>Zdolności:</b><br/>
+                            {dynamicData.abilities.map((ability) => {
+                                return (ability.name)
+                            })
+
+                            }
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Typography>
+                    <b>Zasady Specialne:</b>
+                    {dynamicData.specialRules}
+                </Typography>
+            </Grid>
+
+        </Grid>)
+    };
+
+    showMobile = (dynamicData, classes, key) => {
+        return (<Grid container spacing={8} alignItems={"flex-start"}
+                      justify={"flex-start"}>
+            <Grid item xs={2}>
+                <img
+                    // src={"/img/Books/Bestiary/mino.png"}
+                    //  src={require("./../../../../img/Beasts/" + `${dynamicData.imageName}` + ".png")}
+                    width={"100%"}
+                    height={"100%"}
+                    alt={"img"} key={key}/>
+            </Grid>
+            <Grid item xs={12}>
+
+                <Typography>
+                    {dynamicData.description}
+                </Typography>
+            </Grid>
+            <Grid container>
+                <Grid item xs={12}>
+                    <Paper classes={{root: classes.tableHeader}}>
+                        Cechy Główne:
+                    </Paper>
+                    <Table>
+                        <TableBody>
+
+                            <TableRow key={-1}>
+
+
+                                {dynamicData.traits.slice(0, 8).map((trait, traitKey) => (
+                                    <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
+                                ))}
+
+
+                            </TableRow>
+
+                            <TableRow key={key}>
+                                {dynamicData.traits.slice(0, 8).map((trait, traitKey) => (
+                                    <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
+                                ))}
+
+
+                            </TableRow>
+
+
+                        </TableBody>
+                    </Table>
+
+
+                    <Paper classes={{root: classes.tableHeader}}>
+                        Cechy Drugorzędne:
+                    </Paper>
+                    <Table>
+
+                        <TableBody>
+
+                            <TableRow key={-1}>
+                                {dynamicData.traits.slice(8, 16).map((trait, traitKey) => (
+                                    <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
+                                ))}
+
+
+                            </TableRow>
+                            <TableRow key={key + 1}>
+                                {dynamicData.traits.slice(8, 16).map((trait, traitKey) => (
+                                    <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
+                                ))}
+
+
+                            </TableRow>
+
+
+                        </TableBody>
+                    </Table>
+
+                    <Grid container spacing={8}>
+                        <Grid item xs={4}>
+                            <Typography>
+                                <b>Ekwipunek:</b><br/>
+                                {dynamicData.armors}<br/>
+                                {dynamicData.weapons}<br/>
+                                {dynamicData.items}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Typography>
+                                <b>Umiejetności:</b><br/>
+                                {dynamicData.skills.map((skill) => {
+                                    return (skill.name)
+                                })
+
+                                }
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Typography>
+                                <b>Zdolności:</b><br/>
+                                {dynamicData.abilities.map((ability) => {
+                                    return (ability.name)
+                                })
+
+                                }
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Typography>
+                        <b>Zasady Specialne:</b>
+                        {dynamicData.specialRules}
+                    </Typography>
+                </Grid>
+            </Grid>
+
+        </Grid>)
+    };
 
 
     render() {
 
         const {classes} = this.props;
         const {width} = this.props;
+        let {mobile} = this.state;
         let sortIcon;
         let expandIcon = {
             height: 64,
@@ -294,96 +521,186 @@ class Bestiary extends React.Component {
                 width: 32,
                 height: 32
             };
+            mobile = true;
         }
         if (isWidthUp('lg', width)) {
             sortIcon = {
                 width: 64,
                 height: 64
             };
+            mobile = false;
 
         }
+
+        let headerDekstop = <Grid container alignItems={"center"} justify={"flex-start"}>
+
+            <Grid item xs={9}>
+
+                <div className={classes.paper}>
+                    <FormControl>
+                        <RadioGroup
+                            aria-label="position"
+                            name="position"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value="ALL"
+                                control={<Radio color="default"/>}
+                                label="Wszystko"
+                            />
+                            <FormControlLabel
+                                value="WILDLIFE"
+                                control={<Radio color="default"
+                                                icon={<img src={WildlifeBorderIcon} alt={"dzikie zwierzeta"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Zwierzęta"
+                            />
+                            <FormControlLabel
+                                value="DEMON"
+                                control={<Radio color="default"
+                                                icon={<img src={DemonBorderIcon} alt={"mordujace demony"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={DemonIcon} alt={"wymordowane demony"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Demony"
+                            />
+                            <FormControlLabel
+                                value="UNDEAD"
+                                control={<Radio color="default"
+                                                icon={<img src={UndeadBorderIcon} alt={"trupczaki"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={UndeadIcon} alt={"umarlaki"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Ożywieńcy"
+                            />
+                            <FormControlLabel
+                                value="MUTANT"
+                                control={<Radio color="default"
+                                                icon={<img src={MutantsBorderIcon} alt={"GMO"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={MutantsIcon} alt={"mutaciaki"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Mutanci"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+
+                </div>
+            </Grid>
+            <Grid item xs={3}>
+                <Grid container>
+
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            value={this.state.searchValue}
+                            onChange={this.filterList}
+                            placeholder="Wyszukaj.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                        />
+                    </div>
+                </Grid>
+            </Grid>
+        </Grid>;
+
+        let headerMobile = <Grid container>
+            <Grid item xs={12}>
+
+            <Grid container justify={"center"}>
+                <Grid item >
+                    <FormControl>
+                        <RadioGroup
+                            aria-label="position"
+                            name="position"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value="ALL"
+                                control={<Radio color="default"/>}
+                                label="Wszystko"
+                            />
+                            <FormControlLabel
+                                value="WILDLIFE"
+                                control={<Radio color="default"
+                                                icon={<img src={WildlifeBorderIcon} alt={"dzikie zwierzeta"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Zwierzęta"
+                            />
+                            <FormControlLabel
+                                value="DEMON"
+                                control={<Radio color="default"
+                                                icon={<img src={DemonBorderIcon} alt={"mordujace demony"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={DemonIcon} alt={"wymordowane demony"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Demony"
+                            />
+                            <FormControlLabel
+                                value="UNDEAD"
+                                control={<Radio color="default"
+                                                icon={<img src={UndeadBorderIcon} alt={"trupczaki"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={UndeadIcon} alt={"umarlaki"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Ożywieńcy"
+                            />
+                            <FormControlLabel
+                                value="MUTANT"
+                                control={<Radio color="default"
+                                                icon={<img src={MutantsBorderIcon} alt={"GMO"}
+                                                           style={sortIcon}/>}
+                                                checkedIcon={<img src={MutantsIcon} alt={"mutaciaki"}
+                                                                  style={sortIcon}/>}/>}
+                                label="Mutanci"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+
+
+                </Grid>
+            </Grid>
+            </Grid>
+            <Grid container>
+                <Grid item xs={12}>
+                <Grid container justify={"center"}>
+
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            value={this.state.searchValue}
+                            onChange={this.filterList}
+                            placeholder="Wyszukaj.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                        />
+                    </div>
+                </Grid>
+            </Grid>
+            </Grid>
+        </Grid>;
 
 
         return (
             <Paper className={classes.paper}>
-                <Grid container alignItems={"center"} justify={"flex-start"}>
-                    <Grid item xs={9}>
+                {mobile === false ? headerDekstop : headerMobile}
 
-                        <div className={classes.paper}>
-                            <FormControl>
-                                <RadioGroup
-                                    aria-label="position"
-                                    name="position"
-                                    value={this.state.value}
-                                    onChange={this.handleChange}
-                                    row
-                                >
-                                    <FormControlLabel
-                                        value="ALL"
-                                        control={<Radio color="default"/>}
-                                        label="Wszystko"
-                                    />
-                                    <FormControlLabel
-                                        value="WILDLIFE"
-                                        control={<Radio color="default"
-                                                        icon={<img src={WildlifeBorderIcon} alt={"dzikie zwierzeta"}
-                                                                   style={sortIcon}/>}
-                                                        checkedIcon={<img src={WildLifeIcon} alt={"Dziki Zwirz"}
-                                                                          style={sortIcon}/>}/>}
-                                        label="Zwierzęta"
-                                    />
-                                    <FormControlLabel
-                                        value="DEMON"
-                                        control={<Radio color="default"
-                                                        icon={<img src={DemonBorderIcon} alt={"mordujace demony"}
-                                                                   style={sortIcon}/>}
-                                                        checkedIcon={<img src={DemonIcon} alt={"wymordowane demony"}
-                                                                          style={sortIcon}/>}/>}
-                                        label="Demony"
-                                    />
-                                    <FormControlLabel
-                                        value="UNDEAD"
-                                        control={<Radio color="default"
-                                                        icon={<img src={UndeadBorderIcon} alt={"trupczaki"}
-                                                                   style={sortIcon}/>}
-                                                        checkedIcon={<img src={UndeadIcon} alt={"umarlaki"}
-                                                                          style={sortIcon}/>}/>}
-                                        label="Ożywieńcy"
-                                    />
-                                    <FormControlLabel
-                                        value="MUTANT"
-                                        control={<Radio color="default"
-                                                        icon={<img src={MutantsBorderIcon} alt={"GMO"}
-                                                                   style={sortIcon}/>}
-                                                        checkedIcon={<img src={MutantsIcon} alt={"mutaciaki"}
-                                                                          style={sortIcon}/>}/>}
-                                        label="Mutanci"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-
-                        </div>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Grid container>
-
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon/>
-                                </div>
-                                <InputBase
-                                    value={this.state.searchValue}
-                                    onChange={this.filterList}
-                                    placeholder="Wyszukaj.."
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                />
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
 
                 <Grid container alignItems={"flex-start"} justify={"flex-start"} className={classes.paper}>
 
@@ -396,133 +713,23 @@ class Bestiary extends React.Component {
 
 
 
-                                    <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}
-                                                    key={key}>
-                                        <ExpansionPanelSummary expandIcon={<img
-                                            src={require("./../../../../img/icon/" + `${dynamicData.type}` + ".png")}
-                                            alt={"Dziki Zwirz"}
-                                            style={expandIcon}/>} key={key}>
-                                            {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
-                                            <Typography gutterBottom variant="h5"
-                                                        component="h5" key={key}>{dynamicData.name}</Typography>
-                                        </ExpansionPanelSummary>
-                                        <ExpansionPanelDetails>
-
-                                            <Grid container spacing={8} alignItems={"flex-start"}
-                                                  justify={"flex-start"}>
-                                                <Grid item xs={2}>
-                                                    <img
-                                                        // src={"/img/Books/Bestiary/mino.png"}
-                                                        //  src={require("./../../../../img/Beasts/" + `${dynamicData.imageName}` + ".png")}
-                                                         width={"100%"}
-                                                         height={"100%"}
-                                                         alt={"img"} key={key}/>
-                                                </Grid>
-                                                <Grid item xs={3}>
-
-                                                    <Typography>
-                                                        {dynamicData.description}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item xs={7}>
-                                                    <Paper classes={{root: classes.tableHeader}}>
-                                                        Cechy Główne:
-                                                    </Paper>
-                                                    <Table>
-                                                        <TableBody>
-
-                                                            <TableRow key={-1}>
+                                <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}
+                                                key={key}>
+                                    <ExpansionPanelSummary expandIcon={<img
+                                        src={require("./../../../../img/icon/" + `${dynamicData.type}` + ".png")}
+                                        alt={""}
+                                        style={expandIcon}/>} key={key}>
+                                        {/* TODO Ikona winna sie zmieniac wraz z pochodzeniam danego stwora i.e wilk - wildLife, kapra demon - demonIcon, chtulu - mutantIcon */}
+                                        <Typography gutterBottom variant="h5"
+                                                    component="h5" key={key}>{dynamicData.name}</Typography>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails>
+                                        {mobile === false ? this.showDesktop(dynamicData, classes, key) : this.showMobile(dynamicData, classes, key)}
 
 
-
-                                                                {dynamicData.traits.slice(0,8).map((trait,traitKey)=>(
-                                                                <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
-                                                                ))}
-
-
-                                                            </TableRow>
-
-                                                            <TableRow key={key}>
-                                                                {dynamicData.traits.slice(0,8).map((trait,traitKey)=>(
-                                                                    <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
-                                                                ))}
-
-
-
-                                                            </TableRow>
-
-
-                                                        </TableBody>
-                                                    </Table>
-
-
-                                                    <Paper classes={{root: classes.tableHeader}}>
-                                                        Cechy Drugorzędne:
-                                                    </Paper>
-                                                    <Table>
-
-                                                        <TableBody>
-
-                                                            <TableRow key={-1}>
-                                                                {dynamicData.traits.slice(8,16).map((trait,traitKey)=>(
-                                                                    <CustomTableCell key={traitKey}>{trait.first}</CustomTableCell>
-                                                                ))}
-
-
-                                                            </TableRow>
-                                                            <TableRow key={key + 1}>
-                                                                {dynamicData.traits.slice(8,16).map((trait,traitKey)=>(
-                                                                    <CustomTableCell key={traitKey}>{trait.second}</CustomTableCell>
-                                                                ))}
-
-
-                                                            </TableRow>
-
-
-                                                        </TableBody>
-                                                    </Table>
-
-                                                    <Grid container spacing={8}>
-                                                        <Grid item xs={4}>
-                                                            <Typography>
-                                                                <b>Ekwipunek:</b><br/>
-                                                                {dynamicData.armors}<br/>
-                                                                {dynamicData.weapons}<br/>
-                                                                {dynamicData.items}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={4}>
-                                                            <Typography>
-                                                                <b>Umiejetności:</b><br/>
-                                                                {dynamicData.skills.map((skill) => {
-                                                                    return (skill.name)
-                                                                })
-
-                                                                }
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={4}>
-                                                            <Typography>
-                                                                <b>Zdolności:</b><br/>
-                                                                {dynamicData.abilities.map((ability) => {
-                                                                    return (ability.name)
-                                                                })
-
-                                                                }
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                    <Typography>
-                                                        <b>Zasady Specialne:</b>
-                                                        {dynamicData.specialRules}
-                                                    </Typography>
-                                                </Grid>
-
-                                            </Grid>
-
-                                        </ExpansionPanelDetails>
-                                    </ExpansionPanel>
-                                ))}
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
+                            ))}
                         </LazyLoad>
                     </Grid>
 

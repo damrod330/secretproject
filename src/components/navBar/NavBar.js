@@ -187,6 +187,65 @@ class NavBar extends React.Component {
             isSm = false;
         }
 
+        let menu =
+            <Paper className={classes.trans}>
+                {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
+                <MenuList className={classes.banner}>
+                    <MenuItem className={classes.menuItem}>Profile</MenuItem>
+                    <MenuItem className={classes.menuItem}>My account</MenuItem>
+
+                    <List className={classes.menuItem}>
+                        <ListItem button onClick={this.handleClick}>
+                            <ListItemText primary="Przedmioty"/>
+                            {this.state.nestItemOpen ? <ExpandLess/> : <ExpandMore/>}
+                        </ListItem>
+                        <Collapse in={this.state.nestItemOpen} timeout="auto" unmountOnExit>
+                            <List disablePadding className={classes.menuItem}>
+                                <ListItem button onClick={()=>{this.props.callBackFromChildren(0) }}>
+
+                                    {/*<img src={ArmoryIcon} alt={"Armory"} className={classes.icons}/>*/}
+
+                                    <ListItemText primary="Zbrojownia"/>
+                                </ListItem>
+                                <ListItem button onClick={()=>{this.props.callBackFromChildren(1) }}>
+
+                                    {/*<img src={BestiaryIcon} alt={"Bestiary"}*/}
+                                    {/*className={classes.icons}/>*/}
+                                    <ListItemText primary="Bestiariusz"/>
+                                </ListItem>
+                                <ListItem button onClick={()=>{this.props.callBackFromChildren(2) }}>
+
+                                    {/*<img src={SpellsIcon} alt={"Spells"} className={classes.icons}/>*/}
+
+                                    <ListItemText primary="Księga Zaklęć" />
+                                </ListItem>
+                                <ListItem button onClick={()=>{this.props.callBackFromChildren(3) }}>
+                                    {/*<img src={MutationsIcon} alt={"Mutations"}*/}
+                                    {/*className={classes.icons}/>*/}
+                                    <ListItemText primary="Mutacje"/>
+                                </ListItem>
+                                <ListItem button onClick={this.handleMap}>
+                                    <ListItemText primary="Mapa"/>
+                                    {this.state.openMap ? <NewWindow copyStyles={true} onUnload={this.handleUnMap} url={"http://localhost:8080/"}/> : null}
+
+                                </ListItem>
+                            </List>
+                        </Collapse>
+                    </List>
+
+
+                    <MenuItem className={classes.menuItem}>Logout</MenuItem>
+                    <MenuItem className={classes.menuItem}>Mapa</MenuItem>
+
+
+                    {/*<Button disabled className={classes.button}> </Button>/!*invisible sign to keep error away*!/*/}
+
+
+                </MenuList>
+
+                {/*</ClickAwayListener>*/}
+            </Paper>;
+
 
         return (
 
@@ -204,63 +263,8 @@ class NavBar extends React.Component {
                             style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
                             timeout={{enter: 1000}}
                         >
-                            <Paper className={classes.trans}>
-                                {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
-                                <MenuList className={classes.banner}>
-                                    <MenuItem className={classes.menuItem}>Profile</MenuItem>
-                                    <MenuItem className={classes.menuItem}>My account</MenuItem>
 
-                                    <List className={classes.menuItem}>
-                                        <ListItem button onClick={this.handleClick}>
-                                            <ListItemText primary="Przedmioty"/>
-                                            {this.state.nestItemOpen ? <ExpandLess/> : <ExpandMore/>}
-                                        </ListItem>
-                                        <Collapse in={this.state.nestItemOpen} timeout="auto" unmountOnExit>
-                                            <List disablePadding className={classes.menuItem}>
-                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(0) }}>
-
-                                                    {/*<img src={ArmoryIcon} alt={"Armory"} className={classes.icons}/>*/}
-
-                                                    <ListItemText primary="Zbrojownia"/>
-                                                </ListItem>
-                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(1) }}>
-
-                                                    {/*<img src={BestiaryIcon} alt={"Bestiary"}*/}
-                                                    {/*className={classes.icons}/>*/}
-                                                    <ListItemText primary="Bestiariusz"/>
-                                                </ListItem>
-                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(2) }}>
-
-                                                    {/*<img src={SpellsIcon} alt={"Spells"} className={classes.icons}/>*/}
-
-                                                    <ListItemText primary="Księga Zaklęć" />
-                                                </ListItem>
-                                                <ListItem button onClick={()=>{this.props.callBackFromChildren(3) }}>
-                                                    {/*<img src={MutationsIcon} alt={"Mutations"}*/}
-                                                    {/*className={classes.icons}/>*/}
-                                                    <ListItemText primary="Mutacje"/>
-                                                </ListItem>
-                                                <ListItem button onClick={this.handleMap}>
-                                                    <ListItemText primary="Mapa"/>
-                                                    {this.state.openMap ? <NewWindow copyStyles={true} onUnload={this.handleUnMap} url={"http://localhost:8080/"}/> : null}
-
-                                                </ListItem>
-                                            </List>
-                                        </Collapse>
-                                    </List>
-
-
-                                    <MenuItem className={classes.menuItem}>Logout</MenuItem>
-                                    <MenuItem className={classes.menuItem}>Mapa</MenuItem>
-
-
-                                    {/*<Button disabled className={classes.button}> </Button>/!*invisible sign to keep error away*!/*/}
-
-
-                                </MenuList>
-
-                                {/*</ClickAwayListener>*/}
-                            </Paper>
+                            {menu}
 
                         </Slide>
 
@@ -321,28 +325,13 @@ class NavBar extends React.Component {
                         <div
                             tabIndex={0}
                             role="button"
-                            onClick={this.toggleDrawer('left', false)}
-                            onKeyDown={this.toggleDrawer('left', false)}
-                            className={classes.banner}
+                            // onClick={this.toggleDrawer('left', false)}
+                            // onKeyDown={this.toggleDrawer('left', false)}
                         >
 
-                            <div className={classes.list}>
-                                <List>
-                                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                                        <ListItem button key={text}>
-                                            <ListItemText primary={text}/>
-                                        </ListItem>
-                                    ))}
-                                </List>
-                                <Divider/>
-                                <List>
-                                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                                        <ListItem button key={text}>
-                                            <ListItemText primary={text}/>
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </div>
+
+                                {menu}
+
                         </div>
                     </SwipeableDrawer>
                     : null}
