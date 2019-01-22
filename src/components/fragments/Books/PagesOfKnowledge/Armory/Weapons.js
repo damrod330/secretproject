@@ -7,7 +7,7 @@ import "./../../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
-import frontPaper from './../../../../../img/dist/paper/linedpaper.png'
+import frontPaper from './../../../../../img/dist/paper/white_paperboard.png'
 import {compose} from "recompose";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';

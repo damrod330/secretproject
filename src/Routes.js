@@ -27,27 +27,27 @@ class Routers extends React.Component {
     }
 
     render() {
+        let routes;
 
-        let routes = (
-            <Switch>
-                <Route path="/login" exact component={LoginPage} />
-                <Redirect to="/login" />
-            </Switch>
-        );
         if (this.props.isAuthenticated) {
             routes = (
                 <Switch>
-                    <Route path="/character" component={CharacterPage} />
+                    <Route path="/character" exact component={CharacterPage} />
                     <Route path="/" exact component={MainLayout} />
                     <Redirect to="/" />
+                </Switch>
+            );
+        } else {
+            routes = (
+                <Switch>
+                    <Route path="/" component={LoginPage} />  
                 </Switch>
             );
         }
 
         return (
-            <div>
-                {routes}
-            </div>
+            <div>{routes}</div>
+                
         );
     }
 }

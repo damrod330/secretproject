@@ -20,7 +20,7 @@ body {
     z-index: 1;
     top: 0;
     right: 0;
-    background-color: #111;
+    background-image: url('../img/dist/paper/black_paper.png');
     overflow-x: hidden;
     padding-top: 20px;
     width: 300px;
