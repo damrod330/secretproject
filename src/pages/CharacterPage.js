@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HeroCard from '../components/fragments/HeroCard'
 import Grid from '@material-ui/core/Grid';
-import {url} from '../Constants';
+import axios from '../axios';
 import SideNav from '../components/SideNav';
 import '../styles/main.css';
 
@@ -14,18 +14,10 @@ class CharacterCard extends Component {
     }
 
     componentDidMount(){
-        fetch(url + "/weapons", {
-            method: 'GET',
-            // headers: header,
-            credentials: 'same-origin'
-        }).then(res => res.json())
-        .then(weapons => {
-            // console.log("sukces");
-            // console.log(weapons);
-        })
-        .catch(err => {
-            // console.log("error");
-            // console.log(err);
+        axios.get("/weapons").then(res=>{
+
+        }).catch(error=>{
+            
         });
     }
 

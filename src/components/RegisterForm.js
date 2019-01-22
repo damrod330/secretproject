@@ -160,7 +160,7 @@ class RegisterForm extends Component {
                 />
 
                 <Button type="submit" variant="contained" color="secondary"> Zarejestruj się</Button>
-                <p>Masz konto? <a href="" onClick={this.handleOnLoginClicked.bind(this)}>Przejdź do logowania.</a></p>
+                <p>Masz konto? <a href="#" onClick={this.handleOnLoginClicked.bind(this)}>Przejdź do logowania.</a></p>
             </form>
         );
     }

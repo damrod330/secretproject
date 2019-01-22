@@ -64,7 +64,6 @@ class HeroCard extends Component {
             }
         }
 
-        console.log("jestem pojebany");
         return (
             <div className="paper-card">
                 <div className="paper-card-title">
