@@ -76,7 +76,7 @@ class Armory extends React.Component {
                     <Tab icon={<img src={WeaponIcon} alt={"Bestiary"} className={"icons"}/>} />
                 </Tabs>
 
-                {/* {value === 0 && <TabContainer> <Armors/> </TabContainer>} */}
+                {value === 0 && <TabContainer> <Armors/> </TabContainer>}
                 {value === 1 && <TabContainer> <Weapons/> </TabContainer>}
 
 
