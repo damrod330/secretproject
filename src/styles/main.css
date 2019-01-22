@@ -1,4 +1,8 @@
+@import url("https://fonts.googleapis.com/css?family=Patrick+Hand");
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+
 body {
+    font-family: 'Montserrat', sans-serif;
     background: url('../img/dist/main-bg-blur.jpg')no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -30,6 +34,46 @@ body {
 .side-nav-logo {
     width:100%;
 }
+
+.side-nav-menu {
+    min-height: 600px;
+    margin:12px;
+    padding:32px;
+    background:  url('../img/dist/menu-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.side-nav-menu ul {
+    list-style-type:none;
+    margin: 0px;
+    padding: 0px;
+    text-align:left;
+}
+
+.side-nav-menu ul li {
+    text-transform: uppercase;
+    font-family: 'Patrick Hand', cursive;
+    color:#efefef;
+    font-weight: 300;
+    font-size: 24px;
+    transition: background-color 0.3s ease;
+    padding:8px 32px;
+    border-bottom: 1px dotted #8b0000;
+}
+
+.side-nav-menu ul li:hover {
+    cursor: pointer;
+    background-color: #8b000088;
+    color:whitesmoke;
+    border-right: 4px solid whitesmoke;
+}
+
+.side-nav-menu ul .link{
+    all: unset;
+}
+
+
 
 .logo-img{
     position:fixed;
@@ -69,7 +113,6 @@ body {
     background-color: #0a0a0aea;
     text-transform: uppercase;
     font-weight: bold;
-    font-family: 'Times New Roman', Times, serif;
     color: white;
 }
 

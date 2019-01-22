@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-
-import '../styles/main.css';
-import logo from '../img/dist/logo.png';
 import HeroCard from '../components/fragments/HeroCard'
 import Grid from '@material-ui/core/Grid';
 import {url} from '../Constants';
+import SideNav from '../components/SideNav';
+import '../styles/main.css';
 
 
 class CharacterCard extends Component {
@@ -40,7 +39,8 @@ class CharacterCard extends Component {
                     </Grid>
                 </Grid>
                 </div>
-                <div className="side-nav"><img src={logo} className="side-nav-logo" /></div>
+                <SideNav/>
+
             </div>
         );
     }
