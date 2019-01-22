@@ -15,7 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from "@material-ui/core/es/Divider/Divider";
 import {compose} from "recompose";
-import Banner from "../../img/menu-bg.png"
+import Banner from "../../img/dist/menu-bg.png"
 import NewWindow from 'react-new-window'
 import Collapse from '@material-ui/core/Collapse';
 import ListItemIcon from '@material-ui/core/ListItemIcon';

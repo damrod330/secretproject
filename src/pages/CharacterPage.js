@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import '../styles/main.css';
-import logo from '../img/logo.png';
+import logo from '../img/dist/logo.png';
 import HeroCard from '../components/fragments/HeroCard'
 import Grid from '@material-ui/core/Grid';
 import {url} from '../Constants';

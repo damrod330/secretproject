@@ -1,5 +1,5 @@
 body {
-    background: url('../img/main-bg.jpg')no-repeat center center fixed;
+    background: url('../img/dist/main-bg-blur.jpg')no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -39,7 +39,7 @@ body {
 }
 
 .paper-card {
-    background-image: url('../img/paper-texture-alt.jpg');
+    background-image: url('../img/dist/paper/exclusive_paper.png');
     border-radius: 4px;
     -webkit-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);

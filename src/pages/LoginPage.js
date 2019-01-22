@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import '../styles/main.css';
-import logo from '../img/logo.png'
+import logo from '../img/dist/logo.png'
 
 import RegisterForm from '../components/RegisterForm';
 import LoginForm from '../components/LoginForm';
