@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 class SideNav extends Component {
 
     state = {
-        currentActive: '/'
+        currentPath: window.location.href.substring(window.location.href.lastIndexOf('/'))
     }
 
     handleLogout = () => {
@@ -19,16 +19,22 @@ class SideNav extends Component {
     }
 
     render() {
+
+        const createMenuItem = (path, label)=>{
+            return <Link to={path} className="link"><li className={this.state.currentPath == path ? "active" : null}>{label}</li></Link>
+        }
+
         return (
             <div className="side-nav">
                 <img src={logo} className="side-nav-logo" />
                 <div className="side-nav-menu">
                     <ul>
-                        <Link to={"/"} className="link"><li className="active">Karta postaci</li></Link>
-                        <Link to={"/armory"} className="link"><li>Zbrojownia</li></Link>
-                        <Link to={"/bestiary"} className="link"><li>Bestiariusz</li></Link>
-                        <Link to={"/spells"} className="link"><li>Księga zaklęć</li></Link>
-                        <Link to={"/mutations"} className="link"><li>Mutacje</li></Link>
+                        {createMenuItem("/character", "Karta postaci")}
+                        {createMenuItem("/equipment", "Ekwipunek")}
+                        {createMenuItem("/armory", "Zbrojownia")}
+                        {createMenuItem("/bestiary", "Bestiariusz")}
+                        {createMenuItem("/spells", "Księga zaklęć")}
+                        {createMenuItem("/mutations", "Mutacje")}
                         <Link to={"/"} className="link"><li onClick={this.handleLogout}>Wyloguj się</li></Link>
                     </ul>
                 </div>

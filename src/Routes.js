@@ -10,6 +10,7 @@ import Bestiary from "./components/fragments/Books/PagesOfKnowledge/Bestiary";
 import Armory from './components/fragments/Books/PagesOfKnowledge/Armory';
 import Mutations from "./components/fragments/Books/PagesOfKnowledge/Mutations";
 import Spells from "./components/fragments/Books/PagesOfKnowledge/Spells";
+import EquipmentPage from './pages/EquipmentPage';
 
 
 
@@ -36,7 +37,8 @@ class Routers extends React.Component {
         if (this.props.isAuthenticated) {
             routes = (
                 <Switch>
-                    <Route path="/" exact component={CharacterPage} />
+                    <Route path="/character" exact component={CharacterPage} />
+                    <Route path="/equipment" exact component={EquipmentPage} />
 
                     <MainLayout>
                         <Route path="/bestiary" exact component={Bestiary}/>
@@ -45,7 +47,7 @@ class Routers extends React.Component {
                         <Route path="/spells" exact component={Spells}/>
                     </MainLayout>
 
-                    <Redirect to="/" />
+                    <Redirect to="/character" />
                 </Switch>
             );
         } else {

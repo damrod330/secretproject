@@ -57,7 +57,7 @@ body {
 .side-nav-menu ul li {
     text-transform: uppercase;
     font-family: 'Patrick Hand', cursive;
-    color: #efefef;
+    color: whitesmoke;
     font-weight: 300;
     font-size: 22px;
     transition: background-color 0.3s ease;
@@ -72,10 +72,9 @@ body {
     border-right: 4px solid whitesmoke;
 }
 
-.active {
-    background-color: #8b0000EE;
+.side-nav-menu .active {
+    background-color: #8b000056;
     color: whitesmoke;
-    border-right: 4px solid whitesmoke;
 }
 
 .side-nav-menu ul .link {
