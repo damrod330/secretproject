@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import HeroCard from '../components/fragments/HeroCard'
+import HeroTraits from '../components/fragments/HeroTraits'
 import Grid from '@material-ui/core/Grid';
 import axios from '../axios';
 import SideNav from '../components/SideNav';
 import '../styles/main.css';
+import './CharacterPage.css';
 
 
-class CharacterCard extends Component {
+class CharacterPage extends Component {
 
     constructor() {
         super();
@@ -29,6 +31,9 @@ class CharacterCard extends Component {
                     <Grid item xs={12} sm={6} md={4}>
                         <HeroCard />
                     </Grid>
+                    <Grid item xs={6} sm={4} md={3}>
+                        <HeroTraits />
+                    </Grid>
                 </Grid>
                 </div>
                 <SideNav/>
@@ -38,4 +43,4 @@ class CharacterCard extends Component {
     }
 }
 
-export default CharacterCard;
+export default CharacterPage;

@@ -10,10 +10,20 @@ import { Link } from 'react-router-dom';
 
 class SideNav extends Component {
 
-
+    state = {
+        currentActive: '/'
+    }
 
     handleLogout = () => {
         this.props.onLogout();
+    }
+
+
+    handleLinkClicked(e){
+        console.log(e.target);
+        console.log(e.target.classList);
+        e.target.classList.add("active");
+        console.log(this);
     }
 
     render() {
@@ -21,7 +31,7 @@ class SideNav extends Component {
             <div className="side-nav">
                 <img src={logo} className="side-nav-logo" />
                 <div className="side-nav-menu">
-                    <ul>
+                    <ul onClick={e=>this.handleLinkClicked(e)}>
                         <Link to={"/character"} className="link"><li>Karta postaci</li></Link>
                         <Link to={"/"} className="link"><li>Profil</li></Link>
                         <Link to={"/"} className="link"><li>Zbrojownia</li></Link>

@@ -9,7 +9,7 @@ class HeroCard extends Component {
     state = {
         name: 'Jon\'athrin Mull',
         race: 'Elf',
-        currentProfession: 'Wojownik Klanowy',
+        currentProfession: "Wojownik klanowy",
         previousProfession: 'brak',
         age: '52',
         gender: 'mężczyzna',
@@ -20,7 +20,7 @@ class HeroCard extends Component {
         starSign: 'brak',
         siblings: 'brak',
         placeOfBirth: 'Wielki Las',
-        specialCharactersOfAppearance: 'Nadgryzione prawe ucho.'
+        specialCharactersOfAppearance: 'Nadgryzione prawe ucho.',
     }
 
     labels = {

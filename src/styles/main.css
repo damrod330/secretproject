@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Patrick+Hand");
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 
+/* BODY */
 body {
     font-family: 'Montserrat', sans-serif;
-    background: url('../img/dist/main-bg-blur.jpg')no-repeat center center fixed;
+    background: url('../img/dist/main-bg.jpg')no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -12,12 +13,13 @@ body {
     margin: 0px;
 }
 
+/* CONTAINER */
 .container {
     margin-left: 300px;
     padding: 32px;
 }
 
-
+/* SIDE NAVIGATION */
 .side-nav {
     position: fixed;
     z-index: 1;
@@ -55,9 +57,9 @@ body {
     font-family: 'Patrick Hand', cursive;
     color:#efefef;
     font-weight: 300;
-    font-size: 24px;
+    font-size: 22px;
     transition: background-color 0.3s ease;
-    padding:8px 32px;
+    padding:8px 24px;
     border-bottom: 1px dotted #8b0000;
 }
 
@@ -68,11 +70,15 @@ body {
     border-right: 4px solid whitesmoke;
 }
 
+.active {
+    background-color: #8b0000EE;
+    color:whitesmoke;
+    border-right: 4px solid whitesmoke;
+}
+
 .side-nav-menu ul .link{
     all: unset;
 }
-
-
 
 .logo-img{
     position:fixed;
@@ -81,7 +87,9 @@ body {
     width:300px;
 }
 
+/* CARDS */
 .paper-card {
+    color: black;
     background-image: url('../img/dist/paper/exclusive_paper.png');
     border-radius: 4px;
     -webkit-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
@@ -89,6 +97,46 @@ body {
     box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
 }
 
+.paper-card-dark {
+    color: white;
+    background-image: url('../img/dist/paper/black_paper.png');
+    border-radius: 4px;
+    -webkit-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
+    box-shadow: 8px 10px 39px 10px rgba(0, 0, 0, 0.75);
+}
+
+.paper-card-body {
+    padding: 42px;
+}
+
+.paper-card .paper-card-title {
+    padding:8px;
+    background-image: url(../img/dist/paper/black_paper.png);
+    text-transform: uppercase;
+    font-weight: 500;
+    color: whitesmoke;
+}
+
+.paper-card-dark .paper-card-title {
+    padding:8px;
+    background-image: url(../img/dist/paper/exclusive_paper.png);
+    text-transform: uppercase;
+    font-weight: 500;
+    color: black;
+}
+
+.paper-card-title h2 {
+    margin: 0px;
+}
+
+.paper-card-body-sm {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* LOGIN CARD */
 #login-card {
     margin: 140px auto;
     max-width: 460px;
@@ -103,31 +151,9 @@ body {
     margin-top: 32px;
 }
 
-.paper-card .paper-card-body {
-    padding: 42px;
-}
-
-.paper-card .paper-card-title {
-    padding:8px;
-    background-image: url(../img/dist/paper/black_paper.png);
-    text-transform: uppercase;
-    font-weight: 500;
-    color: whitesmoke;
-}
-
-.paper-card .paper-card-title h2 {
-    margin: 0px;
-}
-
-.paper-card .paper-card-body-sm {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* scrollbar (chrome) */
+/* SCROLLBAR (chrome) */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
 }
  
 ::-webkit-scrollbar-track {
