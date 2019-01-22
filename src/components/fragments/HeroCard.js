@@ -69,7 +69,7 @@ class HeroCard extends Component {
                 <div className="paper-card-title">
                     <h2>Bohater</h2>
                 </div>
-                <div className="paper-card-body-sm">
+                <div className="paper-card-body">
                     <Grid container spacing={8}>
                         {textField.map((textField)=>{return textField})}
                         {/* {createTextField("name")}

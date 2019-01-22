@@ -1,0 +1,31 @@
+@import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+ul.traits  {
+    margin:0px;
+    padding:0px;
+}
+ul.traits li {
+    padding: 6px;
+    display: flex;
+    flex-direction: row ;
+    justify-content: space-between;
+    align-content:center;
+    align-items: center;
+}
+
+ul.traits .value {
+    width: 150px;
+    background:whitesmoke;
+    display: flex;
+    align-content:center;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row ;
+    font-weight: bolder;
+}
+
+
+ul.traits .label {
+    font-size: 12px;
+    color: #323432;
+}

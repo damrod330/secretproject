@@ -36,16 +36,15 @@ class Routers extends React.Component {
         if (this.props.isAuthenticated) {
             routes = (
                 <Switch>
-                    <Route path="/character" exact component={CharacterPage} />
+                    <Route path="/" exact component={CharacterPage} />
 
                     <MainLayout>
-                        <Route path="/"/>
                         <Route path="/bestiary" exact component={Bestiary}/>
                         <Route path="/armory" exact component={Armory}/>
                         <Route path="/mutations" exact component={Mutations}/>
                         <Route path="/spells" exact component={Spells}/>
-
                     </MainLayout>
+
                     <Redirect to="/" />
                 </Switch>
             );

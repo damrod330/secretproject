@@ -18,27 +18,17 @@ class SideNav extends Component {
         this.props.onLogout();
     }
 
-
-    handleLinkClicked(e){
-        console.log(e.target);
-        console.log(e.target.classList);
-        e.target.classList.add("active");
-        console.log(this);
-    }
-
     render() {
         return (
             <div className="side-nav">
                 <img src={logo} className="side-nav-logo" />
                 <div className="side-nav-menu">
-                    <ul onClick={e=>this.handleLinkClicked(e)}>
-                        <Link to={"/character"} className="link"><li>Karta postaci</li></Link>
-                        <Link to={"/"} className="link"><li>Profil</li></Link>
-                        <Link to={"/"} className="link"><li>Zbrojownia</li></Link>
-                        <Link to={"/"} className="link"><li>Bestiariusz</li></Link>
-                        <Link to={"/"} className="link"><li>Księga zaklęć</li></Link>
-                        <Link to={"/"} className="link"><li>Mutacje</li></Link>
-                        <Link to={"/"} className="link"><li>Mapa</li></Link>
+                    <ul>
+                        <Link to={"/"} className="link"><li className="active">Karta postaci</li></Link>
+                        <Link to={"/armory"} className="link"><li>Zbrojownia</li></Link>
+                        <Link to={"/bestiary"} className="link"><li>Bestiariusz</li></Link>
+                        <Link to={"/spells"} className="link"><li>Księga zaklęć</li></Link>
+                        <Link to={"/mutations"} className="link"><li>Mutacje</li></Link>
                         <Link to={"/"} className="link"><li onClick={this.handleLogout}>Wyloguj się</li></Link>
                     </ul>
                 </div>
