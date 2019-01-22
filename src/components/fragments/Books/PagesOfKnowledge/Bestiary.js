@@ -2,17 +2,17 @@ import React from "react";
 import Paper from "@material-ui/core/es/Paper/Paper";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
-import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
 import frontPaper from './../../../../img/dist/paper/linedpaper.png'
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import {compose} from "recompose";
+import { compose } from "recompose";
 import DemonIcon from './../../../../img/icon/demons2.png';
 import DemonBorderIcon from './../../../../img/icon/demons2Border.png';
 import WildLifeIcon from './../../../../img/icon/wildlifeicon.png';
@@ -29,9 +29,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import InputBase from "@material-ui/core/es/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
-import {fade} from '@material-ui/core/styles/colorManipulator';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import LazyLoad from 'react-lazyload';
-import {url} from '../../../../Constants'
+import { url } from '../../../../Constants'
+
+import axios from '../../../../axios';
 
 const styles = theme => ({
     paper: {
@@ -144,14 +146,12 @@ class Bestiary extends React.Component {
         filteredBeasts: [],
         filteredBeastsAfterSearch: [],
         searchValue: "",
-        mobile: false,
-
-
+        mobile: false
     };
 
 
     handleChange = event => {
-        this.setState({value: event.target.value});
+        this.setState({ value: event.target.value });
         this.showBeasts(event.target.value);
         this.setState({
             searchValue: ""
@@ -159,24 +159,35 @@ class Bestiary extends React.Component {
     };
 
     componentDidMount() {
-        fetch(url + "/creatures", {
-            method: 'GET',
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
-            this.setState({
-                beasts: findresponse,
-            })
-        }).then(() => {
-            this.filterBeasts();
+        // fetch(url + "/creatures", {
+        //     method: 'GET',
+        //     headers: header,
+        //     credentials: 'same-origin'
+        // }).then((Response) => Response.json()).then((findresponse) => {
+        //     this.setState({
+        //         beasts: findresponse,
+        //     })
+        // }).then(() => {
+        //     this.filterBeasts();
 
-        }).then(() => {
-            this.showBeasts(this.state.value);
-            this.setState({
-                filteredBeastsAfterSearch: this.state.filteredBeasts
+        // }).then(() => {
+        //     this.showBeasts(this.state.value);
+        //     this.setState({
+        //         filteredBeastsAfterSearch: this.state.filteredBeasts
 
-            })
-        })
+        //     })
+        // })
+
+        axios.get('/creatures')
+            .then(res => {
+                this.setState({ beasts: res.data });
+                this.filterBeasts();
+                this.showBeasts(this.state.value);
+                this.setState({
+                    filteredBeastsAfterSearch: this.state.filteredBeasts
+
+                });
+            });
     }
 
     filterList = event => {
@@ -190,12 +201,10 @@ class Bestiary extends React.Component {
 
         });
         this.setState({filteredBeastsAfterSearch: filteredList})
-
     };
 
     componentWillMount() {
         this.setState({filteredBeastsAfterSearch: this.state.filteredBeasts})
-
     }
 
     filterBeasts() {
@@ -204,8 +213,6 @@ class Bestiary extends React.Component {
                 case "DEMON": {
 
                     return this.state.demons.push(beast);
-
-
                 }
                 case "MUTANT": {
                     return this.state.mutants.push(beast);
@@ -317,8 +324,6 @@ class Bestiary extends React.Component {
 
 
                         </TableRow>
-
-
                     </TableBody>
                 </Table>
 
@@ -374,7 +379,6 @@ class Bestiary extends React.Component {
                             {dynamicData.abilities.map((ability) => {
                                 return (ability.name)
                             })
-
                             }
                         </Typography>
                     </Grid>
@@ -513,8 +517,6 @@ class Bestiary extends React.Component {
             height: 64,
             width: 64
         };
-
-
         if (isWidthDown('md', width)) {
 
             sortIcon = {
@@ -725,8 +727,6 @@ class Bestiary extends React.Component {
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails>
                                         {mobile === false ? this.showDesktop(dynamicData, classes, key) : this.showMobile(dynamicData, classes, key)}
-
-
                                     </ExpansionPanelDetails>
                                 </ExpansionPanel>
                             ))}

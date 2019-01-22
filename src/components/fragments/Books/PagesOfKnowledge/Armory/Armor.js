@@ -20,6 +20,7 @@ import TableHead from '@material-ui/core/TableHead';
 import {url} from '../../../../../Constants'
 import LazyLoad from 'react-lazyload';
 
+import axios from '../../../../../axios';
 const styles = theme => ({
     paper: {
         //   fontFamily:"Garamond",
@@ -217,26 +218,37 @@ class Armor extends React.Component {
     };
 
     componentDidMount() {
-        fetch(url + "/armors", {
-            method: 'GET',
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
-            this.setState({
-                armors: findresponse,
-            })
+        // fetch(url + "/armors", {
+        //     method: 'GET',
+        //     headers: header,
+        //     credentials: 'same-origin'
+        // }).then((Response) => Response.json()).then((findresponse) => {
+        //     this.setState({
+        //         armors: findresponse,
+        //     })
 
-        }).then(() => {
-            this.state.armors.map((dynamicData) => (
-                this.addToAccordingTable(dynamicData.type, dynamicData)
-            ))
+        // }).then(() => {
+        //     this.state.armors.map((dynamicData) => (
+        //         this.addToAccordingTable(dynamicData.type, dynamicData)
+        //     ))
 
 
-        }).then(() => {
-            this.setState({
-                tables: this.renderTables(this.props)
-            })
-        });
+        // }).then(() => {
+        //     this.setState({
+        //         tables: this.renderTables(this.props)
+        //     })
+        // });
+
+        axios.get('/armors')
+            .then(res => {
+                this.setState({armors: res.data});
+                this.state.armors.map((dynamicData) => (
+                    this.addToAccordingTable(dynamicData.type, dynamicData)
+                ));
+                this.setState({
+                    tables: this.renderTables(this.props)
+                });
+            });
     }
 
     handleChange = event => {
@@ -284,7 +296,6 @@ class Armor extends React.Component {
 
 
         return (
-
 
             <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}} key={mainKey}>
                 <ExpansionPanelSummary key={1}>

@@ -2,7 +2,7 @@ import React from "react";
 import Paper from "@material-ui/core/es/Paper/Paper";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
@@ -12,7 +12,7 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import {compose} from "recompose";
+import { compose } from "recompose";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -22,17 +22,19 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import InputBase from "@material-ui/core/es/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
-import {fade} from '@material-ui/core/styles/colorManipulator';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import Divider from "@material-ui/core/Divider";
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Button from "@material-ui/core/Button";
 import LazyLoad from 'react-lazyload';
-import {url} from '../../../../Constants'
+import { url } from '../../../../Constants'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+
+import axios from '../../../../axios';
 
 
 const styles = theme => ({
@@ -226,19 +228,19 @@ class Mutations extends React.Component {
     };
 
     handleAllowTable = name => event => {
-        this.setState({[name]: event.target.checked});
+        this.setState({ [name]: event.target.checked });
     };
     handleOpenModalTable = () => {
-        this.setState({openAddModalTable: true})
+        this.setState({ openAddModalTable: true })
 
     };
     handleModalAdd = (name) => event => {
 
         this.setState({
-                addMutation:{
-                    ...this.state.addMutation,
-                    [name]: event.target.value
-                }
+            addMutation: {
+                ...this.state.addMutation,
+                [name]: event.target.value
+            }
 
 
 
@@ -250,7 +252,7 @@ class Mutations extends React.Component {
         })
     };
     openAddModal = () => {
-        this.setState({openAddModal: true})
+        this.setState({ openAddModal: true })
 
     };
 
@@ -261,7 +263,7 @@ class Mutations extends React.Component {
             tableHeader: table
         });
     };
-    handlePushToTableBody = (j, i,D1Array,D2Array) => event => {
+    handlePushToTableBody = (j, i, D1Array, D2Array) => event => {
         console.log(j, i);
 
         D1Array = this.state.tableBody.slice();
@@ -275,19 +277,20 @@ class Mutations extends React.Component {
     };
     fromTableToPairs = () => {
         let table = {
-            first:"",
-            second:""
+            first: "",
+            second: ""
 
         };
 
-        for (let i=0;i<this.state.numberOfColumns;i++){
-            table.first=(this.state.tableHeader[i]);
-            table.second=(this.state.tableBody[i]);
+        for (let i = 0; i < this.state.numberOfColumns; i++) {
+            table.first = (this.state.tableHeader[i]);
+            table.second = (this.state.tableBody[i]);
 
             this.state.addMutation.table.push(table);
-            table={
-                first:"",
-                second:""};
+            table = {
+                first: "",
+                second: ""
+            };
         }
 
 
@@ -296,33 +299,47 @@ class Mutations extends React.Component {
         });
     };
 
-    fillAddMutations=()=>{
+    fillAddMutations = () => {
 
 
         this.setState({
             openAddModal: false
         });
+        // fetch(url + "/mutations", {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         name: this.state.addMutation.name,
+        //         type: this.state.addMutation.type,
+        //         description: this.state.addMutation.description,
+        //         godType: this.state.addMutation.godType,
+        //         ps: this.state.addMutation.ps,
+        //         roll: this.state.addMutation.roll,
+        //         comment: this.state.addMutation.comment,
+        //         variants: this.state.addMutation.variants,
+        //         table: this.state.addMutation.table,
+        //     }),
+        //     headers: header,
+        //     credentials: 'same-origin'
+        // }).then((Response) => Response.json()).then((findresponse) => {
+        //     this.setState({
 
+        //     })
+        // });
 
+        axios.post('/mutations', {
+            name: this.state.addMutation.name,
+            type: this.state.addMutation.type,
+            description: this.state.addMutation.description,
+            godType: this.state.addMutation.godType,
+            ps: this.state.addMutation.ps,
+            roll: this.state.addMutation.roll,
+            comment: this.state.addMutation.comment,
+            variants: this.state.addMutation.variants,
+            table: this.state.addMutation.table})
+            .then(res => {
 
-        fetch(url + "/mutations", {
-            method: 'POST',
-            body: JSON.stringify({
-                name: this.state.addMutation.name,
-                type: this.state.addMutation.type,
-                description: this.state.addMutation.description,
-                godType: this.state.addMutation.godType,
-                ps: this.state.addMutation.ps,
-                roll: this.state.addMutation.roll,
-                comment: this.state.addMutation.comment,
-                variants: this.state.addMutation.variants,
-                table: this.state.addMutation.table,
-            }),
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
+            });
 
-        });
     };
 
 
@@ -344,6 +361,7 @@ class Mutations extends React.Component {
                            margin="normal"
                            error
                            label={"Nagłówek: " + i}
+
                 />);
             for (let j = 0; j < nbrOfRows; j++) {
 
@@ -400,7 +418,7 @@ class Mutations extends React.Component {
     }
 
     handleChange = event => {
-        this.setState({value: event.target.value});
+        this.setState({ value: event.target.value });
         this.showMutations(event.target.value);
         this.setState({
             searchValue: ""
@@ -409,27 +427,38 @@ class Mutations extends React.Component {
     };
 
     componentDidMount() {
-        fetch(url + "/mutations", {
-            method: 'GET',
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
-            this.setState({
-                mutations: findresponse,
+        // fetch(url + "/mutations", {
+        //     method: 'GET',
+        //     headers: header,
+        //     credentials: 'same-origin'
+        // }).then((Response) => Response.json()).then((findresponse) => {
+        //     this.setState({
+        //         mutations: findresponse,
+        //     });
+
+        // }).then(() => {
+        //     this.filterMutations();
+
+        // }).then(() => {
+        //     this.showMutations(this.state.value);
+        //     this.setState({
+        //         filteredMutationsAfterSearch: this.state.filteredMutations
+
+        //     })
+        // })
+
+        axios.get('/mutations')
+            .then(res => {
+                this.setState({ mutations: res.data });
+                this.filterMutations();
+                this.showMutations(this.state.value);
+                this.setState({
+                    filteredMutationsAfterSearch: this.state.filteredMutations
+
+                });
             });
 
-        }).then(() => {
-            this.filterMutations();
 
-        }).then(() => {
-            this.showMutations(this.state.value);
-            this.setState({
-                filteredMutationsAfterSearch: this.state.filteredMutations
-
-            })
-
-
-        })
     }
 
 
@@ -474,12 +503,12 @@ class Mutations extends React.Component {
                 event.target.value.toString().toLowerCase()) !== -1;
 
         });
-        this.setState({filteredMutationsAfterSearch: filteredList})
+        this.setState({ filteredMutationsAfterSearch: filteredList })
 
     };
 
     componentWillMount() {
-        this.setState({filteredMutationsAfterSearch: this.state.filteredMutations})
+        this.setState({ filteredMutationsAfterSearch: this.state.filteredMutations })
 
     }
 
@@ -531,7 +560,7 @@ class Mutations extends React.Component {
 
         return (<Table key={key}>
             <TableHead key={key + "head"}>
-                <TableRow classes={{root: classes.tableShrink}} key={key}>
+                <TableRow classes={{ root: classes.tableShrink }} key={key}>
                     {dynamicData.table.map((table, keyHeader) => {
 
                         return (
@@ -549,12 +578,12 @@ class Mutations extends React.Component {
 
     generateBodyTable(Data, classes, key) {
         let mutationTable = this.fromPairsToRows(Data);
-        return (<TableBody classes={{root: classes.tableShrink}} key={key}>
+        return (<TableBody classes={{ root: classes.tableShrink }} key={key}>
 
 
             {mutationTable.map((row, rowKey) => (
 
-                <TableRow key={rowKey} classes={{root: classes.tableShrink}}>
+                <TableRow key={rowKey} classes={{ root: classes.tableShrink }}>
                     {row.map((item, itemKey) =>
 
                         <CustomTableCell key={itemKey}>
@@ -762,11 +791,11 @@ class Mutations extends React.Component {
                     </FormControl>
                     </Grid>
                 </Grid>
-
             </Grid>
             <Grid container justify={"center"}>
             <Grid item xs={12}>
                 <Grid container justify={"center"}>
+
 
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
@@ -782,6 +811,7 @@ class Mutations extends React.Component {
                             }}
                         />
                     </div>
+
                 </Grid>
             </Grid>
             </Grid>
@@ -800,8 +830,8 @@ class Mutations extends React.Component {
                             {this.state.filteredMutationsAfterSearch.map((dynamicData, key) => (
 
 
-                                <ExpansionPanel classes={{root: classes.paper, expanded: classes.expansionPanel}}
-                                                key={key}>
+                                <ExpansionPanel classes={{ root: classes.paper, expanded: classes.expansionPanel }}
+                                    key={key}>
                                     <ExpansionPanelSummary key={key}>
                                         <Grid container>
                                             <Grid item xs={10}>
@@ -824,8 +854,9 @@ class Mutations extends React.Component {
                                         {mobile===false? this.showForDesktop(dynamicData,classes,key): this.showForMobile(dynamicData,classes,key)}
 
 
+
                                     </ExpansionPanelDetails>
-                                    <Divider/>
+                                    <Divider />
                                     <ExpansionPanelActions>
                                         <Button size="small" color="primary">
                                             MUTUJ
@@ -838,7 +869,6 @@ class Mutations extends React.Component {
 
 
                 </Grid>
-
                 {fabVisible ? <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.openAddModal}>
                     <AddIcon/>
                 </Fab> : null}
@@ -846,6 +876,7 @@ class Mutations extends React.Component {
                 <Modal
                     disableBackdropClick
                     open={this.state.openAddModal}
+
                 >
                     <div className={classes.modal}>
                         <Typography variant="h6" id="modal-title">
@@ -901,6 +932,7 @@ class Mutations extends React.Component {
                                     </option>
                                 ))}
                             </TextField>
+
                                 <TextField
                                     select
                                     label="Bóstwo"
@@ -949,7 +981,7 @@ class Mutations extends React.Component {
                                         value="Tabela istnieje?"
                                     />
                                 }
-                                                  label={"Istnieje Tabela?"}/>
+                                    label={"Istnieje Tabela?"} />
                                 <TextField
                                     disabled={!this.state.allowTable}
                                     label="Liczba Nagłówków"
@@ -968,7 +1000,7 @@ class Mutations extends React.Component {
                                     margin="normal"
                                 />
                                 <Button size="large" color="primary" onClick={this.handleOpenModalTable}
-                                        disabled={!this.state.allowTable}>
+                                    disabled={!this.state.allowTable}>
                                     ¿Tabela?
                                 </Button>
                             </Grid>
