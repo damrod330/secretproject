@@ -20,6 +20,8 @@ import TableHead from '@material-ui/core/TableHead';
 import {url} from '../../../../../Constants'
 import LazyLoad from 'react-lazyload';
 
+import axios from '../../../../../axios';
+
 
 const styles = theme => ({
     paper: {
@@ -361,26 +363,39 @@ class Melee extends React.Component {
     }
 
     componentDidMount() {
-        fetch(url + "/weapons", {
-            method: 'GET',
-            headers: header,
-            credentials: 'same-origin'
-        }).then((Response) => Response.json()).then((findresponse) => {
-            this.setState({
-                weapons: findresponse,
+        // fetch(url + "/weapons", {
+        //     method: 'GET',
+        //     headers: header,
+        //     credentials: 'same-origin'
+        // }).then((Response) => Response.json()).then((findresponse) => {
+        //     this.setState({
+        //         weapons: findresponse,
+        //     })
+
+        // }).then(() => {
+        //     this.state.weapons.map((dynamicData) => (
+        //         this.addToAccordingTable(dynamicData.type, dynamicData)
+        //     ))
+
+
+        // }).then(() => {
+        //     this.setState({
+        //         tables: this.renderTables(this.props)
+        //     })
+        // });
+
+        axios.get("/weapons")
+            .then(res => {
+                this.setState({weapons: res.data});
+                this.state.weapons.map((dynamicData) => (
+                    this.addToAccordingTable(dynamicData.type, dynamicData)
+                ));
+                this.setState({
+                    tables: this.renderTables(this.props)
+                });
             })
 
-        }).then(() => {
-            this.state.weapons.map((dynamicData) => (
-                this.addToAccordingTable(dynamicData.type, dynamicData)
-            ))
-
-
-        }).then(() => {
-            this.setState({
-                tables: this.renderTables(this.props)
-            })
-        });
+        
     }
 
     handleChange = event => {
