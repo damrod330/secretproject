@@ -40,7 +40,7 @@ class CharacterCard extends Component {
                     </Grid>
                 </Grid>
                 </div>
-                <div className="side-nav"><img src={logo} className="logo-img" /></div>
+                <div className="side-nav"><img src={logo} className="side-nav-logo" /></div>
             </div>
         );
     }

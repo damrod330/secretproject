@@ -14,20 +14,28 @@ body {
     height: 100%;
 }
 
-.logo-img {
-width:100%;
-}
 
 .side-nav {
     position: fixed;
     z-index: 1;
     top: 0;
     right: 0;
-    /* background-color: #111; */
+    background-color: #111;
     overflow-x: hidden;
     padding-top: 20px;
     width: 300px;
     height: 100%;
+}
+
+.side-nav-logo {
+    width:100%;
+}
+
+.logo-img{
+    position:fixed;
+    top:0;
+    right:0;
+    width:300px;
 }
 
 .paper-card {
@@ -43,14 +51,17 @@ width:100%;
     max-width: 460px;
 }
 
+#login-card form {
+    display: flex;
+    flex-direction: column;
+}
+
 #login-card button {
     margin-top: 32px;
 }
 
 .paper-card .paper-card-body {
     padding: 42px;
-    display: flex;
-    flex-direction: column;
 }
 
 .paper-card .paper-card-title {
@@ -72,15 +83,3 @@ width:100%;
     flex-direction: column;
 }
 
-/* .bg-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-height: 100vh;
-    min-width: 100vw;
-    background: linear-gradient( rgba(19, 13, 14, 0.3), rgba(29, 175, 201, 0.1)), url('../img/main-bg.jpg')no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-} */
