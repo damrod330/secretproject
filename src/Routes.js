@@ -2,10 +2,14 @@ import React from 'react';
 import LoginPage from './pages/LoginPage';
 import CharacterPage from './pages/CharacterPage';
 import MainLayout from './MainLayout';
-
+import BOF from './components/fragments/Books/BookOfKnowledge'
 import { Route, Switch, BrowserRouter, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
+import Bestiary from "./components/fragments/Books/PagesOfKnowledge/Bestiary";
+import Armory from './components/fragments/Books/PagesOfKnowledge/Armory';
+import Mutations from "./components/fragments/Books/PagesOfKnowledge/Mutations";
+import Spells from "./components/fragments/Books/PagesOfKnowledge/Spells";
 
 
 
@@ -33,7 +37,15 @@ class Routers extends React.Component {
             routes = (
                 <Switch>
                     <Route path="/character" exact component={CharacterPage} />
-                    <Route path="/" exact component={MainLayout} />
+
+                    <MainLayout>
+                        <Route path="/"/>
+                        <Route path="/bestiary" exact component={Bestiary}/>
+                        <Route path="/armory" exact component={Armory}/>
+                        <Route path="/mutations" exact component={Mutations}/>
+                        <Route path="/spells" exact component={Spells}/>
+
+                    </MainLayout>
                     <Redirect to="/" />
                 </Switch>
             );
@@ -47,6 +59,7 @@ class Routers extends React.Component {
 
         return (
             <div>{routes}</div>
+
                 
         );
     }

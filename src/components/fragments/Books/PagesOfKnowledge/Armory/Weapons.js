@@ -305,6 +305,8 @@ class Melee extends React.Component {
                 return "Proca";
             case "FIREARM":
                 return "Palna";
+            case "OTHER":
+                return "Inne?";
             default: return "Brak";
         }
     }

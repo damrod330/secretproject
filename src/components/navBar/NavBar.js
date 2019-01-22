@@ -13,22 +13,17 @@ import SwipeableDrawer from "@material-ui/core/es/SwipeableDrawer/SwipeableDrawe
 import List from "@material-ui/core/es/List/List";
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from "@material-ui/core/es/Divider/Divider";
 import {compose} from "recompose";
-import Banner from "../../img/dist/menu-bg.png"
+import Banner from "../../img/dist/menu-bg1.png"
 import NewWindow from 'react-new-window'
 import Collapse from '@material-ui/core/Collapse';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import ArmoryIcon from './../../img/icon/armory.png';
-import BestiaryIcon from './../../img/icon/monsters.png';
-import SpellsIcon from './../../img/icon/magic2.png';
-import MutationsIcon from './../../img/icon/mutations.png';
+import {Link} from 'react-router-dom';
 
 
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 import {LOGOUT_SUCCESS} from '../../store/const/messages';
 
@@ -51,10 +46,10 @@ const styles = theme => ({
     menuItem: {
         marginLeft: 20,
         marginRight: 20,
-        borderRadius: 20,
+        // borderRadius: 20,
         '&:focus': {
-            background: 'linear-gradient(45deg, #2196f3 30%, #21cbf3 90%)',
-            borderRadius: 20,
+            // background: 'linear-gradient(45deg, #2196f3 30%, #21cbf3 90%)',
+            // borderRadius: 20,
             color: 'white',
             marginLeft: 20,
             marginRight: 20,
@@ -161,7 +156,7 @@ class NavBar extends React.Component {
         left: false,
         isSm: false,
         nestItemOpen: true,
-        openMap:false,
+        openMap: false,
         logoutClicked: false
     };
     handleClick = () => {
@@ -187,7 +182,7 @@ class NavBar extends React.Component {
 
     render() {
         let redirect = null;
-        if(this.state.logoutClicked){
+        if (this.state.logoutClicked) {
             redirect = <Redirect to="/login"/>
         }
         const {classes} = this.props;
@@ -207,10 +202,13 @@ class NavBar extends React.Component {
 
         let menu =
             <Paper className={classes.trans}>
-            {redirect}
+                {redirect}
                 {/*<ClickAwayListener onClickAway={this.handleClose}>*/}
                 <MenuList className={classes.banner}>
-                    <MenuItem className={classes.menuItem}>Profile</MenuItem>
+                    <Link to={"/character"} style={{ textDecoration: 'none' }}>
+                        <MenuItem className={classes.menuItem}>Profile</MenuItem>
+                    </Link>
+
                     <MenuItem className={classes.menuItem}>My account</MenuItem>
 
                     <List className={classes.menuItem}>
@@ -220,32 +218,65 @@ class NavBar extends React.Component {
                         </ListItem>
                         <Collapse in={this.state.nestItemOpen} timeout="auto" unmountOnExit>
                             <List disablePadding className={classes.menuItem}>
-                                <ListItem button onClick={()=>{this.props.callBackFromChildren(0) }}>
 
-                                    {/*<img src={ArmoryIcon} alt={"Armory"} className={classes.icons}/>*/}
+                                <Link to={"/armory"} style={{ textDecoration: 'none' }}>
 
-                                    <ListItemText primary="Zbrojownia"/>
-                                </ListItem>
-                                <ListItem button onClick={()=>{this.props.callBackFromChildren(1) }}>
+                                    <ListItem button
+                                        //           onClick={() => {
+                                        //     this.props.callBackFromChildren(0)
+                                        // }}
+                                    >
+
+                                        {/*<img src={ArmoryIcon} alt={"Armory"} className={classes.icons}/>*/}
+
+                                        <ListItemText primary="Zbrojownia"/>
+
+                                    </ListItem>
+                            </Link>
+                                <Link to={"/bestiary"} style={{ textDecoration: 'none' }}>
+                                <ListItem button
+                                    //           onClick={() => {
+                                    //     this.props.callBackFromChildren(1)
+                                    // }}
+                                >
                                     {/*<img src={BestiaryIcon} alt={"Bestiary"}*/}
                                     {/*className={classes.icons}/>*/}
-                                    <ListItemText primary="Bestiariusz"/>
-                                </ListItem>
-                                <ListItem button onClick={()=>{this.props.callBackFromChildren(2) }}>
 
-                                    {/*<img src={SpellsIcon} alt={"Spells"} className={classes.icons}/>*/}
+                                        <ListItemText primary="Bestiariusz"/>
+
+                                </ListItem>
+                            </Link>
+                                <Link to={"/spells"} style={{ textDecoration: 'none' }}>
+                                    <ListItem button
+                                        //           onClick={() => {
+                                        //     this.props.callBackFromChildren(2)
+                                        // }}
+                                    >
+
+                                        {/*<img src={SpellsIcon} alt={"Spells"} className={classes.icons}/>*/}
 
 
-                                    <ListItemText primary="Księga Zaklęć" />
-                                </ListItem>
-                                <ListItem button onClick={()=>{this.props.callBackFromChildren(3) }}>
-                                    {/*<img src={MutationsIcon} alt={"Mutations"}*/}
-                                    {/*className={classes.icons}/>*/}
-                                    <ListItemText primary="Mutacje"/>
-                                </ListItem>
+                                        <ListItemText primary="Księga Zaklęć"/>
+
+                                    </ListItem>
+                            </Link>
+                                <Link to={"/mutations"} style={{ textDecoration: 'none' }}>
+
+                                    <ListItem button
+                                        //           onClick={() => {
+                                        //     this.props.callBackFromChildren(3)
+                                        // }}
+                                    >
+                                        {/*<img src={MutationsIcon} alt={"Mutations"}*/}
+                                        {/*className={classes.icons}/>*/}
+                                        <ListItemText primary="Mutacje"/>
+
+                                    </ListItem>
+                        </Link>
                                 <ListItem button onClick={this.handleMap}>
                                     <ListItemText primary="Mapa"/>
-                                    {this.state.openMap ? <NewWindow copyStyles={true} onUnload={this.handleUnMap} url={"http://localhost:8080/"}/> : null}
+                                    {this.state.openMap ? <NewWindow copyStyles={true} onUnload={this.handleUnMap}
+                                                                     url={"http://localhost:8080/"}/> : null}
 
                                 </ListItem>
                             </List>
@@ -254,7 +285,7 @@ class NavBar extends React.Component {
 
 
                     <MenuItem className={classes.menuItem} onClick={this.handleLogout}>Logout</MenuItem>
-                    <MenuItem className={classes.menuItem}>Mapa</MenuItem>
+                    <MenuItem className={classes.menuItem}>???</MenuItem>
 
 
                     {/*<Button disabled className={classes.button}> </Button>/!*invisible sign to keep error away*!/*/}
@@ -290,47 +321,6 @@ class NavBar extends React.Component {
                 </Popper>
 
 
-                {/*<FormGroup>*/}
-                {/*<FormControlLabel*/}
-                {/*control={*/}
-                {/*<Switch checked={auth} onChange={this.handleChange} aria-label="LoginSwitch" />*/}
-                {/*}*/}
-                {/*label={auth ? 'Logout' : 'Login'}*/}
-                {/*/>*/}
-                {/*</FormGroup>*/}
-
-
-                {/*<AppBar position="static" className={"navBar"}>*/}
-                {/*<Toolbar>*/}
-                {/*<IconButton className={classes.menuButton} buttonRef={node => {*/}
-                {/*this.anchorEl = node;*/}
-                {/*}}*/}
-                {/*aria-owns={open ? 'menu-list-grow' : undefined}*/}
-                {/*aria-haspopup="true"*/}
-                {/*onClick={this.handleToggle}*/}
-                {/*color="inherit">*/}
-                {/*<MenuIcon />*/}
-                {/*</IconButton>*/}
-                {/*<Typography className={classes.title} variant="h6" color="inherit" noWrap>*/}
-                {/*Material-UI*/}
-                {/*</Typography>*/}
-                {/*<div className={classes.grow} />*/}
-                {/*<div className={classes.search}>*/}
-                {/*<div className={classes.searchIcon}>*/}
-                {/*<SearchIcon />*/}
-                {/*</div>*/}
-                {/*<InputBase*/}
-                {/*placeholder="Wyszukaj.."*/}
-                {/*classes={{*/}
-                {/*root: classes.inputRoot,*/}
-                {/*input: classes.inputInput,*/}
-                {/*}}*/}
-                {/*/>*/}
-                {/*</div>*/}
-                {/*</Toolbar>*/}
-
-                {/*</AppBar>*/}
-
                 {isSm ?
                     <SwipeableDrawer
                         open={this.state.left}
@@ -347,7 +337,7 @@ class NavBar extends React.Component {
                         >
 
 
-                                {menu}
+                            {menu}
 
                         </div>
                     </SwipeableDrawer>
@@ -368,4 +358,4 @@ NavBar.propTypes = {
     width: PropTypes.string.isRequired,
 };
 
-export default connect(null , mapDispatchToProps)(compose(withStyles(styles), withWidth()) (NavBar));
+export default connect(null, mapDispatchToProps)(compose(withStyles(styles), withWidth())(NavBar));
