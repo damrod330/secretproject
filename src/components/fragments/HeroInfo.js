@@ -3,8 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-class HeroCard extends Component {
-
+class HeroInfo extends Component {
 
     state = {
         name: 'Jon\'athrin Mull',
@@ -94,4 +93,4 @@ class HeroCard extends Component {
     }
 }
 
-export default HeroCard;
+export default HeroInfo;

@@ -4,19 +4,17 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-class HeroTraits extends Component {
+class HeroAbilities extends Component {
 
     state = {
         isEditModeEnabled: false,
         isProgressionModeEnabled: this.props.isProgressionModeEnabled,
         currentExpirience: this.props.currentExpirience,
-        traits: this.props.traits
+        characterId: this.props.characterId,
+        abilities: this.props.abilities
     }
 
     handleToggleEditState() {
-        if(this.state.isEditModeEnabled)
-        this.props.updateTraitsOnServer(this.state.traits);
-
         this.setState({ isEditModeEnabled: !this.state.isEditModeEnabled });
     }
 
@@ -29,19 +27,12 @@ class HeroTraits extends Component {
     }
 
     render() {
-        let createTrait = (trait, index) => {
+        let createAbility = (ability, index) => {
             if (!this.state.isEditModeEnabled) {
                 // Standard mode
-                let canUpgrade = ((Number(trait.currentValue) >= (Number(trait.baseValue) + Number(trait.maxProgress))) ? false : true) && this.state.isProgressionModeEnabled;
+                let canUpgrade = this.state.isProgressionModeEnabled;
                 return (
-                    <li key={trait.name}>
-                        <div className="label">{trait.displayName}:</div>
-                        <div>
-                            <span className="value">{trait.currentValue}</span>
-                            <Button disabled={!canUpgrade}>+</Button>
-                        </div>
-
-                    </li>
+                    <li> {ability.name} </li>
                 )
             } else {
                 // Edit mode
@@ -73,4 +64,4 @@ class HeroTraits extends Component {
     }
 }
 
-export default HeroTraits;
+export default HeroAbilities;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import HeroCard from '../components/fragments/HeroCard'
+import HeroInfo from '../components/fragments/HeroInfo'
 import HeroTraits from '../components/fragments/HeroTraits'
 import Grid from '@material-ui/core/Grid';
 import axios from '../axios';

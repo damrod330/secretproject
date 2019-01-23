@@ -13,16 +13,16 @@ ul.traits li {
     align-items: center;
 }
 
-ul.traits .value {
-    width: 150px;
-    background:whitesmoke;
-    display: flex;
-    align-content:center;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row ;
-    font-weight: bolder;
+ul.traits li input {
+    max-width: 40px;
+    padding: 4px;
 }
+
+ul.traits .value {
+    font-size: 16px;
+    padding: 8px;
+    font-weight: bolder;
+} 
 
 
 ul.traits .label {
