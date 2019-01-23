@@ -37,6 +37,7 @@ class Routers extends React.Component {
         if (this.props.isAuthenticated) {
             routes = (
                 <Switch>
+                    <Route path="/"exact component={CharacterPage} />
                     <Route path="/character" exact component={CharacterPage} />
                     <Route path="/equipment" exact component={EquipmentPage} />
 
@@ -47,7 +48,7 @@ class Routers extends React.Component {
                         <Route path="/spells" exact component={Spells}/>
                     </MainLayout>
 
-                    <Redirect to="/character" />
+                    {/* <Redirect to="/character" /> */}
                 </Switch>
             );
         } else {

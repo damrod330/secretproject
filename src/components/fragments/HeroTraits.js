@@ -3,10 +3,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import axios from '../../axios';
 
 class HeroTraits extends Component {
 
     state = {
+        characterId: this.props.characterId,
         isEditModeEnabled: false,
         isProgressionModeEnabled: this.props.isProgressionModeEnabled,
         currentExpirience: this.props.currentExpirience,
@@ -28,6 +30,18 @@ class HeroTraits extends Component {
         this.setState({ ...stateCopy });
     }
 
+    handleIncreaseTraitClick(trait, index){
+        axios.put(`/character/${this.state.characterId}/incrementTrait`,trait).then(res => {
+            console.log(res.status);
+            const stateCopy = { ...this.state };
+            let trait = stateCopy.traits[index];
+            trait = trait.currentValue + trait.progressStep;
+            this.setState({ ...stateCopy });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
     render() {
         let createTrait = (trait, index) => {
             if (!this.state.isEditModeEnabled) {
@@ -38,7 +52,7 @@ class HeroTraits extends Component {
                         <div className="label">{trait.displayName}:</div>
                         <div>
                             <span className="value">{trait.currentValue}</span>
-                            <Button disabled={!canUpgrade}>+</Button>
+                            <Button disabled={!canUpgrade} onClick={()=>{this.handleIncreaseTraitClick(trait, index)}}>+</Button>
                         </div>
 
                     </li>

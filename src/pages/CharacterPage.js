@@ -6,12 +6,13 @@ import axios from '../axios';
 import SideNav from '../components/SideNav';
 import '../styles/main.css';
 import '../styles/CharacterPage.css';
+import HeroAbilities from '../components/fragments/HeroAbilities';
 
 
 class CharacterPage extends Component {
 
     state = {
-        isProgressionModeEnabled: false,
+        isProgressionModeEnabled: true,
         currentExpirience: 1000,
         data: null
     }
@@ -19,9 +20,7 @@ class CharacterPage extends Component {
     componentDidMount() {
         axios.get("/character/5c4760b66c063f2d8263e096").then(res => {
             this.setState({ data: res.data });
-        }).catch(error => {
-
-        });
+        }).catch(error => {console.log(error)});
     }
 
     handleUpdateTraitsOnTheServer(traits){
@@ -42,10 +41,14 @@ class CharacterPage extends Component {
                             <Grid item xs={12} sm={6} md={4}>
                                 <HeroInfo />
                             </Grid>
-                            <Grid item xs={6} sm={4} md={3}>
+                            <Grid item xs={6} sm={6} md={2}>
                                 <HeroTraits traits={this.state.data.traits} 
                                 isProgressionModeEnabled={this.state.isProgressionModeEnabled} 
+                                characterId={this.state.data.id}
                                 updateTraitsOnServer={this.handleUpdateTraitsOnTheServer}/>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <HeroAbilities abilities={this.state.data.abilities}/>
                             </Grid>
                         </Grid>
                     </div> : null}

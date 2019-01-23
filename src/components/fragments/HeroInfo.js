@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 class HeroInfo extends Component {
 
     state = {
+        ex: 1000,
         name: 'Jon\'athrin Mull',
         race: 'Elf',
         currentProfession: "Wojownik klanowy",
@@ -23,6 +24,7 @@ class HeroInfo extends Component {
     }
 
     labels = {
+        ex: 'Doświadczenie',
         name: 'Nazwa',
         race: 'Rasa',
         currentProfession: 'Aktualna profesja',
