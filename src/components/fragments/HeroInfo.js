@@ -58,6 +58,12 @@ class HeroInfo extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        const stateCopy = { ...this.state };
+        stateCopy.hero.basicInfo[0].value = nextProps.xp;
+        this.setState({...stateCopy});
+    }
+
     handleToggleEditState() {
         if (this.state.isEditModeEnabled) {
             console.log({
@@ -128,7 +134,7 @@ class HeroInfo extends Component {
             if (!this.state.isEditModeEnabled) {
                 if (info.value) {
                     return (
-                        <ListItem button>
+                        <ListItem button key={info.name + "ListItem"}>
                             <ListItemText primary={info.name} secondary={info.value} />
                         </ListItem>
                     )
