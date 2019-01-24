@@ -44,7 +44,6 @@ class HeroAbilities extends Component {
         checked: [],
         isEditModeEnabled: false,
         isAddAbilityModeEnabled: false,
-        isProgressionModeEnabled: this.props.isProgressionModeEnabled,
         currentExpirience: this.props.currentExpirience,
         characterId: this.props.characterId,
         abilities: this.props.abilities,

@@ -16,7 +16,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 class CharacterPage extends Component {
 
     state = {
-        isProgressionModeEnabled: true,
         data: null,
         error: null,
         success: null,
@@ -88,13 +87,11 @@ class CharacterPage extends Component {
                                     currentProfession={this.state.data.currentProfession}
                                     previousProfession={this.state.data.previousProfession}
                                     additionalInfo={this.state.data.additionalInfo}
+                                    responseMessage={this.handleMessage}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={12} md={6} lg={3}>
                                 <HeroTraits traits={this.state.data.traits}
-                                    isProgressionModeEnabled={this.state.isProgressionModeEnabled}
-                                    isProgressionModeEnabled={this.state.isProgressionModeEnabled}
-                                    isProgressionModeEnabled={this.state.isProgressionModeEnabled}
                                     responseMessage={this.handleMessage}
                                     characterId={this.state.data.id}
                                     handleSubstractXp={this.handleSubstractXp} />

@@ -43,7 +43,6 @@ class HeroSkills extends Component {
         expanded: null,
         checked: [],
         isEditModeEnabled: false,
-        isProgressionModeEnabled: this.props.isProgressionModeEnabled,
         currentExpirience: this.props.currentExpirience,
         characterId: this.props.characterId,
         skills: this.props.skills,

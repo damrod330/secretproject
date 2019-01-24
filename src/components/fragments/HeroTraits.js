@@ -11,7 +11,6 @@ class HeroTraits extends Component {
         title: "Cechy",
         characterId: this.props.characterId,
         isEditModeEnabled: false,
-        isProgressionModeEnabled: this.props.isProgressionModeEnabled,
         currentExpirience: this.props.currentExpirience,
         traits: this.props.traits
     }
@@ -64,9 +63,9 @@ class HeroTraits extends Component {
             trait.currentValue = Number(trait.currentValue) + Number(trait.progressStep);
             this.setState({ ...stateCopy });
             this.props.handleSubstractXp(100);
-            this.props.responseMessage("success", `Dodano +${trait.progressStep} do cechy ${trait.name} kosztem 100 xp.`);
+            this.props.responseMessage("success", `Dodano +${trait.progressStep} do cechy ${trait.name} kosztem 100 xp`);
         }).catch(error => {
-            this.props.responseMessage("error", "Nie posiadasz wystarczająco punktów doświadczenia.");
+            this.props.responseMessage("error", "Nie posiadasz wystarczająco punktów doświadczenia");
             console.log(error);
         });
     }
@@ -75,7 +74,7 @@ class HeroTraits extends Component {
         let createTrait = (trait, index) => {
             if (!this.state.isEditModeEnabled) {
                 // Standard mode
-                let canUpgrade = ((Number(trait.currentValue) >= (Number(trait.baseValue) + Number(trait.maxProgress))) ? false : true) && this.state.isProgressionModeEnabled;
+                let canUpgrade = ((Number(trait.currentValue) >= (Number(trait.baseValue) + Number(trait.maxProgress))) ? false : true);
                 return (
                     <li key={trait.name}>
                         <div className="label">{trait.displayName}:</div>
