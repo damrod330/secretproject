@@ -61,9 +61,11 @@ class HeroTraits extends Component {
             console.log(res.status);
             const stateCopy = { ...this.state };
             let trait = stateCopy.traits[index];
-            trait = trait.currentValue + trait.progressStep;
+            trait.currentValue = trait.currentValue + trait.progressStep;
             this.setState({ ...stateCopy });
+            this.props.responseMessage("success", `Dodano +${trait.progressStep} do cechy ${trait.name} kosztem 100 xp.`);
         }).catch(error => {
+            this.props.responseMessage("error", "Nie posiadasz wystarczająco punktów doświadczenia.");
             console.log(error);
         });
     }

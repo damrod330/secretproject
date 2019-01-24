@@ -74,7 +74,7 @@ class CharacterPage extends Component {
                 {this.state.data ?
                     <div className="container">
                         <Grid container spacing={16}>
-                            <Grid item xs={12} sm={6} md={3}>
+                            <Grid item xs={12} sm={12} md={6} lg={3}>
                                 <HeroInfo
                                     characterId={this.state.data.id}
                                     xp={this.state.data.xp}
@@ -85,7 +85,7 @@ class CharacterPage extends Component {
                                     additionalInfo={this.state.data.additionalInfo}
                                 />
                             </Grid>
-                            <Grid item xs={6} sm={6} md={3}>
+                            <Grid item xs={12} sm={12} md={6} lg={3}>
                                 <HeroTraits traits={this.state.data.traits}
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
@@ -93,13 +93,13 @@ class CharacterPage extends Component {
                                     responseMessage={this.handleMessage}
                                     characterId={this.state.data.id} />
                             </Grid>
-                            <Grid item xs={12} sm={6} md={3}>
+                            <Grid item xs={12} sm={12} md={6} lg={3}>
                                 <HeroAbilities 
                                 abilities={this.state.data.abilities}
                                 responseMessage={this.handleMessage}
                                  characterId={this.state.data.id} />
                             </Grid>
-                            <Grid item xs={12} sm={6} md={3}>
+                            <Grid item xs={12} sm={12} md={6} lg={3}>
                                 <HeroSkills 
                                 skills={this.state.data.skills} 
                                 characterId={this.state.data.id} 
