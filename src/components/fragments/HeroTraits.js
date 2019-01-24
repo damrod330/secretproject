@@ -20,7 +20,7 @@ class HeroTraits extends Component {
         if (this.state.isEditModeEnabled) {
             axios.put(`/character/${this.state.characterId}/traits`, this.state.traits).then(res => {
                 console.log(res.status);
-                this.props.responseMessage("success", "Udało się edytować cechy");
+                this.props.responseMessage("success", "Zaktualizowano cechy");
                 this.setState(
                     {
                         title: "Cechy",
@@ -29,7 +29,7 @@ class HeroTraits extends Component {
                 );
             }).catch(error => {
                 console.log(error);
-                this.props.responseMessage("error", "Nie mozna zaktualizowac cech.");
+                this.props.responseMessage("error", "Nie udało się zaktualizowac cech.");
                 this.setState(
                     {
                         title: "Cechy",
@@ -61,8 +61,9 @@ class HeroTraits extends Component {
             console.log(res.status);
             const stateCopy = { ...this.state };
             let trait = stateCopy.traits[index];
-            trait.currentValue = trait.currentValue + trait.progressStep;
+            trait.currentValue = Number(trait.currentValue) + Number(trait.progressStep);
             this.setState({ ...stateCopy });
+            this.props.handleSubstractXp(100);
             this.props.responseMessage("success", `Dodano +${trait.progressStep} do cechy ${trait.name} kosztem 100 xp.`);
         }).catch(error => {
             this.props.responseMessage("error", "Nie posiadasz wystarczająco punktów doświadczenia.");

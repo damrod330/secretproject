@@ -17,7 +17,6 @@ class CharacterPage extends Component {
 
     state = {
         isProgressionModeEnabled: true,
-        currentExpirience: 1000,
         data: null,
         error: null,
         success: null,
@@ -45,11 +44,17 @@ class CharacterPage extends Component {
                 this.setState({ snackbarOpen: true, error: null, success: true, messageType: "success", message: message });
                 break;
             case "error":
-            this.setState({ snackbarOpen: true, error: true, success: false, messageType: "error", message: message });
+                this.setState({ snackbarOpen: true, error: true, success: false, messageType: "error", message: message });
                 break;
             default:
                 this.setState({ snackbarOpen: false, error: null, success: false, messageType: "", message: "" });
         }
+    }
+
+    handleSubstractXp = (ammount) => {
+        const stateCopy = { ...this.state };
+        stateCopy.data.xp = stateCopy.data.xp - ammount;
+        this.setState({...stateCopy});
     }
 
     render() {
@@ -91,19 +96,20 @@ class CharacterPage extends Component {
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
                                     responseMessage={this.handleMessage}
+                                    characterId={this.state.data.id}
+                                    handleSubstractXp={this.handleSubstractXp} />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6} lg={3}>
+                                <HeroAbilities
+                                    abilities={this.state.data.abilities}
+                                    responseMessage={this.handleMessage}
                                     characterId={this.state.data.id} />
                             </Grid>
                             <Grid item xs={12} sm={12} md={6} lg={3}>
-                                <HeroAbilities 
-                                abilities={this.state.data.abilities}
-                                responseMessage={this.handleMessage}
-                                 characterId={this.state.data.id} />
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={6} lg={3}>
-                                <HeroSkills 
-                                skills={this.state.data.skills} 
-                                characterId={this.state.data.id} 
-                                responseMessage={this.handleMessage}
+                                <HeroSkills
+                                    skills={this.state.data.skills}
+                                    characterId={this.state.data.id}
+                                    responseMessage={this.handleMessage}
                                 />
                             </Grid>
                         </Grid>
