@@ -63,7 +63,7 @@ class CharacterPage extends Component {
                                     xp={this.state.data.xp}
                                     name={this.state.data.name}
                                     race={this.state.data.race}
-                                    curretProfession={this.state.data.curretProfession}
+                                    currentProfession={this.state.data.currentProfession}
                                     previousProfession={this.state.data.previousProfession}
                                     additionalInfo={this.state.data.additionalInfo}
                                 />
