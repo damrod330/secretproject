@@ -29,6 +29,7 @@ class LoginForm extends Component {
 
     handleOnRegisterClicked(e) {
         e.preventDefault();
+        this.props.clearError();
         this.props.onRegisterClicked(false);
     }
 
@@ -133,7 +134,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (login, password) => dispatch(actions.auth(login, password))
+        onAuth: (login, password) => dispatch(actions.auth(login, password)),
+        clearError: () => dispatch(actions.clearError())
     };
 };
 
