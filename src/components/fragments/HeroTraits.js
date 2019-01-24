@@ -20,6 +20,7 @@ class HeroTraits extends Component {
         if (this.state.isEditModeEnabled) {
             axios.put(`/character/${this.state.characterId}/traits`, this.state.traits).then(res => {
                 console.log(res.status);
+                this.props.responseMessage("success", "Udało się edytować cechy");
                 this.setState(
                     {
                         title: "Cechy",
@@ -28,6 +29,7 @@ class HeroTraits extends Component {
                 );
             }).catch(error => {
                 console.log(error);
+                this.props.responseMessage("error", "Nie mozna zaktualizowac cech.");
                 this.setState(
                     {
                         title: "Cechy",

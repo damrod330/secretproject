@@ -7,7 +7,7 @@ import SideNav from '../components/SideNav';
 import '../styles/main.css';
 import '../styles/CharacterPage.css';
 import HeroAbilities from '../components/fragments/HeroAbilities';
-// import HeroSkills from '../components/fragments/HeroSkills';
+import HeroSkills from '../components/fragments/HeroSkills';
 
 //Snackbar
 import MySnackbarContent from '../UI/Snackbar';
@@ -20,6 +20,9 @@ class CharacterPage extends Component {
         currentExpirience: 1000,
         data: null,
         error: null,
+        success: null,
+        messageType: "success",
+        message: "",
         snackbarOpen: false
     }
 
@@ -27,29 +30,43 @@ class CharacterPage extends Component {
         axios.get("/character").then(res => {
             this.setState({ data: res.data, error: null, snackbarOpen: false });
         }).catch(error => {
-            this.setState({snackbarOpen: true, error: "Nie mozna pobrać postaci, sprawdź połączenie"});
+            this.setState({ snackbarOpen: true, error: true, success: false, messageType: "error", message: "Nie pobrano postaci, sprawdź połączenie." });
         });
     }
 
     handleHideSnack = () => {
-        this.setState({snackbarOpen: false})
+        this.setState({ snackbarOpen: false, error: null, success: null });
+    }
+
+    handleMessage = (type, message) => {
+        switch (type) {
+            case "success":
+                console.log(type);
+                this.setState({ snackbarOpen: true, error: null, success: true, messageType: "success", message: message });
+                break;
+            case "error":
+            this.setState({ snackbarOpen: true, error: true, success: false, messageType: "error", message: message });
+                break;
+            default:
+                this.setState({ snackbarOpen: false, error: null, success: false, messageType: "", message: "" });
+        }
     }
 
     render() {
-        let snackbar = this.state.error ? <Snackbar
-        anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-        }}
-        open={this.state.snackbarOpen}
-        autoHideDuration={6000}
-        onClose={this.handleHideSnack}>
-        <MySnackbarContent
-            onClose={this.handleHideSnack}
-            variant="error"
-            message={this.state.error}
-        />
-    </Snackbar> : null;
+        let snackbar = this.state.error || this.state.success ? <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            open={this.state.snackbarOpen}
+            autoHideDuration={6000}
+            onClose={this.handleHideSnack}>
+            <MySnackbarContent
+                onClose={this.handleHideSnack}
+                variant={this.state.messageType}
+                message={this.state.message}
+            />
+        </Snackbar> : null;
         return (
             <div>
                 {snackbar}
@@ -57,7 +74,7 @@ class CharacterPage extends Component {
                 {this.state.data ?
                     <div className="container">
                         <Grid container spacing={16}>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={3}>
                                 <HeroInfo
                                     characterId={this.state.data.id}
                                     xp={this.state.data.xp}
@@ -68,18 +85,26 @@ class CharacterPage extends Component {
                                     additionalInfo={this.state.data.additionalInfo}
                                 />
                             </Grid>
-                            <Grid item xs={6} sm={6} md={2}>
+                            <Grid item xs={6} sm={6} md={3}>
                                 <HeroTraits traits={this.state.data.traits}
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
-                                isProgressionModeEnabled={this.state.isProgressionModeEnabled} 
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
+                                    isProgressionModeEnabled={this.state.isProgressionModeEnabled}
+                                    responseMessage={this.handleMessage}
                                     characterId={this.state.data.id} />
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
-                                <HeroAbilities abilities={this.state.data.abilities} characterId={this.state.data.id} />
+                                <HeroAbilities 
+                                abilities={this.state.data.abilities}
+                                responseMessage={this.handleMessage}
+                                 characterId={this.state.data.id} />
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
-                                <HeroSkills skills={this.state.data.skills} characterId={this.state.data.id} />
+                                <HeroSkills 
+                                skills={this.state.data.skills} 
+                                characterId={this.state.data.id} 
+                                responseMessage={this.handleMessage}
+                                />
                             </Grid>
                         </Grid>
                     </div> : null}

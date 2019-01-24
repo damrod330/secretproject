@@ -87,7 +87,10 @@ class HeroAbilities extends Component {
                         checked: checked,
                         isEditModeEnabled: true
                     });
-            }).catch(error => { console.log(error) });
+            }).catch(error => { 
+                this.props.responseMessage("error", "Nie mozna pobrać zdolności");
+                console.log(error) 
+            });
         } else {
             let abilities = [];
             this.state.allAbilities.forEach(ability => {
@@ -98,6 +101,8 @@ class HeroAbilities extends Component {
 
             axios.put(`/character/${this.state.characterId}/abilities`, this.state.checked).then(res => {
                 console.log(res.status);
+                this.props.responseMessage("success", "Zaktualizowano zdolności");
+
                 this.setState(
                     {
                         title: "Zdolności",
@@ -105,6 +110,7 @@ class HeroAbilities extends Component {
                         isEditModeEnabled: false
                     });
             }).catch(error => {
+                this.props.responseMessage("error", "Nie udało się zaktualizować zdolności");
                 console.log(error);
                 this.setState(
                     {
