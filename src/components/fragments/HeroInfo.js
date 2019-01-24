@@ -60,6 +60,42 @@ class HeroInfo extends Component {
 
     handleToggleEditState() {
         if (this.state.isEditModeEnabled) {
+            console.log({
+                id: this.state.characterId,
+                name: this.state.hero.basicInfo[1].value,
+                race: this.state.hero.basicInfo[2].value,
+                xp: this.state.hero.basicInfo[0].value,
+                additionalInfo: this.state.hero.additionalInfo
+            });
+            axios.put(`/character`, {
+                id: this.state.characterId,
+                name: this.state.hero.basicInfo[1].value,
+                race: this.state.hero.basicInfo[2].value,
+                xp: this.state.hero.basicInfo[0].value,
+                additionalInfo: this.state.hero.additionalInfo
+            }).then(res => {
+                console.log(res.status);
+                this.setState(
+                    {
+                        title: "Cechy",
+                        isEditModeEnabled: false
+                    }
+                );
+            }).catch(error => {
+                console.log(error);
+                this.setState(
+                    {
+                        title: "Cechy",
+                        isEditModeEnabled: false
+                    }
+                );
+            });
+            this.setState(
+                {
+                    title: "Edytuj bohatera",
+                    isEditModeEnabled: true
+                }
+            );
             this.setState(
                 {
                     title: "Bohater",
@@ -69,38 +105,12 @@ class HeroInfo extends Component {
         } else {
             this.setState(
                 {
-                    title: "Edytuj bohatera",
+                    title: "Bohater",
                     isEditModeEnabled: true
                 }
             );
         }
-        //     axios.put(`/character/${this.state.characterId}`, this.state.traits).then(res => {
-        //         console.log(res.status);
-        //         this.setState(
-        //             {
-        //                 title: "Cechy",
-        //                 isEditModeEnabled: false
-        //             }
-        //         );
-        //     }).catch(error => {
-        //         console.log(error);
-        //         this.setState(
-        //             {
-        //                 title: "Cechy",
-        //                 isEditModeEnabled: false
-        //             }
-        //         );
-        //     });
-        // } else {
-        //     this.setState(
-        //         {
-        //             title: "Edytuj cechy",
-        //             isEditModeEnabled: true
-        //         }
-        //     );
-        // }
     }
-
 
     handleInputChange(e, index, isMandatory) {
         const stateCopy = { ...this.state };
