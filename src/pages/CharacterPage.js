@@ -7,7 +7,7 @@ import SideNav from '../components/SideNav';
 import '../styles/main.css';
 import '../styles/CharacterPage.css';
 import HeroAbilities from '../components/fragments/HeroAbilities';
-// import HeroSkills from '../components/fragments/HeroSkills';
+import HeroSkills from '../components/fragments/HeroSkills';
 
 //Snackbar
 import MySnackbarContent from '../UI/Snackbar';

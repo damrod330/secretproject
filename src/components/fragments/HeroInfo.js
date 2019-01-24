@@ -32,17 +32,48 @@ class HeroInfo extends Component {
         isEditModeEnabled: false,
         characterId: this.props.characterId,
         hero: {
-            xp: this.props.xp,
-            name: this.props.name,
-            race: this.props.race,
-            currentProfession: this.props.currentProfession,
-            previousProfession: this.props.previousProfession,
+            basicInfo: [
+                {
+                    name: "Doświadczenie",
+                    value: this.props.xp
+                },
+                {
+                    name: "Imię",
+                    value: this.props.name
+                },
+                {
+                    name: "Rasa",
+                    value: this.props.race
+                },
+                {
+                    name: "Aktualna profesja",
+                    value: this.props.currentProfession
+                },
+                {
+                    name: "Poprzednia profesja",
+                    value: this.props.previousProfession
+                },
+            ],
             additionalInfo: this.props.additionalInfo
         }
     }
 
     handleToggleEditState() {
-        // if (this.state.isEditModeEnabled) {
+        if (this.state.isEditModeEnabled) {
+            this.setState(
+                {
+                    title: "Bohater",
+                    isEditModeEnabled: false
+                }
+            );
+        } else {
+            this.setState(
+                {
+                    title: "Edytuj bohatera",
+                    isEditModeEnabled: true
+                }
+            );
+        }
         //     axios.put(`/character/${this.state.characterId}`, this.state.traits).then(res => {
         //         console.log(res.status);
         //         this.setState(
@@ -71,50 +102,38 @@ class HeroInfo extends Component {
     }
 
 
-    handleInputChange(e, index, propName) {
-        // const stateCopy = { ...this.state };
-        // let hero = stateCopy.hero[index];
-        // trait[propName] = e.target.value;
-        // this.setState({ ...stateCopy });
+    handleInputChange(e, index, isMandatory) {
+        const stateCopy = { ...this.state };
+        if (isMandatory) {
+            stateCopy.hero.basicInfo[index].value = e.target.value;
+        } else {
+            stateCopy.hero.additionalInfo[index].value = e.target.value;
+        }
+        this.setState(stateCopy);
     }
 
     render() {
-        let createInfoItem = (label, value) => {
+        let createInfoItem = (info, index, isMandatory) => {
+
             if (!this.state.isEditModeEnabled) {
+                if (info.value) {
+                    return (
+                        <ListItem button>
+                            <ListItemText primary={info.name} secondary={info.value} />
+                        </ListItem>
+                    )
+                } else {
+                    return null;
+                }
+            } else {
                 return (
-                    <ListItem button>
-                        <ListItemText primary={label} secondary={value} />
+                    <ListItem>
+                        <TextField key={info.name + "TextField"} label={info.name} type="text" value={info.value}
+                            onChange={e => this.handleInputChange(e, index, isMandatory)} />
                     </ListItem>
                 )
             }
         }
-        // let createTrait = (trait, index) => {
-        //     if (!this.state.isEditModeEnabled) {
-        //         // Standard mode
-        //         let canUpgrade = ((Number(trait.currentValue) >= (Number(trait.baseValue) + Number(trait.maxProgress))) ? false : true) && this.state.isProgressionModeEnabled;
-        //         return (
-        //             <li key={trait.name}>
-        //                 <div className="label">{trait.displayName}:</div>
-        //                 <div>
-        //                     <span className="value">{trait.currentValue}</span>
-        //                     <Button disabled={!canUpgrade} onClick={() => { this.handleIncreaseTraitClick(trait, index) }}>+</Button>
-        //                 </div>
-
-        //             </li>
-        //         )
-        //     } else {
-        //         // Edit mode
-        //         return (
-        //             <li key={trait.name}>
-        //                 <div className="label">{trait.name}:</div>
-        //                 <div>
-        //                     <input type="number" value={trait.baseValue} onChange={(e) => this.handleTraitInputChange(e, index, "baseValue")} />
-        //                     <input type="number" value={trait.currentValue} onChange={(e) => this.handleTraitInputChange(e, index, "currentValue")} />
-        //                     <input type="number" value={trait.maxProgress} onChange={(e) => this.handleTraitInputChange(e, index, "maxProgress")} />
-        //                 </div>
-        //             </li>);
-        //     }
-        // }
 
         return (
             <div className="paper-card">
@@ -124,11 +143,8 @@ class HeroInfo extends Component {
                 </div>
                 <div className="paper-card-body">
                     <List>
-                        {createInfoItem("Doświadczenie", this.state.hero.xp)}
-                        {createInfoItem("Imię", this.state.hero.name)}
-                        {this.state.hero.currentProfession ? createInfoItem("Aktualna profesja", this.state.hero.currentProfession) : null}
-                        {this.state.hero.previousProfession ? createInfoItem("Poprzednia profesja", this.state.hero.previousProfession) : null}
-                        {this.state.hero.additionalInfo.map((additionalInfo) => { return createInfoItem(additionalInfo.name, additionalInfo.value) })}
+                        {this.state.hero.basicInfo.map((info, index) => { return createInfoItem(info, index, true) })}
+                        {this.state.hero.additionalInfo.map((info, index) => { return createInfoItem(info, index, false) })}
                     </List>
                 </div>
             </div>
