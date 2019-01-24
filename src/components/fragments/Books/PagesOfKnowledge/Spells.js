@@ -7,11 +7,7 @@ import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
-import frontPaper from './../../../../img/dist/paper/white_paperboard.png'
-import Radio from '@material-ui/core/Radio';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import frontPaper from './../../../../img/dist/paper/old-paper.jpg'
 import {compose} from "recompose";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -23,12 +19,7 @@ import TableRow from '@material-ui/core/TableRow';
 import InputBase from "@material-ui/core/es/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
 import {fade} from '@material-ui/core/styles/colorManipulator';
-import Divider from "@material-ui/core/Divider";
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import Button from "@material-ui/core/Button";
-import {url} from '../../../../Constants'
 import LazyLoad from 'react-lazyload';
-
 import axios from '../../../../axios';
 
 const styles = theme => ({
@@ -131,9 +122,7 @@ const CustomTableCell = withStyles(theme => ({
 
 }))(TableCell);
 
-let header = {
-    "Content-Type": "application/json"
-};
+
 
 class Spells extends React.Component {
     state = {
@@ -154,7 +143,6 @@ class Spells extends React.Component {
     componentDidMount() {
         axios.get('/spells')
         .then(res => {
-            console.log(res);
             this.setState({
                 spells: res.data,
                 filteredSpells: res.data

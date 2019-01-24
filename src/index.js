@@ -23,7 +23,7 @@ const store = createStore(rootReducer, composeEnhancers(
 
 const app = (
     <Provider store={store}>
-        <BrowserRouter homepage={"/rpg"}>
+        <BrowserRouter basename={"/rpg"}>
             <Routes />
         </BrowserRouter>
     </Provider>
