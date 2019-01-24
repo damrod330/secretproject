@@ -23,6 +23,12 @@ export const authFail = (error) => {
     };
 };
 
+export const clearError = () => {
+    return {
+        type: actionTypes.CLEAR_ERROR,
+    };
+}
+
 export const logout = (message) => {
     localStorage.removeItem('token');
     if (message === SESSION_EXPIRED) {

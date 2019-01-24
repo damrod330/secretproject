@@ -7,25 +7,52 @@ import SideNav from '../components/SideNav';
 import '../styles/main.css';
 import '../styles/CharacterPage.css';
 import HeroAbilities from '../components/fragments/HeroAbilities';
-import HeroSkills from '../components/fragments/HeroSkills';
+// import HeroSkills from '../components/fragments/HeroSkills';
 
+//Snackbar
+import MySnackbarContent from '../UI/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class CharacterPage extends Component {
 
     state = {
         isProgressionModeEnabled: true,
-        data: null
+        currentExpirience: 1000,
+        data: null,
+        error: null,
+        snackbarOpen: false
     }
 
     componentDidMount() {
         axios.get("/character").then(res => {
-            this.setState({ data: res.data });
-        }).catch(error => { console.log(error) });
+            this.setState({ data: res.data, error: null, snackbarOpen: false });
+        }).catch(error => {
+            this.setState({snackbarOpen: true, error: "Nie mozna pobrać postaci, sprawdź połączenie"});
+        });
+    }
+
+    handleHideSnack = () => {
+        this.setState({snackbarOpen: false})
     }
 
     render() {
+        let snackbar = this.state.error ? <Snackbar
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+        }}
+        open={this.state.snackbarOpen}
+        autoHideDuration={6000}
+        onClose={this.handleHideSnack}>
+        <MySnackbarContent
+            onClose={this.handleHideSnack}
+            variant="error"
+            message={this.state.error}
+        />
+    </Snackbar> : null;
         return (
             <div>
+                {snackbar}
                 <SideNav />
                 {this.state.data ?
                     <div className="container">
@@ -43,6 +70,8 @@ class CharacterPage extends Component {
                             </Grid>
                             <Grid item xs={6} sm={6} md={2}>
                                 <HeroTraits traits={this.state.data.traits}
+                                    isProgressionModeEnabled={this.state.isProgressionModeEnabled}
+                                isProgressionModeEnabled={this.state.isProgressionModeEnabled} 
                                     isProgressionModeEnabled={this.state.isProgressionModeEnabled}
                                     characterId={this.state.data.id} />
                             </Grid>
