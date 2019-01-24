@@ -18,7 +18,7 @@ class CharacterPage extends Component {
     }
 
     componentDidMount() {
-        axios.get("/character/5c4760b66c063f2d8263e096").then(res => {
+        axios.get("/character").then(res => {
             this.setState({ data: res.data });
         }).catch(error => {console.log(error)});
     }
@@ -39,7 +39,7 @@ class CharacterPage extends Component {
                                 characterId={this.state.data.id}/>
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
-                                <HeroAbilities abilities={this.state.data.abilities}/>
+                                <HeroAbilities abilities={this.state.data.abilities} characterId={this.state.data.id}/>
                             </Grid>
                         </Grid>
                     </div> : null}

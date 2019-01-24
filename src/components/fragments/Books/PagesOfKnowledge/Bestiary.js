@@ -287,7 +287,7 @@ class Bestiary extends React.Component {
             <Grid item xs={2}>
                 <img
                     // src={"/img/Books/Bestiary/mino.png"}
-                    src={require("./../../../../img/dist/creatures/" + `${dynamicData.imageName}` + ".png")}
+                    // src={require("./../../../../img/dist/creatures/" + `${dynamicData.imageName}` + ".png")}
                     width={"100%"}
                     height={"100%"}
                     alt={"img"} key={key}/>

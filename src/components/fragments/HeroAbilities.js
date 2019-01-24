@@ -96,7 +96,7 @@ class HeroAbilities extends Component {
                 }
             })
 
-            axios.put(`/character/${this.state.characterId}/abilities`, this.state.traits).then(res => {
+            axios.put(`/character/${this.state.characterId}/abilities`, this.state.checked).then(res => {
                 console.log(res.status);
                 this.setState(
                     {
