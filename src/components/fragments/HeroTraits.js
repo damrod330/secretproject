@@ -8,6 +8,7 @@ import axios from '../../axios';
 class HeroTraits extends Component {
 
     state = {
+        title: "Cechy",
         characterId: this.props.characterId,
         isEditModeEnabled: false,
         isProgressionModeEnabled: this.props.isProgressionModeEnabled,
@@ -16,10 +17,27 @@ class HeroTraits extends Component {
     }
 
     handleToggleEditState() {
-        if(this.state.isEditModeEnabled)
-        this.props.updateTraitsOnServer(this.state.traits);
+        if (this.state.isEditModeEnabled) {
+            axios.put(`/character/${this.state.characterId}/traits`, this.state.traits).then(res => {
+                console.log(res.status);
+                this.setState(
+                    {
+                        title: "Cechy",
+                        isEditModeEnabled: false
+                    }
+                );
+            }).catch(error => {
+                console.log(error);
+            });
+        } else {
+            this.setState(
+                {
+                    title: "Edytuj cechy",
+                    isEditModeEnabled: true
+                }
+            );
+        }
 
-        this.setState({ isEditModeEnabled: !this.state.isEditModeEnabled });
     }
 
 
@@ -30,8 +48,8 @@ class HeroTraits extends Component {
         this.setState({ ...stateCopy });
     }
 
-    handleIncreaseTraitClick(trait, index){
-        axios.put(`/character/${this.state.characterId}/incrementTrait`,trait).then(res => {
+    handleIncreaseTraitClick(trait, index) {
+        axios.put(`/character/${this.state.characterId}/incrementTrait`, trait).then(res => {
             console.log(res.status);
             const stateCopy = { ...this.state };
             let trait = stateCopy.traits[index];
@@ -52,7 +70,7 @@ class HeroTraits extends Component {
                         <div className="label">{trait.displayName}:</div>
                         <div>
                             <span className="value">{trait.currentValue}</span>
-                            <Button disabled={!canUpgrade} onClick={()=>{this.handleIncreaseTraitClick(trait, index)}}>+</Button>
+                            <Button disabled={!canUpgrade} onClick={() => { this.handleIncreaseTraitClick(trait, index) }}>+</Button>
                         </div>
 
                     </li>
@@ -61,7 +79,7 @@ class HeroTraits extends Component {
                 // Edit mode
                 return (
                     <li key={trait.name}>
-                        <div className="label">{trait.displayName}:</div>
+                        <div className="label">{trait.name}:</div>
                         <div>
                             <input type="number" value={trait.baseValue} onChange={(e) => this.handleTraitInputChange(e, index, "baseValue")} />
                             <input type="number" value={trait.currentValue} onChange={(e) => this.handleTraitInputChange(e, index, "currentValue")} />
@@ -74,7 +92,7 @@ class HeroTraits extends Component {
         return (
             <div className="paper-card">
                 <div className="paper-card-title">
-                    <h2>Cechy</h2>
+                    <h2>{this.state.title}</h2>
                     <IconButton className="edit-btn" onClick={() => this.handleToggleEditState()}>{!this.state.isEditModeEnabled ? <i className="fa fa-pencil" /> : <i className="fa fa-save" />}</IconButton>
                 </div>
                 <div className="paper-card-body">

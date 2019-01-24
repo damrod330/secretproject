@@ -23,14 +23,6 @@ class CharacterPage extends Component {
         }).catch(error => {console.log(error)});
     }
 
-    handleUpdateTraitsOnTheServer(traits){
-        axios.put(`/character/5c4760b66c063f2d8263e096/traits`,traits).then(res => {
-            console.log(res.status);
-        }).catch(error => {
-            console.log(error);
-        });
-    }
-
     render() {
         return (
             <div>
@@ -44,8 +36,7 @@ class CharacterPage extends Component {
                             <Grid item xs={6} sm={6} md={2}>
                                 <HeroTraits traits={this.state.data.traits} 
                                 isProgressionModeEnabled={this.state.isProgressionModeEnabled} 
-                                characterId={this.state.data.id}
-                                updateTraitsOnServer={this.handleUpdateTraitsOnTheServer}/>
+                                characterId={this.state.data.id}/>
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
                                 <HeroAbilities abilities={this.state.data.abilities}/>

@@ -13,10 +13,18 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import CommentIcon from '@material-ui/icons/Comment';
+
 const styles = theme => ({
     root: {
         width: "100%"
     },
+
     heading: {
         fontSize: theme.typography.pxToRem(15),
         flexBasis: "33.33%",
@@ -31,8 +39,9 @@ const styles = theme => ({
 class HeroAbilities extends Component {
 
     state = {
-        title: "Twoje zdolności",
+        title: "Zdolności",
         expanded: null,
+        checked: [],
         isEditModeEnabled: false,
         isAddAbilityModeEnabled: false,
         isProgressionModeEnabled: this.props.isProgressionModeEnabled,
@@ -42,6 +51,22 @@ class HeroAbilities extends Component {
         allAbilities: null
     }
 
+    handleToggle = value => () => {
+        const { checked } = this.state;
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        this.setState({
+            checked: newChecked,
+        });
+    };
+
     handleChange = panel => (event, expanded) => {
         this.setState({
             expanded: expanded ? panel : false
@@ -49,15 +74,55 @@ class HeroAbilities extends Component {
     };
 
     handleToggleEditState() {
-        this.setState({ isEditModeEnabled: !this.state.isEditModeEnabled });
+        if (!this.state.isEditModeEnabled) {
+            axios.get("/abilities").then(res => {
+                let checked = []
+                this.state.abilities.forEach(ability => {
+                    checked.push(ability.id);
+                });
+                this.setState(
+                    {
+                        title: "Wybierz zdolności",
+                        allAbilities: res.data,
+                        checked: checked,
+                        isEditModeEnabled: true
+                    });
+            }).catch(error => { console.log(error) });
+        } else {
+            let abilities = [];
+            this.state.allAbilities.forEach(ability => {
+                if (this.state.checked.find(abilityId => { return abilityId == ability.id })) {
+                    abilities.push(ability);
+                }
+            })
+
+            axios.put(`/character/${this.state.characterId}/abilities`, this.state.traits).then(res => {
+                console.log(res.status);
+                this.setState(
+                    {
+                        title: "Zdolności",
+                        abilities: abilities,
+                        isEditModeEnabled: false
+                    });
+            }).catch(error => {
+                console.log(error);
+                this.setState(
+                    {
+                        title: "Zdolności",
+                        isEditModeEnabled: false
+                    });
+            });
+        }
     }
 
-    handleAddAbility(){
+    handleAddAbility = () => {
         axios.get("/abilities").then(res => {
-            this.setState({ allAbilities: res.data,
-            isAddAbilityModeEnabled: true });
-
-        }).catch(error => {console.log(error)});
+            this.setState(
+                {
+                    allAbilities: res.data,
+                    isAddAbilityModeEnabled: true
+                });
+        }).catch(error => { console.log(error) });
     }
 
 
@@ -68,7 +133,6 @@ class HeroAbilities extends Component {
         let createAbility = (ability, index) => {
             if (!this.state.isEditModeEnabled) {
                 // Standard mode
-                if (!this.state.isAddAbilityModeEnabled) {
                 return (
                     <ExpansionPanel key={ability.name}
                         expanded={expanded === ability.name}
@@ -81,23 +145,19 @@ class HeroAbilities extends Component {
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 )
-                } else {
-                    return (
-                        
-                        <ExpansionPanel key={ability.name}
-                            expanded={expanded === ability.name}
-                            onChange={this.handleChange(ability.name)}>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography className={classes.heading}>{ability.name}</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Typography>{ability.description}</Typography>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>)
-                }
             } else {
-                // Edit mode
-                return (<p>Edit mode</p>)
+                return (
+                    <ListItem key={ability.id} role={undefined} dense button onClick={this.handleToggle(ability.id)}>
+                        <Checkbox
+                            checked={this.state.checked.indexOf(ability.id) !== -1}
+                            tabIndex={-1}
+                            disableRipple
+                        />
+                        <ListItemText primary={ability.name} />
+                        <ListItemSecondaryAction>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                )
             }
         }
 
@@ -109,10 +169,15 @@ class HeroAbilities extends Component {
                         <IconButton className="edit-btn" onClick={() => this.handleToggleEditState()}>{!this.state.isEditModeEnabled ? <i className="fa fa-pencil" /> : <i className="fa fa-save" />}</IconButton>
                     </div>
                     <div className="paper-card-body">
-                        {this.isAddAbilityModeEnabled ? 
-                        this.state.allAbilities.map((ability, index) => { return createAbility(ability, index) })
-                        :this.state.abilities.map((ability, index) => { return createAbility(ability, index) })}
-                        <Button onClick={()=>this.handleAddAbility()}>Dodaj zdolność</Button>
+                        {
+                            this.state.isEditModeEnabled ?
+                                <List>
+                                    {this.state.allAbilities.map((ability, index) => { return createAbility(ability, index) })}
+                                </List>
+                                : <div>
+                                    {this.state.abilities.map((ability, index) => { return createAbility(ability, index) })}
+                                </div>
+                        }
                     </div>
                 </div>
             </div>
