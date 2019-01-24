@@ -7,7 +7,7 @@ import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
-import frontPaper from './../../../../img/dist/paper/white_paperboard.png'
+import frontPaper from './../../../../img/dist/paper/old-paper.jpg'
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -31,8 +31,6 @@ import InputBase from "@material-ui/core/es/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import LazyLoad from 'react-lazyload';
-import { url } from '../../../../Constants'
-
 import axios from '../../../../axios';
 
 const styles = theme => ({
@@ -289,7 +287,7 @@ class Bestiary extends React.Component {
             <Grid item xs={2}>
                 <img
                     // src={"/img/Books/Bestiary/mino.png"}
-                    //  src={require("./../../../../img/Beasts/" + `${dynamicData.imageName}` + ".png")}
+                    src={require("./../../../../img/dist/creatures/" + `${dynamicData.imageName}` + ".png")}
                     width={"100%"}
                     height={"100%"}
                     alt={"img"} key={key}/>

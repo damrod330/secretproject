@@ -20,17 +20,10 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import {Link} from 'react-router-dom';
-
-
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-
 import {LOGOUT_SUCCESS} from '../../store/const/messages';
-
 import * as actions from '../../store/actions/index';
-
-
-import Button from "@material-ui/core/Button";
 
 // import Button from "@material-ui/core/es/Button/Button";
 // import ClickAwayListener from "@material-ui/core/es/ClickAwayListener/ClickAwayListener";
@@ -209,7 +202,6 @@ class NavBar extends React.Component {
                         <MenuItem className={classes.menuItem}>Profile</MenuItem>
                     </Link>
 
-                    <MenuItem className={classes.menuItem}>My account</MenuItem>
 
                     <List className={classes.menuItem}>
                         <ListItem button onClick={this.handleClick}>

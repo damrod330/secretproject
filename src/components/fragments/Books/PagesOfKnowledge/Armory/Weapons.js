@@ -7,7 +7,7 @@ import "./../../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
-import frontPaper from './../../../../../img/dist/paper/white_paperboard.png'
+import frontPaper from './../../../../../img/dist/paper/old-paper.jpg'
 import {compose} from "recompose";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -17,7 +17,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import TableHead from '@material-ui/core/TableHead';
-import {url} from '../../../../../Constants'
 import LazyLoad from 'react-lazyload';
 
 import axios from '../../../../../axios';
@@ -117,9 +116,6 @@ const CustomTableCell = withStyles(theme => ({
 
 }))(TableCell);
 
-let header = {
-    "Content-Type": "application/json"
-};
 
 class Melee extends React.Component {
     state = {
@@ -397,7 +393,7 @@ class Melee extends React.Component {
                 });
             })
 
-        
+
     }
 
     handleChange = event => {
@@ -413,6 +409,7 @@ class Melee extends React.Component {
     };
 
     render() {
+
         const {classes} = this.props;
         const {width} = this.props;
 

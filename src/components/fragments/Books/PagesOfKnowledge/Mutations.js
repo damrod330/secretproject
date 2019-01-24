@@ -7,7 +7,7 @@ import "./../BOF.css"
 import Typography from "@material-ui/core/es/Typography/Typography";
 import withWidth, {isWidthUp, isWidthDown} from '@material-ui/core/withWidth';
 import TableCell from '@material-ui/core/TableCell';
-import frontPaper from './../../../../img/dist/paper/white_paperboard.png'
+import frontPaper from './../../../../img/dist/paper/old-paper.jpg'
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -27,13 +27,11 @@ import Divider from "@material-ui/core/Divider";
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Button from "@material-ui/core/Button";
 import LazyLoad from 'react-lazyload';
-import { url } from '../../../../Constants'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
-
 import axios from '../../../../axios';
 
 
@@ -183,9 +181,6 @@ const CustomTableCell = withStyles(theme => ({
 
 }))(TableCell);
 
-let header = {
-    "Content-Type": "application/json"
-};
 
 class Mutations extends React.Component {
     state = {
@@ -210,11 +205,11 @@ class Mutations extends React.Component {
             name: "",
             type: "",
             description: "",
-            godType: "",
+            godType: "KHORNE",
             ps: 0,
             roll: 0,
             comment: "",
-            variants: "",
+            variants: "SINGLE",
             table: [],
             id: "",
 
@@ -392,6 +387,7 @@ class Mutations extends React.Component {
             case "MULTIPLE":
                 return "Wielokrotna";
 
+
         }
     }
 
@@ -411,9 +407,10 @@ class Mutations extends React.Component {
 
             }
             case "TZEENTCH": {
-                return "Izeentch";
+                return "Tzeentch";
 
             }
+
         }
     }
 
@@ -549,6 +546,8 @@ class Mutations extends React.Component {
                 });
                 break;
             }
+            default:
+                console.log("Sie zjebalo (mutacje| filtr mutacji)")
 
         }
 
@@ -619,16 +618,34 @@ class Mutations extends React.Component {
       return(<Grid container>
           <Grid item xs={7}>
               <Typography>
+                  <b>Bóg:</b> {this.changeGodTypeENUM(dynamicData.godType)}
+              </Typography>
+              <Typography>
                   <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
               </Typography>
               <Typography>
                   <b>Opis:</b> {dynamicData.description}
               </Typography>
+              {dynamicData.variants!==""?
+                  <Typography>
+                      <b>Wariant:</b> {dynamicData.variants}
+                  </Typography>:
+                  <Typography/>
+              }
+              {dynamicData.comment!==""?
+                  <Typography>
+                      <b>Komentarz:</b> {dynamicData.comment}
+                  </Typography>:
+                  <Typography/>
+              }
           </Grid>
           <Grid item xs={5}>
               {
 
-                  dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
+                  dynamicData.table.length!==0
+
+
+                      ? this.generateTable(dynamicData, key, classes)
                       :
                       null
               }
@@ -640,11 +657,30 @@ class Mutations extends React.Component {
         return(<Grid container>
             <Grid item xs={12}>
                 <Typography>
+                    <b>Bóg:</b> {this.changeGodTypeENUM(dynamicData.godType)}
+                </Typography>
+                <Typography>
                     <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
                 </Typography>
                 <Typography>
                     <b>Opis:</b> {dynamicData.description}
                 </Typography>
+                {dynamicData.variants!==""?
+                    <Typography>
+                    <b>Wariant:</b> {dynamicData.variants}
+                </Typography>:
+                    <Typography/>
+                    }
+                {dynamicData.comment!==""?
+                    <Typography>
+                        <b>Komentarz:</b> {dynamicData.comment}
+                    </Typography>:
+                    <Typography/>
+                }
+
+
+
+
             </Grid>
 
             <Grid container>
@@ -844,8 +880,7 @@ class Mutations extends React.Component {
                                                 <Typography gutterBottom variant="h5" component="h5" align={"right"}>
                                                     <b>
                                                         PS: {dynamicData.ps}
-                                                    </b></Typography>
-                                            </Grid>
+                                                    </b></Typography></Grid>
                                         </Grid>
 
                                     </ExpansionPanelSummary>
