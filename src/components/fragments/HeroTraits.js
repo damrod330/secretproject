@@ -28,6 +28,12 @@ class HeroTraits extends Component {
                 );
             }).catch(error => {
                 console.log(error);
+                this.setState(
+                    {
+                        title: "Cechy",
+                        isEditModeEnabled: false
+                    }
+                );
             });
         } else {
             this.setState(
