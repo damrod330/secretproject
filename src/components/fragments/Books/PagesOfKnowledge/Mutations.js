@@ -203,13 +203,13 @@ class Mutations extends React.Component {
         allowTable: false,
         addMutation: {
             name: "",
-            type: "",
+            type: "SINGLE",
             description: "",
-            godType: "KHORNE",
+            godType: "",
             ps: 0,
             roll: 0,
             comment: "",
-            variants: "SINGLE",
+            variants: "",
             table: [],
             id: "",
 
@@ -393,7 +393,7 @@ class Mutations extends React.Component {
 
     changeGodTypeENUM(String) {
         switch (String) {
-            case "KHORNE": {
+            case "KHORN": {
 
                 return "Khorn"
 
@@ -462,7 +462,7 @@ class Mutations extends React.Component {
     filterMutations() {
         this.state.mutations.map((mutation) => {
             switch (mutation.godType) {
-                case "KHORNE": {
+                case "KHORN": {
 
                     return this.state.khorn.push(mutation);
 
@@ -511,7 +511,7 @@ class Mutations extends React.Component {
 
     showMutations(String) {
         switch (String) {
-            case "KHORNE": {
+            case "KHORN": {
                 this.setState({
                     filteredMutations: this.state.khorn,
                     filteredMutationsAfterSearch: this.state.khorn
@@ -700,7 +700,7 @@ class Mutations extends React.Component {
 
     render() {
         let mutationType = ["","SINGLE", "MULTIPLE"];
-        let godType = ["","NURGLE", "KHORNE", "TZEENTCH", "SLAANESH"];
+        let godType = ["","NURGLE", "KHORN", "TZEENTCH", "SLAANESH"];
         const {classes} = this.props;
         const {width} = this.props;
         let {mobile}=this.state;
@@ -732,7 +732,7 @@ class Mutations extends React.Component {
                                 label="Mutacje"
                             />
                             <FormControlLabel
-                                value="KHORNE"
+                                value="KHORN"
                                 control={<Radio color="default"/>}
                                 label="Mutacje Khorna"
                             />
@@ -801,7 +801,7 @@ class Mutations extends React.Component {
                                 label="Mutacje"
                             />
                             <FormControlLabel
-                                value="KHORNE"
+                                value="KHORN"
                                 control={<Radio color="default"/>}
                                 label="Khorn"
                             />
