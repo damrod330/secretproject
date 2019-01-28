@@ -687,7 +687,7 @@ class Mutations extends React.Component {
             <Grid item xs={12}>
                 {
 
-                    dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
+                    dynamicData.table.length!==0 ? this.generateTable(dynamicData, key, classes)
                         :
                         null
                 }
