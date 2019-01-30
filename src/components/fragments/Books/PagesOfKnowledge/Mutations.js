@@ -203,13 +203,13 @@ class Mutations extends React.Component {
         allowTable: false,
         addMutation: {
             name: "",
-            type: "",
+            type: "SINGLE",
             description: "",
             godType: "KHORN",
             ps: 0,
             roll: 0,
             comment: "",
-            variants: "SINGLE",
+            variants: "",
             table: [],
             id: "",
 
@@ -688,7 +688,7 @@ class Mutations extends React.Component {
             <Grid item xs={12}>
                 {
 
-                    dynamicData.table === '' || dynamicData.table===[] || dynamicData.table !== null ? this.generateTable(dynamicData, key, classes)
+                    dynamicData.table.length!==0 ? this.generateTable(dynamicData, key, classes)
                         :
                         null
                 }
