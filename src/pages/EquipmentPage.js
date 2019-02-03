@@ -10,8 +10,6 @@ import '../styles/main.css';
 class EquipmentPage extends Component {
 
     state = {
-        isProgressionModeEnabled: true,
-        currentExpirience: 1000,
         data: null
     }
 

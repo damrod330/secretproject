@@ -205,7 +205,7 @@ class Mutations extends React.Component {
             name: "",
             type: "SINGLE",
             description: "",
-            godType: "",
+            godType: "KHORN",
             ps: 0,
             roll: 0,
             comment: "",
@@ -446,6 +446,7 @@ class Mutations extends React.Component {
 
         axios.get('/mutations')
             .then(res => {
+                console.log(res);
                 this.setState({ mutations: res.data });
                 this.filterMutations();
                 this.showMutations(this.state.value);

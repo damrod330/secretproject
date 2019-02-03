@@ -66,13 +66,6 @@ class HeroInfo extends Component {
 
     handleToggleEditState() {
         if (this.state.isEditModeEnabled) {
-            console.log({
-                id: this.state.characterId,
-                name: this.state.hero.basicInfo[1].value,
-                race: this.state.hero.basicInfo[2].value,
-                xp: this.state.hero.basicInfo[0].value,
-                additionalInfo: this.state.hero.additionalInfo
-            });
             axios.put(`/character`, {
                 id: this.state.characterId,
                 name: this.state.hero.basicInfo[1].value,
@@ -83,35 +76,25 @@ class HeroInfo extends Component {
                 console.log(res.status);
                 this.setState(
                     {
-                        title: "Cechy",
+                        title: "Bohater",
                         isEditModeEnabled: false
                     }
                 );
+                this.props.responseMessage("success", "Zaktualizowano opis bohatera");
             }).catch(error => {
                 console.log(error);
                 this.setState(
                     {
-                        title: "Cechy",
+                        title: "Bohater",
                         isEditModeEnabled: false
                     }
                 );
+                this.props.responseMessage("error", "Nie udało się zaktualizować opisu bohatera");
             });
-            this.setState(
-                {
-                    title: "Edytuj bohatera",
-                    isEditModeEnabled: true
-                }
-            );
-            this.setState(
-                {
-                    title: "Bohater",
-                    isEditModeEnabled: false
-                }
-            );
         } else {
             this.setState(
                 {
-                    title: "Bohater",
+                    title: "Edytuj bohatera",
                     isEditModeEnabled: true
                 }
             );
