@@ -126,14 +126,15 @@ class Melee extends React.Component {
         segregatedWeapons: [],
         weapons: [],
         tables: [],
-        fireArmTable:[],
-        balistaTable:[],
-        ammoTable:[],
-        typeOfWeapon:[],
+        fireArmTable: [],
+        balistaTable: [],
+        ammoTable: [],
+        typeOfWeapon: [],
+        mobile: false,
 
     };
 
-    generatePanels = (weaponsTable, props, masterKey) => {
+    generatePanels = (weaponsTable, props, masterKey, mobile) => {
         let typeOfWeapon = this.state.typeOfWeapon;
         const {classes} = props;
 
@@ -147,53 +148,14 @@ class Melee extends React.Component {
                 <ExpansionPanelDetails>
 
                     <Grid container spacing={8} alignItems={"flex-start"} justify={"flex-start"}>
-                        <Grid item  md={1}>
+                        <Grid item md={1}>
 
                         </Grid>
                         <Grid item xs={12} md={10}>
-
-                            <Table key={masterKey}>
-                                <TableHead key={masterKey}>
-                                    <TableRow classes={{root: classes.tableShrink}}>
-                                        <CustomTableCell>Nazwa</CustomTableCell>
-                                        <CustomTableCell>Cena</CustomTableCell>
-                                        <CustomTableCell>Obciążenie</CustomTableCell>
-                                        <CustomTableCell>Kategoria</CustomTableCell>
-                                        <CustomTableCell>Siła Broni</CustomTableCell>
-                                        <CustomTableCell>Zasięg</CustomTableCell>
-                                        <CustomTableCell>Przeładowanie</CustomTableCell>
-                                        <CustomTableCell>Cechy Oręża</CustomTableCell>
-                                        <CustomTableCell>Dostępność</CustomTableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody classes={{root: classes.tableShrink}}>
-                                    {weaponsTable.map((dynamicData, key) => (
-
-                                            <TableRow key={key} classes={{root: classes.tableShrink}}>
-                                                <CustomTableCell><Typography
-                                                    >{dynamicData.name}</Typography></CustomTableCell>
-                                                <CustomTableCell>
-                                                    {dynamicData.price.gold!==0?<Typography>{dynamicData.price.gold}zk</Typography>:null}
-                                                    {dynamicData.price.silver!==0?<Typography>{dynamicData.price.silver}s</Typography>:null}
-                                                    {dynamicData.price.bronze!==0?<Typography>{dynamicData.price.bronze}p</Typography>:null}
-                                                </CustomTableCell>
-                                                <CustomTableCell>{dynamicData.weight}</CustomTableCell>
-                                                <CustomTableCell>{this.changeCategoryENUM(dynamicData.category)}</CustomTableCell>
-                                                <CustomTableCell>{dynamicData.power}</CustomTableCell>
-                                                <CustomTableCell>{dynamicData.range}</CustomTableCell>
-                                                <CustomTableCell>{dynamicData.reloadTime}</CustomTableCell>
-                                                <CustomTableCell>{dynamicData.weaponTraits.map((trait)=>(this.changeTraitEMUM(trait)))}</CustomTableCell>
-                                                <CustomTableCell>{this.changeENUM(dynamicData.availability)}</CustomTableCell>
-
-                                            </TableRow>
-                                        )
-                                    )}
-
-                                </TableBody>
-                            </Table>
+                            {mobile === false ? this.showForDesktop(weaponsTable, classes, masterKey) : this.showForMobile(weaponsTable, classes, masterKey)}
 
                         </Grid>
-                        <Grid item  md={1}>
+                        <Grid item md={1}>
                         </Grid>
 
                     </Grid>
@@ -303,11 +265,13 @@ class Melee extends React.Component {
                 return "Palna";
             case "OTHER":
                 return "Inne?";
-            default: return "Brak";
+            default:
+                return "Brak";
         }
     }
-    changeTraitEMUM(String){
-        switch (String){
+
+    changeTraitEMUM(String) {
+        switch (String) {
             case "SPECIAL":
                 return "Specjalny";
             case "CRUSHING":
@@ -336,13 +300,15 @@ class Melee extends React.Component {
                 return "Zawodny";
             case "EXPERIMENTAL":
                 return "Eksperymentalny";
-            default: return "Brak";
+            default:
+                return "Brak";
 
 
         }
     }
-    changeENUM(String){
-        switch(String){
+
+    changeENUM(String) {
+        switch (String) {
             case "RARE":
                 return "Rzadkie";
             case "COMMON":
@@ -355,7 +321,8 @@ class Melee extends React.Component {
                 return "Mała";
             case "NONE":
                 return "Brak";
-            default: return "Brak";
+            default:
+                return "Brak";
 
         }
     }
@@ -400,24 +367,131 @@ class Melee extends React.Component {
         this.setState({value: event.target.value});
     };
 
-    renderTables = (props) => {
+    renderTables = (props, mobile) => {
 
         return this.state.segregatedWeapons.map((segregatedWeapon, key) => (
-            this.generatePanels(segregatedWeapon, props, key)
+            this.generatePanels(segregatedWeapon, props, key, mobile)
 
         ))
+    };
+
+    showForDesktop = (weaponsTable, classes, masterKey) => {
+        return (<Table key={masterKey}>
+            <TableHead key={masterKey}>
+                <TableRow classes={{root: classes.tableShrink}}>
+                    <CustomTableCell>Nazwa</CustomTableCell>
+                    <CustomTableCell>Cena</CustomTableCell>
+                    <CustomTableCell>Obciążenie</CustomTableCell>
+                    <CustomTableCell>Kategoria</CustomTableCell>
+                    <CustomTableCell>Siła Broni</CustomTableCell>
+                    <CustomTableCell>Zasięg</CustomTableCell>
+                    <CustomTableCell>Przeładowanie</CustomTableCell>
+                    <CustomTableCell>Cechy Oręża</CustomTableCell>
+                    <CustomTableCell>Dostępność</CustomTableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody classes={{root: classes.tableShrink}}>
+                {weaponsTable.map((dynamicData, key) => (
+
+                        <TableRow key={key} classes={{root: classes.tableShrink}}>
+                            <CustomTableCell><Typography
+                            >{dynamicData.name}</Typography></CustomTableCell>
+                            <CustomTableCell>
+                                {dynamicData.price.gold !== 0 ? <Typography>{dynamicData.price.gold}zk</Typography> : null}
+                                {dynamicData.price.silver !== 0 ?
+                                    <Typography>{dynamicData.price.silver}s</Typography> : null}
+                                {dynamicData.price.bronze !== 0 ?
+                                    <Typography>{dynamicData.price.bronze}p</Typography> : null}
+                            </CustomTableCell>
+                            <CustomTableCell>{dynamicData.weight}</CustomTableCell>
+                            <CustomTableCell>{this.changeCategoryENUM(dynamicData.category)}</CustomTableCell>
+                            <CustomTableCell>{dynamicData.power}</CustomTableCell>
+                            <CustomTableCell>{dynamicData.range}</CustomTableCell>
+                            <CustomTableCell>{dynamicData.reloadTime}</CustomTableCell>
+                            <CustomTableCell>{dynamicData.weaponTraits.map((trait) => (this.changeTraitEMUM(trait)))}</CustomTableCell>
+                            <CustomTableCell>{this.changeENUM(dynamicData.availability)}</CustomTableCell>
+
+                        </TableRow>
+                    )
+                )}
+
+            </TableBody>
+        </Table>);
+    };
+    showForMobile = (weaponsTable, classes, masterKey) => {
+        return (
+            <div>
+                {weaponsTable.map((dynamicData, key) => (
+                        <div key={key}>
+                            <Grid key={key} container spacing={8}>
+                                <Grid  item xs={4}>
+                                    <Typography key={"nameKey" + key}><b>Nazwa:</b></Typography>
+                                    <Typography key={"nameValue" + key}>{dynamicData.name}</Typography>
+                                    <br/>
+                                    <Typography key={"priceKey" + key}><b>Cena:</b></Typography>
+
+                                    {dynamicData.price.gold !== 0 ?
+                                        <Typography key={"gold" + key}>{dynamicData.price.gold}zk</Typography> : null}
+                                    {dynamicData.price.silver !== 0 ?
+                                        <Typography key={"silver" + key}>{dynamicData.price.silver}s</Typography> : null}
+                                    {dynamicData.price.bronze !== 0 ?
+                                        <Typography key={"bronze" + key}>{dynamicData.price.bronze}p</Typography> : null}
+
+
+                                    <br/>
+                                    <Typography key={"weightKey" + key}><b>Obciążenie:</b></Typography>
+                                    <Typography key={"weightValue" + key}>{dynamicData.weight}</Typography>
+                                    <br/>
+                                    <Typography key={"categoryKey" + key}><b>Kategoria:</b></Typography>
+                                    <Typography
+                                        key={"categoryValue" + key}>{this.changeCategoryENUM(dynamicData.category)}</Typography>
+                                    <br/>
+                                    <Typography key={"strengthKey" + key}><b>Siła Broni:</b></Typography>
+                                    <Typography key={"strengthValue" + key}>{dynamicData.power}</Typography>
+                                    <br/>
+
+                                </Grid>
+                                <Grid  item xs={2}/>
+
+
+                                <Grid  item xs={6}>
+                                    <Typography key={"rangeKey" + key}><b>Zasięg:</b></Typography>
+                                    <Typography key={"rangeValue" + key}>{dynamicData.range}</Typography>
+                                    <br/>
+                                    <Typography key={"reloadKey" + key}><b>Przeładowanie:</b></Typography>
+                                    <Typography key={"reloadValue" + key}>{dynamicData.reloadTime}</Typography>
+                                    <br/>
+                                    <Typography key={"traitKey" + key}><b>Cechy:</b></Typography>
+                                    <Typography
+                                        key={"traitValue" + key}>{dynamicData.weaponTraits.map((trait) => (this.changeTraitEMUM(trait)))}</Typography>
+                                    <br/>
+                                    <Typography key={"availabilityKey" + key}><b>Dostępność:</b></Typography>
+                                    <Typography
+                                        key={"availabilityValue" + key}>{this.changeENUM(dynamicData.availability)}</Typography>
+                                </Grid>
+                            </Grid>
+
+
+                            <hr/>
+                        </div>
+                    )
+                )}
+            </div>);
     };
 
     render() {
 
         const {classes} = this.props;
         const {width} = this.props;
+        let {mobile} = this.state;
+
 
         if (isWidthDown('md', width)) {
-
+            mobile = true
 
         }
         if (isWidthUp('lg', width)) {
+            mobile = false
 
 
         }
@@ -431,7 +505,7 @@ class Melee extends React.Component {
                     <Grid item xs={12}>
 
                         <LazyLoad height={300}>
-                        {this.state.tables}
+                            {this.renderTables(this.props, mobile)}
                         </LazyLoad>
 
 

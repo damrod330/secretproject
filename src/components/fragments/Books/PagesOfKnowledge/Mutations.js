@@ -587,7 +587,7 @@ class Mutations extends React.Component {
 
                         <CustomTableCell key={itemKey}>
                             {itemKey%row.length===0? <Typography noWrap={true}>{item}</Typography>:<Typography>{item}</Typography>}
-                            </CustomTableCell>
+                        </CustomTableCell>
                     )}
 
                 </TableRow>
@@ -614,48 +614,42 @@ class Mutations extends React.Component {
         return newTable;
     }
 
-    showForDesktop=(dynamicData,classes,key)=>{
-      return(<Grid container>
-          <Grid item xs={7}>
-              <Typography>
-                  <b>Bóg:</b> {this.changeGodTypeENUM(dynamicData.godType)}
-              </Typography>
-              <Typography>
-                  <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
-              </Typography>
-              <Typography>
-                  <b>Opis:</b> {dynamicData.description}
-              </Typography>
-              {dynamicData.variants!==""?
-                  <Typography>
-                      <b>Wariant:</b> {dynamicData.variants}
-                  </Typography>:
-                  <Typography/>
-              }
-              {dynamicData.comment!==""?
-                  <Typography>
-                      <b>Komentarz:</b> {dynamicData.comment}
-                  </Typography>:
-                  <Typography/>
-              }
-          </Grid>
-          <Grid item xs={5}>
-              {
-
-                  dynamicData.table.length!==0
-
-
-                      ? this.generateTable(dynamicData, key, classes)
-                      :
-                      null
-              }
-
-          </Grid>
-      </Grid>)
-    };
-    showForMobile=(dynamicData,classes,key)=>{
+    showForMobileHeader=(dynamicData,classes,key)=>{
         return(<Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={7}>
+                <Typography gutterBottom variant="h5" component="h5">
+                    {dynamicData.roll}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="h5">
+                    {dynamicData.name}
+                </Typography>
+
+            </Grid>
+            <Grid item xs={5}>
+                <Typography noWrap gutterBottom variant="h5" component="h5" align={"right"}>
+                    <b>
+                        PS: {dynamicData.ps}
+                    </b></Typography></Grid>
+        </Grid>)
+    };
+    showForDesktopHeader=(dynamicData,classes,key)=>{
+        return(<Grid container>
+            <Grid item xs={10}>
+                <Typography gutterBottom variant="h5" component="h5">
+                    {dynamicData.roll} {dynamicData.name}
+                </Typography>
+
+            </Grid>
+            <Grid item xs={2}>
+                <Typography noWrap gutterBottom variant="h5" component="h5" align={"right"}>
+                    <b>
+                        PS: {dynamicData.ps}
+                    </b></Typography></Grid>
+        </Grid>)
+    };
+    showForDesktop=(dynamicData,classes,key)=>{
+        return(<Grid container>
+            <Grid item xs={7}>
                 <Typography>
                     <b>Bóg:</b> {this.changeGodTypeENUM(dynamicData.godType)}
                 </Typography>
@@ -667,34 +661,73 @@ class Mutations extends React.Component {
                 </Typography>
                 {dynamicData.variants!==""?
                     <Typography>
-                    <b>Wariant:</b> {dynamicData.variants}
-                </Typography>:
+                        <b>Wariant:</b> {dynamicData.variants}
+                    </Typography>:
                     <Typography/>
-                    }
+                }
                 {dynamicData.comment!==""?
                     <Typography>
                         <b>Komentarz:</b> {dynamicData.comment}
                     </Typography>:
                     <Typography/>
                 }
-
-
-
-
             </Grid>
-
-            <Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={5}>
                 {
 
-                    dynamicData.table.length!==0 ? this.generateTable(dynamicData, key, classes)
+                    dynamicData.table.length!==0
+
+
+                        ? this.generateTable(dynamicData, key, classes)
                         :
                         null
                 }
 
             </Grid>
-        </Grid>
-        </Grid>
+        </Grid>)
+    };
+    showForMobile=(dynamicData,classes,key)=>{
+        return(<Grid container>
+                <Grid item xs={12}>
+                    <Typography>
+                        <b>Bóg:</b> {this.changeGodTypeENUM(dynamicData.godType)}
+                    </Typography>
+                    <Typography>
+                        <b>Typ:</b> {this.changeENUM(dynamicData.type)}.
+                    </Typography>
+                    <Typography>
+                        <b>Opis:</b> {dynamicData.description}
+                    </Typography>
+                    {dynamicData.variants!==""?
+                        <Typography>
+                            <b>Wariant:</b> {dynamicData.variants}
+                        </Typography>:
+                        <Typography/>
+                    }
+                    {dynamicData.comment!==""?
+                        <Typography>
+                            <b>Komentarz:</b> {dynamicData.comment}
+                        </Typography>:
+                        <Typography/>
+                    }
+
+
+
+
+                </Grid>
+
+                <Grid container>
+                    <Grid item xs={12}>
+                        {
+
+                            dynamicData.table.length!==0 ? this.generateTable(dynamicData, key, classes)
+                                :
+                                null
+                        }
+
+                    </Grid>
+                </Grid>
+            </Grid>
         )
     };
 
@@ -714,6 +747,7 @@ class Mutations extends React.Component {
             fabVisible = true;
             mobile=false;
         }
+
         const desktopVersion = <Grid container alignItems={"center"} justify={"flex-start"}>
             <Grid item xs={9}>
 
@@ -782,76 +816,76 @@ class Mutations extends React.Component {
 
         const mobileVersion =
             <Grid container >
-            <Grid item xs={12}>
-                <Grid container justify={"center"}>
-                    <Grid item >
+                <Grid item xs={12}>
+                    <Grid container justify={"center"}>
+                        <Grid item >
 
 
-                    <FormControl>
-                        <RadioGroup
-                            aria-label="position"
-                            name="position"
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value="ALL"
-                                control={<Radio color="default"/>}
-                                label="Mutacje"
-                            />
-                            <FormControlLabel
-                                value="KHORN"
-                                control={<Radio color="default"/>}
-                                label="Khorn"
-                            />
-                            <FormControlLabel
-                                value="NURGLE"
-                                control={<Radio color="default"
-                                />}
-                                label="Nurgl"
-                            />
-                            <FormControlLabel
-                                value="SLAANESH"
-                                control={<Radio color="default"
-                                />}
-                                label="Slaanesh"
-                            />
-                            <FormControlLabel
-                                value="TZEENTCH"
-                                control={<Radio color="default"
-                                />}
-                                label="Tzeentch"
-                            />
-                        </RadioGroup>
-                    </FormControl>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-label="position"
+                                    name="position"
+                                    value={this.state.value}
+                                    onChange={this.handleChange}
+                                    row
+                                >
+                                    <FormControlLabel
+                                        value="ALL"
+                                        control={<Radio color="default"/>}
+                                        label="Mutacje"
+                                    />
+                                    <FormControlLabel
+                                        value="KHORN"
+                                        control={<Radio color="default"/>}
+                                        label="Khorn"
+                                    />
+                                    <FormControlLabel
+                                        value="NURGLE"
+                                        control={<Radio color="default"
+                                        />}
+                                        label="Nurgl"
+                                    />
+                                    <FormControlLabel
+                                        value="SLAANESH"
+                                        control={<Radio color="default"
+                                        />}
+                                        label="Slaanesh"
+                                    />
+                                    <FormControlLabel
+                                        value="TZEENTCH"
+                                        control={<Radio color="default"
+                                        />}
+                                        label="Tzeentch"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid container justify={"center"}>
-            <Grid item xs={12}>
                 <Grid container justify={"center"}>
+                    <Grid item xs={12}>
+                        <Grid container justify={"center"}>
 
 
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon/>
-                        </div>
-                        <InputBase
-                            onChange={this.filterList}
-                            value={this.state.searchValue}
-                            placeholder="Wyszukaj.."
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                        />
-                    </div>
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon/>
+                                </div>
+                                <InputBase
+                                    onChange={this.filterList}
+                                    value={this.state.searchValue}
+                                    placeholder="Wyszukaj.."
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                />
+                            </div>
 
+                        </Grid>
+                    </Grid>
                 </Grid>
-            </Grid>
-            </Grid>
-        </Grid>;
+            </Grid>;
 
 
         return (
@@ -867,21 +901,11 @@ class Mutations extends React.Component {
 
 
                                 <ExpansionPanel classes={{ root: classes.paper, expanded: classes.expansionPanel }}
-                                    key={key}>
+                                                key={key}>
                                     <ExpansionPanelSummary key={key}>
-                                        <Grid container>
-                                            <Grid item xs={10}>
-                                                <Typography gutterBottom variant="h5" component="h5">
-                                                    {dynamicData.roll} {dynamicData.name}
-                                                </Typography>
 
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <Typography gutterBottom variant="h5" component="h5" align={"right"}>
-                                                    <b>
-                                                        PS: {dynamicData.ps}
-                                                    </b></Typography></Grid>
-                                        </Grid>
+                                        {mobile ===false? this.showForDesktopHeader(dynamicData,classes,key): this.showForMobileHeader(dynamicData,classes,key)}
+
 
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails key={key}>
@@ -1016,7 +1040,7 @@ class Mutations extends React.Component {
                                         value="Tabela istnieje?"
                                     />
                                 }
-                                    label={"Istnieje Tabela?"} />
+                                                  label={"Istnieje Tabela?"} />
                                 <TextField
                                     disabled={!this.state.allowTable}
                                     label="Liczba Nagłówków"
@@ -1035,7 +1059,7 @@ class Mutations extends React.Component {
                                     margin="normal"
                                 />
                                 <Button size="large" color="primary" onClick={this.handleOpenModalTable}
-                                    disabled={!this.state.allowTable}>
+                                        disabled={!this.state.allowTable}>
                                     ¿Tabela?
                                 </Button>
                             </Grid>

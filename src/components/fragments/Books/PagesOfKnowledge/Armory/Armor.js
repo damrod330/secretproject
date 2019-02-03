@@ -20,6 +20,7 @@ import TableHead from '@material-ui/core/TableHead';
 import LazyLoad from 'react-lazyload';
 
 import axios from '../../../../../axios';
+
 const styles = theme => ({
     paper: {
         //   fontFamily:"Garamond",
@@ -115,7 +116,6 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell);
 
 
-
 class Armor extends React.Component {
     state = {
         filter: undefined,
@@ -131,6 +131,7 @@ class Armor extends React.Component {
         segregatedArmors: [],
         tables: [],
         typeOfArmor: [],
+        mobile: false,
 
 
     };
@@ -248,6 +249,109 @@ class Armor extends React.Component {
             });
     }
 
+    showForMobile = (armorTables, classes, key) => {
+
+        return (
+            <div>
+                {armorTables.map((dynamicData, key) => (
+                    <div key={key}>
+            <Grid key={key} container spacing={8}>
+
+                <Grid key={key} item xs={4}>
+                    <Typography key={"typeKey"+key}><b>Typ Zbroi:</b></Typography>
+                    <Typography key={"typeValue"+key}>{dynamicData.name}</Typography>
+                    <br/>
+                    <Typography key={"priceKey"+key}><b>Cena:</b></Typography>
+
+                                {dynamicData.price.gold !== 0 ?
+                                    <Typography key={"gold"+key}>{dynamicData.price.gold}zk</Typography> : null}
+                                {dynamicData.price.silver !== 0 ?
+                                    <Typography key={"silver"+key}>{dynamicData.price.silver}s</Typography> : null}
+                                {dynamicData.price.bronze !== 0 ?
+                                    <Typography key={"bronze"+key}>{dynamicData.price.bronze}p</Typography> : null}
+
+
+                    <br/>
+                    <Typography key={"weightKey"+key}><b>Obciążenie:</b></Typography>
+                   <Typography key={"weightValue"+key}>{dynamicData.weight}</Typography>
+
+                </Grid>
+                <Grid item xs={2}/>
+                <Grid item xs={6}>
+
+                    <Typography key={"protectKey"+key}><b>Chronione lokacje:</b></Typography>
+                   {dynamicData.protectionAreas.map((locations, key) => {
+                            return (<Typography key={"protectLoc"+key}>
+                                    {this.changeENUM(locations)}
+                                </Typography>
+                            )
+                        })}
+                    <br/>
+                    <Typography key={"pzKey"+key}><b>Punkty Zbroi:</b></Typography>
+                    <Typography key={"pzValue"+key}>{dynamicData.pz}</Typography>
+
+                    <br/>
+                    <Typography key={"availabilityKey"+key}><b>Dostępność:</b></Typography>
+
+                        <Typography key={"availabilityValue"+key}>{this.changeENUM(dynamicData.availability)}</Typography>
+                </Grid>
+
+            </Grid>
+                    <hr key={"line"+key}/></div>
+
+                    )
+                )}
+
+            </div>
+
+        );
+    };
+    showForDesktop = (armorTables, classes, mainKey) => {
+        return (<Table>
+            <TableHead key={mainKey}>
+                <TableRow key={-1} classes={{root: classes.tableShrink}}>
+                    <CustomTableCell>Typ Zbroi</CustomTableCell>
+                    <CustomTableCell>Cena</CustomTableCell>
+                    <CustomTableCell>Obciążenie</CustomTableCell>
+                    <CustomTableCell>Chronione lokacje</CustomTableCell>
+                    <CustomTableCell>Punkty Zbroi</CustomTableCell>
+                    <CustomTableCell>Dostępność</CustomTableCell>
+                </TableRow>
+            </TableHead>
+
+            <TableBody classes={{root: classes.tableShrink}}>
+                {armorTables.map((dynamicData, key) => (
+                        <TableRow key={key} classes={{root: classes.tableShrink}}>
+                            <CustomTableCell><Typography
+                                noWrap={true}>{dynamicData.name}</Typography></CustomTableCell>
+                            <CustomTableCell>
+                                {dynamicData.price.gold !== 0 ?
+                                    <Typography>{dynamicData.price.gold}zk</Typography> : null}
+                                {dynamicData.price.silver !== 0 ?
+                                    <Typography>{dynamicData.price.silver}s</Typography> : null}
+                                {dynamicData.price.bronze !== 0 ?
+                                    <Typography>{dynamicData.price.bronze}p</Typography> : null}
+                            </CustomTableCell>
+                            <CustomTableCell>{dynamicData.weight}</CustomTableCell>
+                            <CustomTableCell>
+
+                                {dynamicData.protectionAreas.map((locations, key) => {
+                                    return (<Typography key={key}>
+                                            {this.changeENUM(locations)}
+                                        </Typography>
+                                    )
+                                })}
+                            </CustomTableCell>
+                            <CustomTableCell>{dynamicData.pz}</CustomTableCell>
+                            <CustomTableCell>{this.changeENUM(dynamicData.availability)}</CustomTableCell>
+
+
+                        </TableRow>
+                    )
+                )}
+            </TableBody>
+        </Table>);
+    };
     handleChange = event => {
         this.setState({value: event.target.value});
     };
@@ -287,7 +391,7 @@ class Armor extends React.Component {
     }
 
 
-    generatePanels = (armorTables, props, mainKey) => {
+    generatePanels = (armorTables, props, mainKey, mobile) => {
         let typeOfArmor = this.state.typeOfArmor;
         const {classes} = props;
 
@@ -305,52 +409,9 @@ class Armor extends React.Component {
                         <Grid item>
                         </Grid>
                         <Grid item xs={12}>
-                            <Table>
-                                <TableHead key={mainKey}>
-                                    <TableRow key={-1} classes={{root: classes.tableShrink}}>
-                                        <CustomTableCell>Typ Zbroi</CustomTableCell>
-                                        <CustomTableCell>Cena</CustomTableCell>
-                                        <CustomTableCell>Obciążenie</CustomTableCell>
-                                        <CustomTableCell>Chronione lokacje</CustomTableCell>
-                                        <CustomTableCell>Punkty Zbroi</CustomTableCell>
-                                        <CustomTableCell>Dostępność</CustomTableCell>
-                                    </TableRow>
-                                </TableHead>
-
-                                <TableBody classes={{root: classes.tableShrink}}>
-                                    {armorTables.map((dynamicData, key) => (
-                                            <TableRow key={key} classes={{root: classes.tableShrink}}>
-                                                <CustomTableCell><Typography
-                                                    noWrap={true}>{dynamicData.name}</Typography></CustomTableCell>
-                                                <CustomTableCell>
-                                                    {dynamicData.price.gold !== 0 ?
-                                                        <Typography>{dynamicData.price.gold}zk</Typography> : null}
-                                                    {dynamicData.price.silver !== 0 ?
-                                                        <Typography>{dynamicData.price.silver}s</Typography> : null}
-                                                    {dynamicData.price.bronze !== 0 ?
-                                                        <Typography>{dynamicData.price.bronze}p</Typography> : null}
-                                                </CustomTableCell>
-                                                <CustomTableCell>{dynamicData.weight}</CustomTableCell>
-                                                <CustomTableCell>
-
-                                                    {dynamicData.protectionAreas.map((locations, key) => {
-                                                        return (<Typography key={key}>
-                                                                {this.changeENUM(locations)}
-                                                            </Typography>
-                                                        )
-                                                    })}
-                                                </CustomTableCell>
-                                                <CustomTableCell>{dynamicData.pz}</CustomTableCell>
-                                                <CustomTableCell>{this.changeENUM(dynamicData.availability)}</CustomTableCell>
-
-
-                                            </TableRow>
-                                        )
-                                    )}
-                                </TableBody>
-                            </Table>
+                            {mobile === false ? this.showForDesktop(armorTables, classes, mainKey) : this.showForMobile(armorTables, classes, mainKey)}
                         </Grid>
-                        <Grid item >
+                        <Grid item>
                         </Grid>
                     </Grid>
                 </ExpansionPanelDetails>
@@ -359,31 +420,34 @@ class Armor extends React.Component {
 
 
     };
-    renderTables = (props) => {
+    renderTables = (props, mobile) => {
 
 
         return this.state.segregatedArmors.map((segregatedArmor, key) => (
-            this.generatePanels(segregatedArmor, props, key)
+            this.generatePanels(segregatedArmor, props, key, mobile)
 
         ))
     };
+    showTables = (mobile) => {
+        return (this.ge)
+    }
 
 
     render() {
         const {classes} = this.props;
         const {width} = this.props;
-
+        let {mobile} = this.state;
 
 
         if (isWidthDown('md', width)) {
-
+            mobile = true
 
         }
         if (isWidthUp('lg', width)) {
+            mobile = false
 
 
         }
-
 
         return (
             <Paper className={classes.paper}>
@@ -394,7 +458,8 @@ class Armor extends React.Component {
                     <Grid item xs={12}>
 
                         <LazyLoad height={300}>
-                            {this.state.tables}
+                            {/*{this.state.tables}*/}
+                            {this.renderTables(this.props, mobile)}
                         </LazyLoad>
 
                     </Grid>
